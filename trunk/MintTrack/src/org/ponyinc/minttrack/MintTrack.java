@@ -15,13 +15,13 @@ public class MintTrack extends TabActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        
+
         mTabHost = getTabHost();
         
-        mTabHost.addTab(mTabHost.newTabSpec("tab_test1").setIndicator("", getResources().getDrawable(R.drawable.homebtn)).setContent(R.id.tab1));
-        mTabHost.addTab(mTabHost.newTabSpec("tab_test2").setIndicator("", getResources().getDrawable(R.drawable.transactionbtn)).setContent(R.id.tab2));
-        mTabHost.addTab(mTabHost.newTabSpec("tab_test3").setIndicator("", getResources().getDrawable(R.drawable.auditbtn)).setContent(R.id.tab3));
-        mTabHost.addTab(mTabHost.newTabSpec("tab_test3").setIndicator("", getResources().getDrawable(R.drawable.chartbtn)).setContent(R.id.tab4));
+        mTabHost.addTab(mTabHost.newTabSpec("Home").setIndicator("", getResources().getDrawable(R.drawable.homebtn)).setContent(R.id.tab1));
+        mTabHost.addTab(mTabHost.newTabSpec("Transactions").setIndicator("", getResources().getDrawable(R.drawable.transactionbtn)).setContent(R.id.tab2));
+        mTabHost.addTab(mTabHost.newTabSpec("Audit").setIndicator("", getResources().getDrawable(R.drawable.auditbtn)).setContent(R.id.tab3));
+        mTabHost.addTab(mTabHost.newTabSpec("Tools").setIndicator("", getResources().getDrawable(R.drawable.toolsbtn)).setContent(R.id.tab4));
         mTabHost.setCurrentTab(0);
         
         //Button
@@ -33,5 +33,7 @@ public class MintTrack extends TabActivity {
                 this, R.array.planets, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s.setAdapter(adapter);
+        
+        
     }
 }
