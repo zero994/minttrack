@@ -1,95 +1,196 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@android:id/tabhost" android:layout_width="fill_parent"
+<!-- TAB CREATION -->
+<TabHost 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@android:id/tabhost" 
+	android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
-	<LinearLayout android:orientation="vertical"
-		android:layout_width="fill_parent" android:layout_height="fill_parent">
-		<TabWidget android:id="@android:id/tabs"
-			android:layout_width="fill_parent" android:layout_height="wrap_content" />
-
-		<FrameLayout android:id="@android:id/tabcontent"
-			android:layout_width="fill_parent" android:layout_height="fill_parent">
-			<ScrollView android:id="@+id/tab1" android:layout_width="fill_parent"
+	<LinearLayout 
+		android:orientation="vertical"
+		android:layout_width="fill_parent" 
+		android:layout_height="fill_parent">
+		<TabWidget 
+			android:id="@android:id/tabs"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content" />
+		<FrameLayout 
+			android:id="@android:id/tabcontent"
+			android:layout_width="fill_parent" 
+			android:layout_height="fill_parent">
+<!-- TAB 1: HOME SCREEN -->
+			<ScrollView 
+				android:id="@+id/tab1" 
+				android:layout_width="fill_parent"
 				android:layout_height="wrap_content">
-				<LinearLayout android:orientation="vertical"
-					android:layout_width="fill_parent" android:layout_height="fill_parent"
+				<LinearLayout 
+					android:orientation="vertical"
+					android:layout_width="fill_parent" 
+					android:layout_height="fill_parent"
 					android:scrollbars="vertical">
-					<ImageButton android:id="@+id/android_button"
-						android:layout_width="fill_parent" android:layout_height="wrap_content"
+					<ImageButton 
+						android:id="@+id/android_button"
+						android:layout_width="fill_parent" 
+						android:layout_height="wrap_content"
 						android:src="@drawable/android" />
-					<Spinner android:id="@+id/spinner" android:layout_width="fill_parent"
-						android:layout_height="wrap_content" android:drawSelectorOnTop="true"
+					<Spinner 
+						android:id="@+id/spinner" 
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content" 
+						android:drawSelectorOnTop="true"
 						android:prompt="@string/planet_prompt" />
 				</LinearLayout>
 			</ScrollView>
-			<ScrollView android:id="@+id/tab2" android:layout_width="fill_parent"
+<!-- TAB 2: TRANSACTION SCREEN -->
+			<ScrollView 
+				android:id="@+id/tab2" 
+				android:layout_width="fill_parent"
 				android:layout_height="wrap_content">
-				<LinearLayout android:layout_width="fill_parent"
-					android:layout_height="fill_parent" android:orientation="vertical"
-					android:padding="5dip" android:layout_weight="1">
-					<LinearLayout android:layout_width="fill_parent"
-						android:paddingLeft="30dip" android:paddingRight="30dip" android:layout_height="fill_parent" android:orientation="horizontal" android:layout_weight="1">
-						<Button android:id="@+id/incomeButton"
-							android:layout_width="fill_parent" android:layout_height="wrap_content"
-							android:text="+" android:layout_weight="1" />
-						<Button android:id="@+id/expenseButton"
-							android:layout_width="fill_parent" android:layout_height="wrap_content"
-							android:text="-" android:layout_weight="1" />
-					</LinearLayout>
-					<LinearLayout android:layout_width="fill_parent"
-						android:layout_height="fill_parent" android:orientation="horizontal"
+				<LinearLayout 
+					android:layout_width="fill_parent"
+					android:layout_height="fill_parent" 
+					android:orientation="vertical"
+					android:padding="5dip" 
+					android:layout_weight="1">
+<!-- INCOME/EXPENSE BUTTONS -->	
+					<LinearLayout 
+						android:layout_width="fill_parent"
+						android:paddingLeft="30dip" 
+						android:paddingRight="30dip" 
+						android:layout_height="fill_parent" 
+						android:orientation="horizontal" 
 						android:layout_weight="1">
-						<TextView android:text="Amount:" android:layout_width="fill_parent"
-							android:layout_height="fill_parent" android:layout_weight="1" />
-						<TextView android:text="Date" android:layout_width="fill_parent"
-							android:layout_height="fill_parent" android:layout_weight="1" />
+						<Button 
+							android:id="@+id/incomeButton"
+							android:layout_width="fill_parent" 
+							android:layout_height="wrap_content"
+							android:text="+" 
+							android:textSize="32dip"
+							android:layout_weight="1" />
+						<Button 
+							android:id="@+id/expenseButton"
+							android:layout_width="fill_parent" 
+							android:layout_height="wrap_content"
+							android:text="-" 
+							android:textSize="32dip"
+							android:layout_weight="1" />
 					</LinearLayout>
-					<LinearLayout android:layout_width="fill_parent"
-						android:layout_height="fill_parent" android:orientation="horizontal"
+<!-- AMOUNT TEXTFIELD / DATE PICKER -->
+					<LinearLayout 
+						android:layout_width="fill_parent"
+						android:layout_height="fill_parent" 
+						android:orientation="horizontal"
 						android:layout_weight="1">
-						<EditText android:id="@+id/entry1" android:layout_width="fill_parent"
-							android:layout_height="wrap_content" android:background="@android:drawable/editbox_background"
+						<TextView 
+							android:text="Amount:" 
+							android:layout_width="fill_parent"
+							android:layout_height="fill_parent" 
 							android:layout_weight="1" />
-						<Button android:id="@+id/pickDate" android:layout_width="fill_parent"
-							android:layout_height="wrap_content" android:text="Change the date"
+						<TextView 
+							android:text="Date" 
+							android:layout_width="fill_parent"
+							android:layout_height="fill_parent" 
 							android:layout_weight="1" />
 					</LinearLayout>
-					<TextView android:text="Payment Type:"
-						android:layout_width="fill_parent" android:layout_height="wrap_content"
+					<LinearLayout 
+						android:layout_width="fill_parent"
+						android:layout_height="fill_parent" 
+						android:orientation="horizontal"
+						android:layout_weight="1">
+						<EditText 
+							android:id="@+id/entry1" 
+							android:inputType="phone"
+							android:layout_width="fill_parent"
+							android:layout_height="wrap_content" 
+							android:background="@android:drawable/editbox_background"
+							android:layout_weight="1" />
+						<Button 
+							android:id="@+id/pickDate" 
+							android:layout_width="fill_parent"
+							android:layout_height="wrap_content" 
+							android:text="Change the date"
+							android:layout_weight="1" />
+					</LinearLayout>
+<!-- PAYMENT TYPE SPINNER-->
+					<TextView 
+						android:text="Payment Type:"
+						android:layout_width="fill_parent" 
+						android:layout_height="wrap_content"
 						android:layout_weight="1" />
-					<Spinner android:id="@+id/paytype" android:layout_width="fill_parent"
-						android:layout_height="wrap_content" android:drawSelectorOnTop="true"
-						android:prompt="@string/paytype_prompt" android:layout_weight="1" />
-					<TextView android:text="Reason:" android:layout_width="fill_parent"
-						android:layout_height="wrap_content" android:layout_weight="1" />
-					<Spinner android:id="@+id/reason1" android:layout_width="fill_parent"
-						android:layout_height="wrap_content" android:drawSelectorOnTop="true"
-						android:prompt="@string/reason_prompt" android:layout_weight="1" />
-					<TextView android:text="Note:"
-						android:layout_width="fill_parent" android:layout_height="wrap_content"
+					<Spinner 
+						android:id="@+id/paytype" 
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content" 
+						android:drawSelectorOnTop="true"
+						android:prompt="@string/paytype_prompt" 
 						android:layout_weight="1" />
-					<EditText android:id="@+id/notes" android:layout_width="fill_parent"
-						android:layout_height="wrap_content" android:background="@android:drawable/editbox_background"
+<!-- REASON SPINNER-->
+					<TextView 
+						android:text="Reason:" 
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content" 
 						android:layout_weight="1" />
-					<LinearLayout android:layout_width="fill_parent"
-					android:layout_height="fill_parent" android:orientation="vertical"
-					android:paddingLeft="50dip" android:paddingRight="50dip" android:layout_weight="1">
-					<Button android:id="@+id/saveButton" android:layout_width="fill_parent"
-						android:layout_height="wrap_content" android:text="Save"
+					<Spinner 
+						android:id="@+id/reason1" 
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content" 
+						android:drawSelectorOnTop="true"
+						android:prompt="@string/reason_prompt" 
+						android:layout_weight="1" />
+<!-- NOTE TEXTFIELD-->
+					<TextView 
+						android:text="Note:"
+						android:layout_width="fill_parent" 
+						android:layout_height="wrap_content"
+						android:layout_weight="1" />
+					<EditText 
+						android:id="@+id/notes" 
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content" 
+						android:background="@android:drawable/editbox_background"
+						android:layout_weight="1" />
+<!-- SAVE BUTTON -->
+					<LinearLayout 
+						android:layout_width="fill_parent"
+						android:layout_height="fill_parent" 
+						android:orientation="vertical"
+						android:paddingLeft="50dip" 
+						android:paddingRight="50dip" 
+						android:layout_weight="1">
+					<Button 
+						android:id="@+id/saveButton" 
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content" 
+						android:text="Save"
 						android:layout_weight="1" />
 					</LinearLayout>
 				</LinearLayout>
 			</ScrollView>
-			<ScrollView android:id="@+id/tab3" android:layout_width="fill_parent"
+<!-- TAB 3: AUDIT/SUMMARY SCREEN -->
+			<ScrollView 
+				android:id="@+id/tab3" 
+				android:layout_width="fill_parent"
 				android:layout_height="wrap_content">
-				<LinearLayout android:id="@+id/tab3"
-					android:layout_width="fill_parent" android:layout_height="fill_parent">
+				<LinearLayout 
+					android:id="@+id/tab3"
+					android:layout_width="fill_parent" 
+					android:layout_height="fill_parent">
+					
+					<!-- CONTENT GOES HERE -->
+					
 				</LinearLayout>
 			</ScrollView>
-			<ScrollView android:id="@+id/tab4" android:layout_width="fill_parent"
+<!-- TAB 4: TOOLS SCREEN -->
+			<ScrollView 
+				android:id="@+id/tab4" 
+				android:layout_width="fill_parent"
 				android:layout_height="wrap_content">
-				<LinearLayout android:id="@+id/tab4"
-					android:layout_width="fill_parent" android:layout_height="fill_parent">
+				<LinearLayout 
+					android:id="@+id/tab4"
+					android:layout_width="fill_parent" 
+					android:layout_height="fill_parent">
+					
+					<!-- CONTENT GOES HERE -->
+					
 				</LinearLayout>
 			</ScrollView>
 		</FrameLayout>
