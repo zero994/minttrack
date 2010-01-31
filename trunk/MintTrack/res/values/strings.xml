@@ -2,6 +2,8 @@
 <resources>
     <string name="hello">Hello World, HelloTabWidget!</string>
     <string name="app_name">HelloTabWidget</string>
+    <string name="reason_prompt">Reason</string>
+    <string name="paytype_prompt">Payment Type</string>
     <string name="planet_prompt">Choose a planet</string>
     <string-array name="planets">
         <item>Mercury</item>
@@ -12,5 +14,15 @@
         <item>Saturn</item>
         <item>Uranus</item>
         <item>Neptune</item>
+    </string-array>
+    <string-array name="reason">
+        <item>Test 1</item>
+        <item>Test 2</item>
+        <item>Test 3</item>
+    </string-array>
+    <string-array name="paytype">
+        <item>Test 1</item>
+        <item>Test 2</item>
+        <item>Test 3</item>
     </string-array>
 </resources>
