@@ -38,6 +38,10 @@
 						android:layout_height="wrap_content" 
 						android:drawSelectorOnTop="true"
 						android:prompt="@string/planet_prompt" />
+					<TextView
+						android:id="@+id/text"  
+					    android:layout_width="fill_parent"
+					    android:layout_height="wrap_content" />
 				</LinearLayout>
 			</ScrollView>
 <!-- TAB 2: TRANSACTION SCREEN -->
