@@ -17,8 +17,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CursorAdapter;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -56,25 +58,41 @@ public class MintTrack extends TabActivity {
 		mTabHost.setCurrentTab(0);
 
 		MintLink = new MintData(this);
-
+		//Just closing it till we figure out exactly what we want to do.
+		MintLink.close();
+		
+		Spinner s = (Spinner) findViewById(R.id.spinner);
+		fillCatDropDown(s);
+		
 		try {
-			addAccount("Pentucket Bank", 5000.67);
-			addAccount("Boston Bank", 5000.00);
-			Cursor cursor = getAccounts();
-			showAccounts(cursor);
+			//addCategory("test", 432.43, 1);
+			EditCatTotal(1,5000.44);
+			Cursor cursor = getCategorys();
+			//SimpleCursorAdapter s1 = new SimpleCursorAdapter(this,android.R.layout.simple_spinner_item,cursor, new String[] {CATEGORY_NAME,_ID}, new int[] {android.R.id.text1,android.R.id.text2});
+			//s1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			//s.setAdapter(s1);
+			showCategory(cursor);
+			
+//			addAccount("Pentucket Bank", 5000.67);
+//			addAccount("Boston Bank", 5000.00);
+			
+//			ReactivateAccount(1);
+//			ReactivateAccount(3);
+//			ReactivateAccount(45);
+			//EditAccountTotal(1, 14992.98);
+
+//			for(int n = 1; n <= 40; n++)DeactivateAccount(n);
+			//DeactivateAccount(1);
+			//Cursor cursor2 = getAccounts();
+			
+			//showAccounts(cursor2);
 		} finally {
 			MintLink.close();
 		}
+		
+		s.setOnItemSelectedListener(new CatOnItemSelectedListener());
 		// Button
 		final ImageButton button = (ImageButton) findViewById(R.id.android_button);
-
-		// Dropdown for planets
-		Spinner s = (Spinner) findViewById(R.id.spinner);
-		ArrayAdapter adapter = ArrayAdapter.createFromResource(this,
-				R.array.planets, android.R.layout.simple_spinner_item);
-		adapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		s.setAdapter(adapter);
 
 		// Dropdown Reason
 		Spinner s1 = (Spinner) findViewById(R.id.reason1);
@@ -150,28 +168,66 @@ public class MintTrack extends TabActivity {
 		ContentValues values = new ContentValues();
 		values.put(ACCOUNT_NAME, strName);
 		values.put(ACCOUNT_TOTAL, initalValue);
+		values.put(ACCOUNT_ACTIVE, "active");
 		db.insertOrThrow(ACCOUNT_TBLNAM, null, values);
 	}
 
 	private Cursor getAccounts() {
-		final String[] FROM = { _ID, ACCOUNT_NAME, ACCOUNT_TOTAL, };
-		final String ORDER_BY = ACCOUNT_NAME + " DESC";
+		final String[] FROM = { _ID, ACCOUNT_NAME, ACCOUNT_TOTAL, ACCOUNT_ACTIVE, };
+		final String ORDER_BY = _ID + " ASC";
 		SQLiteDatabase db = MintLink.getReadableDatabase();
 		Cursor cursor = db.query(ACCOUNT_TBLNAM, FROM, null, null, null, null,
 				ORDER_BY);
 		startManagingCursor(cursor);
 		return cursor;
 	}
-
+	
+	private void DeactivateAccount(int acc_id)
+	//set account to inactive
+	{
+		SQLiteDatabase db = MintLink.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(ACCOUNT_ACTIVE, "inactive");
+		db.update(ACCOUNT_TBLNAM, values, _ID + "=" + acc_id, null);
+	}
+	private void EditAccountName(int acc_id, String strName)
+	{
+		SQLiteDatabase db = MintLink.getWritableDatabase();
+		ContentValues values = new ContentValues();		
+		values.put(ACCOUNT_NAME, strName);
+		db.update(ACCOUNT_TBLNAM, values, _ID + "=" + acc_id, null);
+	}
+	
+	private void EditAccountTotal(int acc_id, double total)
+	{
+		SQLiteDatabase db = MintLink.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(ACCOUNT_TOTAL, total);
+		db.update(ACCOUNT_TBLNAM, values, _ID + "=" + acc_id, null);
+	}
+	
+	private void ReactivateAccount(int acc_id)
+	//set account to inactive
+	{
+		SQLiteDatabase db = MintLink.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(ACCOUNT_ACTIVE, "active");
+		db.update(ACCOUNT_TBLNAM, values, _ID + "=" + acc_id, null);
+	}
 	private void showAccounts(Cursor cursor) {
 		StringBuilder builder = new StringBuilder("Saved Accounts:\n");
 		while (cursor.moveToNext()) {
-			long id = cursor.getLong(0);
-			String name = cursor.getString(1);
-			float total = cursor.getFloat(2);
-			builder.append(id).append(": ");
-			builder.append(name).append(": ");
-			builder.append(total).append("\n");
+			if(cursor.getString(3).equalsIgnoreCase("active"))
+			{	
+				long id = cursor.getLong(0);
+				String name = cursor.getString(1);
+				double total = cursor.getDouble(2);
+				String activity = cursor.getString(3);
+				builder.append(id).append(": ");
+				builder.append(name).append(": ");
+				builder.append(total).append(": ");
+				builder.append(activity).append("\n");
+			}
 		}
 
 		TextView text = (TextView) findViewById(R.id.text);
@@ -188,21 +244,33 @@ public class MintTrack extends TabActivity {
 		startManagingCursor(cursor);
 		return cursor;
 	}
+	private Cursor getCategorys(MintData MintLink) {
+		final String[] FROM = { _ID, CATEGORY_NAME, CATEGORY_TOTAL,
+				CATEGORY_TYPE, };
+		final String ORDER_BY = CATEGORY_NAME + " DESC";
+		SQLiteDatabase db = MintLink.getReadableDatabase();
+		Cursor cursor = db.query(CATEGORY_TBLNAM, FROM, null, null, null, null,
+				ORDER_BY);
+		startManagingCursor(cursor);
+		return cursor;
+	}
 
-	private Cursor getCategory(int intID) {
+	private String getCategory(int intID) {
 		final String[] FROM = { _ID, CATEGORY_NAME, CATEGORY_TOTAL,
 				CATEGORY_TYPE, };
 		final String ORDER_BY = CATEGORY_NAME + " DESC";
 		final String SELECTION = "_ID=" + intID;
+		
 
 		SQLiteDatabase db = MintLink.getReadableDatabase();
 		Cursor cursor = db.query(CATEGORY_TBLNAM, FROM, SELECTION, null, null,
 				null, ORDER_BY);
 		startManagingCursor(cursor);
-
-		return cursor;
+		
+		return cursor.getString(1);
 	}
 
+	
 	private void addCategory(String strName, double initalValue, int iType) {
 		// Insert a new record into the Events data source.
 		// You would do something similar for delete and update
@@ -213,5 +281,77 @@ public class MintTrack extends TabActivity {
 		values.put(CATEGORY_TYPE, iType);
 
 		db.insertOrThrow(CATEGORY_TBLNAM, null, values);
+	}
+	
+	private void EditCategoryType(int iCatId, int iType){
+		// Insert a new record into the Events data source.
+		// You would do something similar for delete and update
+		SQLiteDatabase db = MintLink.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(CATEGORY_TYPE, iType);
+		db.update(CATEGORY_TBLNAM, values, "_ID=" + iCatId, null);
+		db.close();
+	}
+	
+	private void EditCategoryName(int iCatID, String strCatName){
+		// Insert a new record into the Events data source.
+		// You would do something similar for delete and update
+		SQLiteDatabase db = MintLink.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(CATEGORY_NAME, strCatName);
+		db.update(CATEGORY_TBLNAM, values, "_ID=" + iCatID, null);
+		db.close();
+	}
+	
+	private void updateCategory(int iCatID, double dblTotal){
+		// Insert a new record into the Events data source.
+		// You would do something similar for delete and update
+		SQLiteDatabase db = MintLink.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(CATEGORY_TOTAL, dblTotal);
+		db.update(CATEGORY_TBLNAM, values, "_ID=" + iCatID, null);
+		db.close();
+	}
+	
+	private void showCategory(Cursor cursor) {
+		StringBuilder builder = new StringBuilder("Saved Categories:\n");
+		while (cursor.moveToNext()) {
+			long id = cursor.getLong(0);
+			String name = cursor.getString(1);
+			double total = cursor.getDouble(2);
+			int type = cursor.getInt(3);
+			builder.append(id).append(": ");
+			builder.append(name).append(": ");
+			builder.append(type).append(": ");
+			builder.append(total).append("\n");
+		}
+
+		TextView text = (TextView) findViewById(R.id.text);
+		text.setText(builder);
+	}
+	/*
+	 * Used to fill Category dropdown from cursor
+	 */
+	private void fillCatDropDown(Spinner s){
+		MintData DBLayer;
+		DBLayer = new MintData(this);
+		
+		try {
+			Cursor cursor = getCategorys(DBLayer);
+			SimpleCursorAdapter s1 = new SimpleCursorAdapter(this,android.R.layout.simple_spinner_item,cursor, new String[] {CATEGORY_NAME,_ID}, new int[] {android.R.id.text1,android.R.id.text2});
+			s1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			s.setAdapter(s1);
+		} finally {
+			DBLayer.close();
+		}
+		
+	}
+	private void EditCatTotal(int catID, double total)
+	{	
+		SQLiteDatabase db = MintLink.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(CATEGORY_TOTAL, total);
+		db.update(CATEGORY_TBLNAM, values, _ID + "=" + catID, null);
+		db.close();
 	}
 }

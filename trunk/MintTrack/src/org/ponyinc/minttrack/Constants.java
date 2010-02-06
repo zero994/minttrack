@@ -10,6 +10,7 @@ public interface Constants extends BaseColumns{
 	// Columns in the Accounts Table
 	public static final String ACCOUNT_NAME = "account_name";
 	public static final String ACCOUNT_TOTAL = "account_total";
+	public static final String ACCOUNT_ACTIVE = "account_active";
 	
 	//Columns in the Category Table
 	public static final String CATEGORY_NAME = "category_name";
