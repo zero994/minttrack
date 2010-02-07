@@ -62,30 +62,37 @@ public class MintTrack extends TabActivity {
 		MintLink.close();
 		
 		Spinner s = (Spinner) findViewById(R.id.spinner);
-		fillCatDropDown(s);
+		
 		
 		try {
-			//addCategory("test", 432.43, 1);
-			EditCatTotal(1,5000.44);
-			Cursor cursor = getCategorys();
+		//	addCategory("next", 432.43, 1);
+		//	fillCatDropDown(s);
+			//EditCatTotal(1,5000.44);
+		//	Cursor cursor = getCategorys();
 			//SimpleCursorAdapter s1 = new SimpleCursorAdapter(this,android.R.layout.simple_spinner_item,cursor, new String[] {CATEGORY_NAME,_ID}, new int[] {android.R.id.text1,android.R.id.text2});
 			//s1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			//s.setAdapter(s1);
-			showCategory(cursor);
+		//	showCategory(cursor);
 			
-//			addAccount("Pentucket Bank", 5000.67);
-//			addAccount("Boston Bank", 5000.00);
+		//	addAccount("Pentucket Bank", 5000.67);
+		//	addAccount("Boston Bank", 5000.00);
+			
+		//	AddTransfer(2, 3, 4700.00 ,"test", "02062010" );
 			
 //			ReactivateAccount(1);
 //			ReactivateAccount(3);
 //			ReactivateAccount(45);
-			//EditAccountTotal(1, 14992.98);
+//			EditAccountTotal(3, 2000.66);
 
 //			for(int n = 1; n <= 40; n++)DeactivateAccount(n);
 			//DeactivateAccount(1);
-			//Cursor cursor2 = getAccounts();
 			
-			//showAccounts(cursor2);
+			Cursor cursor3 = getTransactions();
+			showTransactions(cursor3);
+			
+	//		Cursor cursor2 = getAccounts();
+			
+	//		showAccounts(cursor2);
 		} finally {
 			MintLink.close();
 		}
@@ -353,5 +360,74 @@ public class MintTrack extends TabActivity {
 		values.put(CATEGORY_TOTAL, total);
 		db.update(CATEGORY_TBLNAM, values, _ID + "=" + catID, null);
 		db.close();
+	}
+	
+	private void AddTransfer(int ToAccount_ID, int FromAccount_ID, double Amount, String Note, String Date)
+	//Date mmddyyyy - ex: 02052010 - no dashes or slashes- fill space with leading zeros
+	{
+		SQLiteDatabase db = MintLink.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(TRANSACTION_TOACCOUNT, ToAccount_ID);
+		values.put(TRANSACTION_FROMACCOUNT, FromAccount_ID);
+		values.put(TRANSACTION_AMOUNT, Amount);
+		values.put(TRANSACTION_NOTE, Note);
+		values.put(TRANSACTION_DATE, Date);
+		values.put(TRANSACTION_TYPE, "transfer");
+		
+		db.insertOrThrow(TRANSACTION_TBLNAM, null, values);
+		
+		final String[] FROM = { _ID, ACCOUNT_NAME, ACCOUNT_TOTAL,
+				ACCOUNT_ACTIVE, };
+		final String ORDER_BY = _ID + " DESC";
+		
+
+		SQLiteDatabase dbR = MintLink.getReadableDatabase();
+		
+		Cursor cursor = dbR.query(ACCOUNT_TBLNAM, FROM, "_ID=" + ToAccount_ID, null, null,
+				null, ORDER_BY);
+		
+		cursor.moveToNext();
+		
+		EditAccountTotal(ToAccount_ID, Amount + cursor.getDouble(2));
+		
+		cursor = dbR.query(ACCOUNT_TBLNAM, FROM, "_ID=" + FromAccount_ID, null, null,
+				null, ORDER_BY);
+		
+		cursor.moveToNext();
+		
+		EditAccountTotal(FromAccount_ID, cursor.getDouble(2) - Amount );
+		
+		dbR.close();
+		db.close();
+	}
+	private Cursor getTransactions() {
+		final String[] FROM = { _ID, TRANSACTION_TOACCOUNT, TRANSACTION_FROMACCOUNT,
+				TRANSACTION_AMOUNT, TRANSACTION_TYPE };
+		final String ORDER_BY = _ID + " DESC";
+		SQLiteDatabase db = MintLink.getReadableDatabase();
+		Cursor cursor = db.query(TRANSACTION_TBLNAM, FROM, null, null, null, null,
+				ORDER_BY);
+		startManagingCursor(cursor);
+		return cursor;
+	}
+	
+	private void showTransactions(Cursor cursor) {
+		StringBuilder builder = new StringBuilder("Saved transactions:\n");
+		while (cursor.moveToNext()) {
+			long id = cursor.getLong(0);
+			int to = cursor.getInt(1);
+			int from = cursor.getInt(2);
+			double total = cursor.getDouble(3);
+			String type = cursor.getString(4);
+			
+			builder.append(id).append(" To: ");
+			builder.append(to).append(" From: ");
+			builder.append(from).append(" Amount: ");
+			builder.append(total).append(" type: ");
+			builder.append(type).append("\n");
+		}
+
+		TextView text = (TextView) findViewById(R.id.text);
+		text.setText(builder);
 	}
 }
