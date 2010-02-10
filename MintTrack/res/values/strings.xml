@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MintTrack</string>
+    <string name="empty"></string>
     <string name="reason_prompt">Reason</string>
     <string name="paytype_prompt">Payment Type</string>
     <string name="planet_prompt">Choose a planet</string>
