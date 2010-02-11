@@ -19,12 +19,16 @@ public class EntryActivity extends Activity {
 	private int mYear;
 	private int mMonth;
 	private int mDay;
+	Buget buget;
+	
 	static final int DATE_DIALOG_ID = 0;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.entry);
+        buget = new Buget(this);
+        
      // Date Box
 		mPickDate = (Button) findViewById(R.id.pickDate);
 

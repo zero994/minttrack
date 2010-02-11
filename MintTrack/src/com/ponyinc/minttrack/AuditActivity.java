@@ -8,20 +8,22 @@ import android.os.Bundle;
 import android.widget.SimpleCursorAdapter;
 import static com.ponyinc.minttrack.Constants.*;
 public class AuditActivity extends ListActivity {
-	MintData MintLink;
+
+	Buget buget;
+	
 	public void onCreate(Bundle savedInstanceState) {
 		Cursor test;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.audit);
-        MintLink = new MintData(this);
-        
+
+        buget = new Buget(this);
         try{
-        	AddTransfer(1,1,2123.33,"Testing", "01022010");
-        	test = getTransactions();
+        	buget.Transfer(1,1,2123.33,"Testing", "01022010");
+        	test = buget.getTransactions();
         	showEvents(test);
         }
         finally{
-        	MintLink.close();
+        
         }
     }
 	private static int[] TO = { R.id.rowid, R.id.time, R.id.title, }; 
@@ -31,7 +33,7 @@ public class AuditActivity extends ListActivity {
 		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.audititem, cursor, FROM, TO);
 		setListAdapter(adapter);
 		}
-	
+/*	
 	private Cursor getTransactions() {
 		final String[] FROM = { _ID, TRANSACTION_TOACCOUNT, TRANSACTION_FROMACCOUNT,
 				TRANSACTION_AMOUNT, TRANSACTION_TYPE };
@@ -58,4 +60,5 @@ public class AuditActivity extends ListActivity {
 		
 		db.close();
 	}
+	*/
 }
