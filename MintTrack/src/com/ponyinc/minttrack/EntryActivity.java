@@ -19,17 +19,17 @@ public class EntryActivity extends Activity {
 	private int mYear;
 	private int mMonth;
 	private int mDay;
-	Buget buget;
-	
+	Budget budget;
+
 	static final int DATE_DIALOG_ID = 0;
-	
+
 	public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        
-        setContentView(R.layout.entry);
-        buget = new Buget(this);
-        
-     // Date Box
+		super.onCreate(savedInstanceState);
+
+		setContentView(R.layout.entry);
+		budget = new Budget(this);
+
+		// Date Box
 		mPickDate = (Button) findViewById(R.id.pickDate);
 
 		// add a click listener to the button
@@ -38,7 +38,7 @@ public class EntryActivity extends Activity {
 				showDialog(DATE_DIALOG_ID);
 			}
 		});
-		
+
 		// Dropdown Reason
 		Spinner s1 = (Spinner) findViewById(R.id.reason1);
 		ArrayAdapter adapter1 = ArrayAdapter.createFromResource(this,
@@ -54,8 +54,7 @@ public class EntryActivity extends Activity {
 		adapter2
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		s2.setAdapter(adapter2);
-		
-		
+
 		// get the current date
 		final Calendar c = Calendar.getInstance();
 		mYear = c.get(Calendar.YEAR);
@@ -64,7 +63,8 @@ public class EntryActivity extends Activity {
 
 		// display the current date (this method is below)
 		updateDisplay();
-    }
+	}
+
 	// updates the date in the TextView
 	private void updateDisplay() {
 		mPickDate.setText(new StringBuilder()
@@ -94,6 +94,5 @@ public class EntryActivity extends Activity {
 		}
 		return null;
 	}
-	
 
 }
