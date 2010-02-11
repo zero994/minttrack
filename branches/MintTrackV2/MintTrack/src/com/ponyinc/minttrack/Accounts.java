@@ -6,19 +6,14 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-
-
-
-public class Accounts 
-{
+public class Accounts {
 	private MintData MintLink;
-	
-	Accounts(MintData mintdata)
-	{
+
+	Accounts(MintData mintdata) {
 		MintLink = mintdata;
-		
+
 	}
-	
+
 	public void addAccount(String strName, double initalValue) {
 		// Insert a new record into the Events data source.
 		// You would do something similar for delete and update
@@ -30,54 +25,54 @@ public class Accounts
 		db.insertOrThrow(ACCOUNT_TBLNAM, null, values);
 	}
 
-	public Cursor getAccount(int _id)
-	{
+	public Cursor getAccount(int _id) {
 		final String[] FROM = { _ID, ACCOUNT_NAME, ACCOUNT_TOTAL,
 				ACCOUNT_ACTIVE, };
 		final String ORDER_BY = _ID + " DESC";
-		
+
 		SQLiteDatabase db = MintLink.getReadableDatabase();
-		
-		Cursor cursor = db.query(ACCOUNT_TBLNAM, FROM, "_ID=" + _id, null, null,
-				null, ORDER_BY);
-		
+
+		Cursor cursor = db.query(ACCOUNT_TBLNAM, FROM, "_ID=" + _id, null,
+				null, null, ORDER_BY);
+
 		return cursor;
 	}
+
 	public Cursor getAccounts() {
-		final String[] FROM = { _ID, ACCOUNT_NAME, ACCOUNT_TOTAL, ACCOUNT_ACTIVE, };
+		final String[] FROM = { _ID, ACCOUNT_NAME, ACCOUNT_TOTAL,
+				ACCOUNT_ACTIVE, };
 		final String ORDER_BY = _ID + " ASC";
 		SQLiteDatabase db = MintLink.getReadableDatabase();
 		Cursor cursor = db.query(ACCOUNT_TBLNAM, FROM, null, null, null, null,
 				ORDER_BY);
 		return cursor;
 	}
-	
+
 	public void DeactivateAccount(int acc_id)
-	//set account to inactive
+	// set account to inactive
 	{
 		SQLiteDatabase db = MintLink.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(ACCOUNT_ACTIVE, "inactive");
 		db.update(ACCOUNT_TBLNAM, values, _ID + "=" + acc_id, null);
 	}
-	public void EditAccountName(int acc_id, String strName)
-	{
+
+	public void EditAccountName(int acc_id, String strName) {
 		SQLiteDatabase db = MintLink.getWritableDatabase();
-		ContentValues values = new ContentValues();		
+		ContentValues values = new ContentValues();
 		values.put(ACCOUNT_NAME, strName);
 		db.update(ACCOUNT_TBLNAM, values, _ID + "=" + acc_id, null);
 	}
-	
-	public void EditAccountTotal(int acc_id, double total)
-	{
+
+	public void EditAccountTotal(int acc_id, double total) {
 		SQLiteDatabase db = MintLink.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(ACCOUNT_TOTAL, total);
 		db.update(ACCOUNT_TBLNAM, values, _ID + "=" + acc_id, null);
 	}
-	
+
 	public void ReactivateAccount(int acc_id)
-	//set account to inactive
+	// set account to inactive
 	{
 		SQLiteDatabase db = MintLink.getWritableDatabase();
 		ContentValues values = new ContentValues();

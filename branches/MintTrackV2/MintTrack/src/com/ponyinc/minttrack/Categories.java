@@ -9,15 +9,13 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-public class Categories 
-{
+public class Categories {
 	private MintData MintLink;
-	
-	Categories(MintData mintdata)
-	{
+
+	Categories(MintData mintdata) {
 		MintLink = mintdata;
 	}
-	
+
 	public Cursor getCategorys() {
 		final String[] FROM = { _ID, CATEGORY_NAME, CATEGORY_TOTAL,
 				CATEGORY_TYPE, };
@@ -27,6 +25,7 @@ public class Categories
 				ORDER_BY);
 		return cursor;
 	}
+
 	public Cursor getCategorys(MintData MintLink) {
 		final String[] FROM = { _ID, CATEGORY_NAME, CATEGORY_TOTAL,
 				CATEGORY_TYPE, };
@@ -42,14 +41,13 @@ public class Categories
 				CATEGORY_TYPE, };
 		final String ORDER_BY = CATEGORY_NAME + " DESC";
 		final String SELECTION = "_ID=" + intID;
-		
+
 		SQLiteDatabase db = MintLink.getReadableDatabase();
 		Cursor cursor = db.query(CATEGORY_TBLNAM, FROM, SELECTION, null, null,
-				null, ORDER_BY);	
+				null, ORDER_BY);
 		return cursor.getString(1);
 	}
 
-	
 	public void addCategory(String strName, double initalValue, int iType) {
 		// Insert a new record into the Events data source.
 		// You would do something similar for delete and update
@@ -60,8 +58,8 @@ public class Categories
 		values.put(CATEGORY_TYPE, iType);
 		db.insertOrThrow(CATEGORY_TBLNAM, null, values);
 	}
-	
-	public void EditCategoryType(int iCatId, int iType){
+
+	public void EditCategoryType(int iCatId, int iType) {
 		// Insert a new record into the Events data source.
 		// You would do something similar for delete and update
 		SQLiteDatabase db = MintLink.getWritableDatabase();
@@ -69,8 +67,8 @@ public class Categories
 		values.put(CATEGORY_TYPE, iType);
 		db.update(CATEGORY_TBLNAM, values, "_ID=" + iCatId, null);
 	}
-	
-	public void EditCategoryName(int iCatID, String strCatName){
+
+	public void EditCategoryName(int iCatID, String strCatName) {
 		// Insert a new record into the Events data source.
 		// You would do something similar for delete and update
 		SQLiteDatabase db = MintLink.getWritableDatabase();
@@ -78,8 +76,8 @@ public class Categories
 		values.put(CATEGORY_NAME, strCatName);
 		db.update(CATEGORY_TBLNAM, values, "_ID=" + iCatID, null);
 	}
-	
-	public void updateCategory(int iCatID, double dblTotal){
+
+	public void updateCategory(int iCatID, double dblTotal) {
 		// Insert a new record into the Events data source.
 		// You would do something similar for delete and update
 		SQLiteDatabase db = MintLink.getWritableDatabase();

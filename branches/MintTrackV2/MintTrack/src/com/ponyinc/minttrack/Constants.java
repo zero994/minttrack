@@ -2,7 +2,7 @@ package com.ponyinc.minttrack;
 
 import android.provider.BaseColumns;
 
-public interface Constants extends BaseColumns{
+public interface Constants extends BaseColumns {
 	public static final String ACCOUNT_TBLNAM = "account";
 	public static final String CATEGORY_TBLNAM = "categorie";
 	public static final String TRANSACTION_TBLNAM = "tran_table";
@@ -11,13 +11,13 @@ public interface Constants extends BaseColumns{
 	public static final String ACCOUNT_NAME = "account_name";
 	public static final String ACCOUNT_TOTAL = "account_total";
 	public static final String ACCOUNT_ACTIVE = "account_active";
-	
-	//Columns in the Category Table
+
+	// Columns in the Category Table
 	public static final String CATEGORY_NAME = "category_name";
 	public static final String CATEGORY_TOTAL = "category_total";
 	public static final String CATEGORY_TYPE = "category_type";
-	
-	//Columns in the Transaction Table
+
+	// Columns in the Transaction Table
 	public static final String TRANSACTION_DATE = "tran_date";
 	public static final String TRANSACTION_TOACCOUNT = "tran_toaccount";
 	public static final String TRANSACTION_FROMACCOUNT = "tran_fromaccount";
@@ -25,5 +25,5 @@ public interface Constants extends BaseColumns{
 	public static final String TRANSACTION_CATEGORY = "tran_category";
 	public static final String TRANSACTION_NOTE = "tran_note";
 	public static final String TRANSACTION_TYPE = "tran_type";
-	
+
 }
