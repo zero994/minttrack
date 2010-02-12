@@ -75,7 +75,10 @@ public class Budget {
 			String Note, String Date) {
 		transactions.createTransfer(ToAccount_ID, FromAccount_ID, Amount, Note,
 				Date);
-
+		/*
+		 * WARNING: The lines below cause a crash because no account exist by default
+		 * Comment all lines to the END OF WARNING to prevent the crash.
+		 */
 		Cursor Account_To = accounts.getAccount(ToAccount_ID);
 		Account_To.moveToNext();
 		EditAccountTotal(ToAccount_ID, Account_To.getDouble(2) + Amount);
@@ -83,6 +86,9 @@ public class Budget {
 		Cursor Account_From = accounts.getAccount(FromAccount_ID);
 		Account_From.moveToNext();
 		EditAccountTotal(FromAccount_ID, Account_From.getDouble(2) - Amount);
+		/*
+		 * END OF WARNING
+		 */
 	}
 
 	Cursor getTransactions() {
