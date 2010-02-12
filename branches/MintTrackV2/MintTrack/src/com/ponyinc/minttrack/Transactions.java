@@ -32,7 +32,7 @@ public class Transactions {
 
 	public Cursor getTransactions() {
 		final String[] FROM = { _ID, TRANSACTION_TOACCOUNT,
-				TRANSACTION_FROMACCOUNT, TRANSACTION_AMOUNT, TRANSACTION_TYPE };
+				TRANSACTION_FROMACCOUNT, TRANSACTION_AMOUNT, TRANSACTION_TYPE, TRANSACTION_DATE, TRANSACTION_CATEGORY, TRANSACTION_NOTE, };
 		final String ORDER_BY = _ID + " DESC";
 		SQLiteDatabase db = MintLink.getReadableDatabase();
 		Cursor cursor = db.query(TRANSACTION_TBLNAM, FROM, null, null, null,
