@@ -1,14 +1,19 @@
 package com.ponyinc.minttrack;
 
+import static android.provider.BaseColumns._ID;
+import static com.ponyinc.minttrack.Constants.*;
+
 import java.util.Calendar;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Button;
@@ -39,28 +44,30 @@ public class EntryActivity extends Activity {
 			}
 		});
 
-		// Dropdown Reason
-		Spinner s1 = (Spinner) findViewById(R.id.reason1);
-		ArrayAdapter adapter1 = ArrayAdapter.createFromResource(this,
-				R.array.reason, android.R.layout.simple_spinner_item);
-		adapter1
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		s1.setAdapter(adapter1);
+		Spinner ss = (Spinner) findViewById(R.id.reason1);
+		fillCatDropDown(ss);
+		
+		/*
+		 * Dropdown Reason Spinner s1 = (Spinner) findViewById(R.id.reason1);
+		 * ArrayAdapter adapter1 = ArrayAdapter.createFromResource(this,
+		 * R.array.reason, android.R.layout.simple_spinner_item); adapter1
+		 * .setDropDownViewResource
+		 * (android.R.layout.simple_spinner_dropdown_item);
+		 * s1.setAdapter(adapter1);
+		 */
 
 		// Dropdown Pay Type
 		Spinner s2 = (Spinner) findViewById(R.id.paytype);
-		ArrayAdapter adapter2 = ArrayAdapter.createFromResource(this,
-				R.array.paytype, android.R.layout.simple_spinner_item);
-		adapter2
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		s2.setAdapter(adapter2);
-
+		fillAccountDropDown(s2);
+		
 		// get the current date
 		final Calendar c = Calendar.getInstance();
 		mYear = c.get(Calendar.YEAR);
 		mMonth = c.get(Calendar.MONTH);
 		mDay = c.get(Calendar.DAY_OF_MONTH);
-
+		
+		//example of hiding an element
+		//s2.setVisibility(s2.GONE);
 		// display the current date (this method is below)
 		updateDisplay();
 	}
@@ -95,4 +102,24 @@ public class EntryActivity extends Activity {
 		return null;
 	}
 
+	public void fillCatDropDown(Spinner s) {
+		Cursor cursor = budget.getCategorys();
+		SimpleCursorAdapter s1 = new SimpleCursorAdapter(this,
+				android.R.layout.simple_spinner_item, cursor, new String[] {
+						CATEGORY_NAME, _ID }, new int[] { android.R.id.text1,
+						android.R.id.text2 });
+		s1
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		s.setAdapter(s1);
+	}
+	public void fillAccountDropDown(Spinner s) {
+		Cursor cursor = budget.getAccounts();
+		SimpleCursorAdapter s1 = new SimpleCursorAdapter(this,
+				android.R.layout.simple_spinner_item, cursor, new String[] {
+				ACCOUNT_NAME, _ID }, new int[] { android.R.id.text1,
+						android.R.id.text2 });
+		s1
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		s.setAdapter(s1);
+	}
 }
