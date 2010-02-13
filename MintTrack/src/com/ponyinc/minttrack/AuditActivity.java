@@ -19,16 +19,7 @@ public class AuditActivity extends ListActivity {
 
 		budget = new Budget(this);
 		try {
-			/*
-			 * WARNING: (From Wilkins)
-			 * This line will crash because no account exist by default.  To test go into the Transfer Method
-			 * And comment up the section where it queries the account tables.  
-			 * This line is however needed to enter sample transactions.
-			 */
 			budget.Transfer(1, 1, 2123.33, "Testing", "01022010");
-			/*
-			 * END OF WARNING
-			 */
 			test = budget.getTransactions();
 			showEvents(test);
 		} finally {

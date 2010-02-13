@@ -2,6 +2,7 @@ package com.ponyinc.minttrack;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.widget.Spinner;
 
 public class Budget {
 	private MintData MintLink;
@@ -18,8 +19,7 @@ public class Budget {
 		transactions = new Transactions(MintLink);
 		categories = new Categories(MintLink);
 	}
-
-	void AddAcount(String strName, double value) {
+	void addAccount(String strName, double value) {
 		accounts.addAccount(strName, value);
 	}
 
@@ -51,7 +51,7 @@ public class Budget {
 		return categories.getCategorys();
 	}
 
-	String getCategory(int intID) {
+	Cursor getCategory(int intID) {
 		return categories.getCategory(intID);
 	}
 
@@ -67,7 +67,7 @@ public class Budget {
 		categories.EditCategoryName(iCatID, strCatName);
 	}
 
-	void updateCategory(int iCatID, double dblTotal) {
+	void EditCategoryTotal(int iCatID, double dblTotal) {
 		categories.updateCategory(iCatID, dblTotal);
 	}
 
@@ -75,10 +75,6 @@ public class Budget {
 			String Note, String Date) {
 		transactions.createTransfer(ToAccount_ID, FromAccount_ID, Amount, Note,
 				Date);
-		/*
-		 * WARNING: The lines below cause a crash because no account exist by default
-		 * Comment all lines to the END OF WARNING to prevent the crash.
-		 */
 		Cursor Account_To = accounts.getAccount(ToAccount_ID);
 		Account_To.moveToNext();
 		EditAccountTotal(ToAccount_ID, Account_To.getDouble(2) + Amount);
@@ -86,9 +82,18 @@ public class Budget {
 		Cursor Account_From = accounts.getAccount(FromAccount_ID);
 		Account_From.moveToNext();
 		EditAccountTotal(FromAccount_ID, Account_From.getDouble(2) - Amount);
-		/*
-		 * END OF WARNING
-		 */
+	}
+
+	void Expense(int FromAccount_ID, double Amount, String Note, String Date,
+			int Category_ID) {
+		transactions.createExpense(FromAccount_ID, Amount, Note, Date);
+		Cursor Account_From = accounts.getAccount(FromAccount_ID);
+		Cursor Category = categories.getCategory(Category_ID);
+
+		Account_From.moveToNext();
+		EditAccountTotal(FromAccount_ID, Account_From.getDouble(2) - Amount);
+		EditCategoryTotal(Category_ID, Category.getDouble(2) + Amount);
+
 	}
 
 	Cursor getTransactions() {

@@ -1,6 +1,10 @@
 package com.ponyinc.minttrack;
 
 import static android.provider.BaseColumns._ID;
+import static com.ponyinc.minttrack.Constants.ACCOUNT_ACTIVE;
+import static com.ponyinc.minttrack.Constants.ACCOUNT_NAME;
+import static com.ponyinc.minttrack.Constants.ACCOUNT_TBLNAM;
+import static com.ponyinc.minttrack.Constants.ACCOUNT_TOTAL;
 import static com.ponyinc.minttrack.Constants.CATEGORY_NAME;
 import static com.ponyinc.minttrack.Constants.CATEGORY_TBLNAM;
 import static com.ponyinc.minttrack.Constants.CATEGORY_TOTAL;
@@ -8,6 +12,8 @@ import static com.ponyinc.minttrack.Constants.CATEGORY_TYPE;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
 
 public class Categories {
 	private MintData MintLink;
@@ -36,7 +42,7 @@ public class Categories {
 		return cursor;
 	}
 
-	public String getCategory(int intID) {
+	public Cursor getCategory(int intID) {
 		final String[] FROM = { _ID, CATEGORY_NAME, CATEGORY_TOTAL,
 				CATEGORY_TYPE, };
 		final String ORDER_BY = CATEGORY_NAME + " DESC";
@@ -45,7 +51,7 @@ public class Categories {
 		SQLiteDatabase db = MintLink.getReadableDatabase();
 		Cursor cursor = db.query(CATEGORY_TBLNAM, FROM, SELECTION, null, null,
 				null, ORDER_BY);
-		return cursor.getString(1);
+		return cursor;
 	}
 
 	public void addCategory(String strName, double initalValue, int iType) {
