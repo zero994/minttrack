@@ -22,15 +22,22 @@
 							android:id="@+id/incomeButton"
 							android:layout_width="fill_parent" 
 							android:layout_height="wrap_content"
-							android:text="+" 
-							android:textSize="32dip"
+							android:text="Income" 
+							android:textSize="15dip"
 							android:layout_weight="1" />
 						<Button 
 							android:id="@+id/expenseButton"
 							android:layout_width="fill_parent" 
 							android:layout_height="wrap_content"
-							android:text="-" 
-							android:textSize="32dip"
+							android:text="Expense" 
+							android:textSize="15dip"
+							android:layout_weight="1" />
+						<Button 
+							android:id="@+id/transferButton"
+							android:layout_width="fill_parent" 
+							android:layout_height="wrap_content"
+							android:text="Transfer" 
+							android:textSize="15dip"
 							android:layout_weight="1" />
 					</LinearLayout>
 <!-- AMOUNT TEXTFIELD / DATE PICKER -->
