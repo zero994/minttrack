@@ -20,12 +20,6 @@ public class HomeActivity extends ListActivity {
 		setContentView(R.layout.home);
 
 		budget = new Budget(this);
-		try{
-			budget.Transfer(1,1,2123.33, "Testing", "01022010");
-			translist = budget.getTransactions();
-			showEvents(translist);
-		}
-		finally{}
 		
 		Cursor AccountCursor =  budget.getAccounts();
 		Cursor CategoryCursor = budget.getCategorys();
@@ -40,6 +34,15 @@ public class HomeActivity extends ListActivity {
 		
 		CategoryCursor.close();
 		AccountCursor.close();
+		
+		try{
+			budget.Transfer(1,1,2123.33, "Testing", "01022010");
+			translist = budget.getTransactions();
+			showEvents(translist);
+		}
+		finally{}
+		
+		
 	}
 	
 	private static int[] TO = { R.id.rowid, R.id.time, R.id.title, };
