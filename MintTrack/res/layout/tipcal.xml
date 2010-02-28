@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="fill_parent"
+	android:layout_width="fill_parent"
+	android:padding="15dip"
+	android:orientation="horizontal">
+	<TextView
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:layout_gravity="center"
+		android:layout_marginBottom="20dip"
+		android:textSize="24.5sp" />
+	<TableLayout
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:layout_gravity="center"
+		android:stretchColumns="*">
+		<TableRow>
+			<TextView
+		        android:text="Total Bill"
+		        android:textSize="15pt"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1"/>
+		     <EditText
+		        android:id="@+id/bill_text"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:background="@android:drawable/editbox_background"/>
+		</TableRow>
+		<TableRow>
+			<TextView
+		        android:text="Tip (%)"
+		        android:textSize="15pt"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1"/>
+		     <EditText
+		        android:id="@+id/tip_text"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:background="@android:drawable/editbox_background"/>
+		</TableRow>
+		<TableRow>
+			<TextView
+		        android:text="Split"
+		        android:textSize="15pt"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1"/>
+		     <EditText
+		        android:id="@+id/split_text"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:background="@android:drawable/editbox_background"/>
+		</TableRow>
+		<Button
+			android:id="@+id/execute_button"
+			android:text="Execute" />
+		<TableRow>
+			<TextView
+		        android:text="Total"
+		        android:textSize="18pt"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1"/>
+		     <EditText
+		        android:id="@+id/total_text"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:background="@android:drawable/editbox_background"/>
+		</TableRow>	
+		
+	</TableLayout>
+</LinearLayout>

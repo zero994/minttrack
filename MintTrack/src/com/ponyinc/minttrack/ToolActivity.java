@@ -1,20 +1,46 @@
 package com.ponyinc.minttrack;
 
-import android.app.Activity;
-import android.os.Bundle;
-import android.widget.TextView;
 
-public class ToolActivity extends Activity {
+
+import android.app.Activity;
+
+import android.os.Bundle;
+
+import android.content.Intent;
+
+import android.view.View;
+import android.view.View.OnClickListener;
+
+
+public class ToolActivity extends Activity implements OnClickListener
+{
 
 	Budget budget;
 
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
-
-		TextView textview = new TextView(this);
-		textview.setText("This is the Artists tab");
-		setContentView(textview);
-
+		setContentView(R.layout.tool);
 		budget = new Budget(this);
+		
+		// Bind the action for the save button.
+       
+        // Set up click listeners for all the buttons
+        View tip_button = findViewById(R.id.tip_button);
+        tip_button.setOnClickListener(this);
+        
+        
+    
 	}
+	
+	
+	 public void onClick(View v) 
+	 {
+		 	//to put a switch if we have more options.
+		 	//v.getId();
+	        Intent i = new Intent(this, tipcal.class);
+	        startActivity(i);
+	 }
+			 
+	
 }

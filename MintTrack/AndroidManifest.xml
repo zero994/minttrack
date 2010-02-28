@@ -16,6 +16,7 @@
     <activity android:name=".EntryActivity"></activity>
     <activity android:name=".HomeActivity"></activity>
     <activity android:name=".ToolActivity"></activity>
+    <activity android:name=".tipcal"></activity>
 </application>
     <uses-sdk android:minSdkVersion="3" />
 
