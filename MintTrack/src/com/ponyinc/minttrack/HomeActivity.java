@@ -1,21 +1,24 @@
 package com.ponyinc.minttrack;
 
-import static android.provider.BaseColumns._ID;
 import static com.ponyinc.minttrack.Constants.TRANSACTION_AMOUNT;
-import static com.ponyinc.minttrack.Constants.TRANSACTION_NOTE;
+import static com.ponyinc.minttrack.Constants.TRANSACTION_DATE;
+import static com.ponyinc.minttrack.Constants.TRANSACTION_TYPE;
+
+import java.text.NumberFormat;
+import java.util.Locale;
+
 import android.app.Activity;
-import android.app.ListActivity;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
-public class HomeActivity extends ListActivity {
+public class HomeActivity extends Activity {
 
 	Budget budget;
+	double d_inTotal;
+	double d_exTotal;
 
 	public void onCreate(Bundle savedInstanceState) {
-		Cursor translist;
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.home);
 
@@ -23,6 +26,7 @@ public class HomeActivity extends ListActivity {
 		
 		Cursor AccountCursor =  budget.getAccounts();
 		Cursor CategoryCursor = budget.getCategorys();
+		Cursor TransactionsCursor = budget.getTransactions();
 		
 		if (AccountCursor.getCount() == 0)
 			budget.addAccount("Miscellaneous", 0.00);
@@ -35,23 +39,114 @@ public class HomeActivity extends ListActivity {
 		CategoryCursor.close();
 		AccountCursor.close();
 		
-		try{
-			budget.Transfer(1,1,2123.33, "Testing", "01022010");
-			translist = budget.getTransactions();
-			showEvents(translist);
+		//Sum up income/expense transactions, store in d_inTotal/d_exTotal
+		TransactionsCursor.moveToFirst();
+		while(!TransactionsCursor.isAfterLast())
+		{
+			if(TransactionsCursor.getInt(TransactionsCursor.getColumnIndex(TRANSACTION_TYPE)) == 0)
+				d_inTotal+=TransactionsCursor.getDouble(TransactionsCursor.getColumnIndex(TRANSACTION_AMOUNT));
+			else if(TransactionsCursor.getInt(TransactionsCursor.getColumnIndex(TRANSACTION_TYPE)) == 1)
+				d_exTotal+=TransactionsCursor.getDouble(TransactionsCursor.getColumnIndex(TRANSACTION_AMOUNT));
+			TransactionsCursor.moveToNext();
 		}
-		finally{}
+				
+		//Update displays
+		displayIncomeTotal(d_inTotal);
+		displayExpenseTotal(d_exTotal);	
+		displayGrandTotal(d_inTotal+d_exTotal);
+		displayRecentTransactions(TransactionsCursor);
 		
-		
+		TransactionsCursor.close();
 	}
 	
-	private static int[] TO = { R.id.rowid, R.id.time, R.id.title, };
-	private static String[] FROM = { _ID, TRANSACTION_AMOUNT, TRANSACTION_NOTE, };
-	
-	private void showEvents(Cursor cursor) {
-		// Set up data binding
-		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
-				R.layout.audititem, cursor, FROM, TO);
-		setListAdapter(adapter);
+	//Number format (US dollars)
+	NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.US);
+	//Text field variables
+	TextView tv_iTotal;
+	TextView tv_eTotal;
+	TextView tv_gTotal;
+	//Text field string variables holding number formats
+	String s_incomeTotal;
+	String s_expenseTotal;
+	String s_grandTotal;
+	//Displays the total value in the income text field
+	private void displayIncomeTotal(double iT){
+		s_incomeTotal=nf.format(iT);
+		tv_iTotal=(TextView)findViewById(R.id.in_total);
+		tv_iTotal.setText(s_incomeTotal);
+	}
+	//Displays the total value in the expense text field
+	private void displayExpenseTotal(double eT){
+		s_expenseTotal=nf.format(eT);
+		tv_eTotal=(TextView)findViewById(R.id.ex_total);
+		tv_eTotal.setText(s_expenseTotal);
+	}
+	//Displays the total value in the grand total text field
+	private void displayGrandTotal(double gT){
+		s_grandTotal = nf.format(gT);
+		tv_gTotal=(TextView)findViewById(R.id.gr_total);
+		tv_gTotal.setText(s_grandTotal);
+	}
+	//Returns transaction type in string form
+	private String getTransactionString(int x){
+		switch(x)
+		{
+		case 0:
+			return "Income";
+		case 1:
+			return "Expense";
+		case 2:
+			return "Transfer";
+		}
+		return "";
+	}
+	//Displays recent transactions at bottom of home screen
+	private void displayRecentTransactions(Cursor TransactionsCursor){
+		//Cursor moved to first item in the table
+		TransactionsCursor.moveToFirst();
+		//Set display information for first list item
+		if(!TransactionsCursor.isAfterLast()){
+			TextView tv_date1 = (TextView)findViewById(R.id.date0);
+			tv_date1.setText(getFormattedDate(TransactionsCursor.getString(TransactionsCursor.getColumnIndex(TRANSACTION_DATE))));
+			TextView tv_type1 = (TextView)findViewById(R.id.type0);
+			tv_type1.setText(getTransactionString(TransactionsCursor.getInt(TransactionsCursor.getColumnIndex(TRANSACTION_TYPE))));
+			TextView tv_amt1 = (TextView)findViewById(R.id.amount0);
+			tv_amt1.setText("$"+TransactionsCursor.getString(TransactionsCursor.getColumnIndex(TRANSACTION_AMOUNT)));
+			TransactionsCursor.moveToNext();
+		}
+		//Set display information for second list item
+		if(!TransactionsCursor.isAfterLast()){
+			TextView tv_date2 = (TextView)findViewById(R.id.date1);
+			tv_date2.setText(getFormattedDate(TransactionsCursor.getString(TransactionsCursor.getColumnIndex(TRANSACTION_DATE))));
+			TextView tv_type2 = (TextView)findViewById(R.id.type1);
+			tv_type2.setText(getTransactionString(TransactionsCursor.getInt(TransactionsCursor.getColumnIndex(TRANSACTION_TYPE))));
+			TextView tv_amt2 = (TextView)findViewById(R.id.amount1);
+			tv_amt2.setText("$"+TransactionsCursor.getString(TransactionsCursor.getColumnIndex(TRANSACTION_AMOUNT)));
+			TransactionsCursor.moveToNext();
+		}
+		//Set display information for third list item
+		if(!TransactionsCursor.isAfterLast()){
+			TextView tv_date3 = (TextView)findViewById(R.id.date2);
+			tv_date3.setText(getFormattedDate(TransactionsCursor.getString(TransactionsCursor.getColumnIndex(TRANSACTION_DATE))));
+			TextView tv_type3 = (TextView)findViewById(R.id.type2);
+			tv_type3.setText(getTransactionString(TransactionsCursor.getInt(TransactionsCursor.getColumnIndex(TRANSACTION_TYPE))));
+			TextView tv_amt3 = (TextView)findViewById(R.id.amount2);
+			tv_amt3.setText("$"+TransactionsCursor.getString(TransactionsCursor.getColumnIndex(TRANSACTION_AMOUNT)));
+			TransactionsCursor.moveToNext();
+		}
+		//Set display information for fourth list item
+		if(!TransactionsCursor.isAfterLast()){
+			TextView tv_date4 = (TextView)findViewById(R.id.date3);
+			tv_date4.setText(getFormattedDate(TransactionsCursor.getString(TransactionsCursor.getColumnIndex(TRANSACTION_DATE))));
+			TextView tv_type4 = (TextView)findViewById(R.id.type3);
+			tv_type4.setText(getTransactionString(TransactionsCursor.getInt(TransactionsCursor.getColumnIndex(TRANSACTION_TYPE))));
+			TextView tv_amt4 = (TextView)findViewById(R.id.amount3);
+			tv_amt4.setText("$"+TransactionsCursor.getString(TransactionsCursor.getColumnIndex(TRANSACTION_AMOUNT)));
+		}
+	}
+	//Returns the date string in a date-like format (mm/dd/yyyy)
+	private String getFormattedDate(String str){
+		str = "0" + str;	//This will be removed once the date string is fixed
+		return str.substring(0,2)+"/"+str.substring(2,4)+"/"+str.substring(4,8);
 	}
 }
