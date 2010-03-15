@@ -10,7 +10,7 @@
 		android:orientation="horizontal"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:layout_marginTop="10px">
+		android:paddingTop="10px">
 		<TextView
 			android:text="Income Total"
 			android:textSize="10pt"
@@ -31,7 +31,7 @@
 			android:orientation="horizontal"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:layout_marginTop="10px">
+			android:paddingTop="10px">
 			<TextView
 				android:text="Expense Total"
 				android:textSize="10pt"
@@ -53,7 +53,7 @@
 			android:orientation="horizontal"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:layout_marginTop="10px">
+			android:paddingTop="10px">
 			<TextView
 				android:text="Grand Total"
 				android:textSize="12pt"
@@ -89,7 +89,7 @@
 			android:orientation="vertical"
 			android:layout_width="fill_parent" 
 			android:layout_height="fill_parent"
-			android:layout_marginTop="10px"> <!-- Note built-in ids for 'list' and 'empty' -->
+			android:paddingTop="10px"> <!-- Note built-in ids for 'list' and 'empty' -->
 			<TableLayout
 				android:layout_width="fill_parent"
 				android:layout_height="fill_parent">
@@ -108,17 +108,17 @@
 								android:layout_width="fill_parent" 
 								android:layout_height="fill_parent">
 								<TextView
-									android:id="@+id/date0"
+									android:id="@+id/date1"
 									android:layout_width="110dip"
 									android:layout_height="fill_parent"
 									android:textSize="16px"/>
 								<TextView
-									android:id="@+id/type0"
+									android:id="@+id/type1"
 									android:layout_width="110dip"
 									android:layout_height="fill_parent"
 									android:textSize="16px"/>
 									<TextView
-									android:id="@+id/amount0"
+									android:id="@+id/amount1"
 									android:layout_width="110dip"
 									android:layout_height="fill_parent"
 									android:textStyle="bold"
@@ -154,17 +154,17 @@
 								android:layout_width="fill_parent" 
 								android:layout_height="fill_parent">
 								<TextView
-									android:id="@+id/date1"
+									android:id="@+id/date2"
 									android:layout_width="110dip"
 									android:layout_height="fill_parent"
 									android:textSize="16px"/>
 								<TextView
-									android:id="@+id/type1"
+									android:id="@+id/type2"
 									android:layout_width="110dip"
 									android:layout_height="fill_parent"
 									android:textSize="16px"/>
 								<TextView
-									android:id="@+id/amount1"
+									android:id="@+id/amount2"
 									android:layout_width="110dip"
 									android:layout_height="fill_parent"
 									android:textStyle="bold"
@@ -186,52 +186,6 @@
 <!-- RECENT TRANS - TRANSACTION 3-->
 				<TableRow
 					android:id="@+id/transaction_3"
-					android:layout_width="fill_parent"
-					android:layout_height="52dip"
-					android:paddingTop="10px">
-					<TableLayout
-						android:layout_width="fill_parent"
-						android:layout_height="fill_parent">
-						<TableRow
-							android:layout_width="fill_parent"
-							android:layout_height="fill_parent">
-							<LinearLayout 
-								android:orientation="horizontal"
-								android:layout_width="fill_parent" 
-								android:layout_height="fill_parent">
-								<TextView
-									android:id="@+id/date2"
-									android:layout_width="110dip"
-									android:layout_height="fill_parent"
-									android:textSize="16px"/>
-								<TextView
-									android:id="@+id/type2"
-									android:layout_width="110dip"
-									android:layout_height="fill_parent"
-									android:textSize="16px"/>
-									<TextView
-									android:id="@+id/amount2"
-									android:layout_width="110dip"
-									android:layout_height="fill_parent"
-									android:textStyle="bold"
-									android:textSize="16px"/>
-							</LinearLayout>
-						</TableRow>
-						<TableRow
-							android:layout_width="fill_parent"
-							android:layout_height="fill_parent">
-							<LinearLayout 
-								android:orientation="horizontal"
-								android:layout_width="fill_parent" 
-								android:layout_height="fill_parent">
-								
-							</LinearLayout>
-						</TableRow>
-					</TableLayout>
-				</TableRow>
-<!-- RECENT TRANS - TRANSACTION 4-->
-				<TableRow
-					android:id="@+id/transaction_4"
 					android:layout_width="fill_parent"
 					android:layout_height="52dip"
 					android:paddingTop="10px">
@@ -284,6 +238,11 @@
 						android:text="To view more data, click the Audit tab above."
 						android:textStyle="italic"/>	
 				</TableRow>
+				<Button
+					android:id="@+id/refresh"
+					android:text="Update Data"
+					android:textStyle="bold"
+					android:textSize="8pt"/>
 			</TableLayout>
 		</LinearLayout>
 </LinearLayout>

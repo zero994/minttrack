@@ -10,28 +10,26 @@ import java.util.Locale;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 public class HomeActivity extends Activity {
 
 	Budget budget;
-	double d_inTotal;
-	double d_exTotal;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.home);
-
+		
 		budget = new Budget(this);
 		
 		Cursor AccountCursor =  budget.getAccounts();
 		Cursor CategoryCursor = budget.getCategorys();
-		Cursor TransactionsCursor = budget.getTransactions();
 		
-		if (AccountCursor.getCount() == 0)
+		if (AccountCursor.getCount() == 0){
 			budget.addAccount("Savings", 0.00);
 			budget.addAccount("Checking", 0.00);
-		
+		}
 		if (CategoryCursor.getCount() == 0){
 			budget.addCategory("Bills", 0.00, 0);
 			budget.addCategory("Food", 0.00, 1);
@@ -40,8 +38,27 @@ public class HomeActivity extends Activity {
 		CategoryCursor.close();
 		AccountCursor.close();
 		
-		//Sum up income/expense transactions, store in d_inTotal/d_exTotal
+		updateDisplay();
+		
+		findViewById(R.id.refresh).setOnClickListener(homeOCL);
+	}
+	
+	View.OnClickListener homeOCL = new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			updateDisplay();
+		}
+	};
+	
+	//Updates the home screen display
+	private void updateDisplay(){
+		Cursor TransactionsCursor = budget.getTransactions();
+		double d_inTotal = 0;
+		double d_exTotal = 0;
 		TransactionsCursor.moveToFirst();
+		//Search through transactions table and sum up all income and expenses
 		while(!TransactionsCursor.isAfterLast())
 		{
 			if(TransactionsCursor.getInt(TransactionsCursor.getColumnIndex(TRANSACTION_TYPE)) == 0)
@@ -50,8 +67,7 @@ public class HomeActivity extends Activity {
 				d_exTotal+=TransactionsCursor.getDouble(TransactionsCursor.getColumnIndex(TRANSACTION_AMOUNT));
 			TransactionsCursor.moveToNext();
 		}
-				
-		//Update displays
+		//Updates individual data fields
 		displayIncomeTotal(d_inTotal);
 		displayExpenseTotal(d_exTotal);	
 		displayGrandTotal(d_inTotal+d_exTotal);
@@ -107,47 +123,37 @@ public class HomeActivity extends Activity {
 		TransactionsCursor.moveToFirst();
 		//Set display information for first list item
 		if(!TransactionsCursor.isAfterLast()){
-			TextView tv_date1 = (TextView)findViewById(R.id.date0);
+			TextView tv_date1 = (TextView)findViewById(R.id.date1);
 			tv_date1.setText(getFormattedDate(TransactionsCursor.getString(TransactionsCursor.getColumnIndex(TRANSACTION_DATE))));
-			TextView tv_type1 = (TextView)findViewById(R.id.type0);
+			TextView tv_type1 = (TextView)findViewById(R.id.type1);
 			tv_type1.setText(getTransactionString(TransactionsCursor.getInt(TransactionsCursor.getColumnIndex(TRANSACTION_TYPE))));
-			TextView tv_amt1 = (TextView)findViewById(R.id.amount0);
+			TextView tv_amt1 = (TextView)findViewById(R.id.amount1);
 			tv_amt1.setText("$"+TransactionsCursor.getString(TransactionsCursor.getColumnIndex(TRANSACTION_AMOUNT)));
 			TransactionsCursor.moveToNext();
 		}
 		//Set display information for second list item
 		if(!TransactionsCursor.isAfterLast()){
-			TextView tv_date2 = (TextView)findViewById(R.id.date1);
+			TextView tv_date2 = (TextView)findViewById(R.id.date2);
 			tv_date2.setText(getFormattedDate(TransactionsCursor.getString(TransactionsCursor.getColumnIndex(TRANSACTION_DATE))));
-			TextView tv_type2 = (TextView)findViewById(R.id.type1);
+			TextView tv_type2 = (TextView)findViewById(R.id.type2);
 			tv_type2.setText(getTransactionString(TransactionsCursor.getInt(TransactionsCursor.getColumnIndex(TRANSACTION_TYPE))));
-			TextView tv_amt2 = (TextView)findViewById(R.id.amount1);
+			TextView tv_amt2 = (TextView)findViewById(R.id.amount2);
 			tv_amt2.setText("$"+TransactionsCursor.getString(TransactionsCursor.getColumnIndex(TRANSACTION_AMOUNT)));
 			TransactionsCursor.moveToNext();
 		}
 		//Set display information for third list item
 		if(!TransactionsCursor.isAfterLast()){
-			TextView tv_date3 = (TextView)findViewById(R.id.date2);
+			TextView tv_date3 = (TextView)findViewById(R.id.date3);
 			tv_date3.setText(getFormattedDate(TransactionsCursor.getString(TransactionsCursor.getColumnIndex(TRANSACTION_DATE))));
-			TextView tv_type3 = (TextView)findViewById(R.id.type2);
+			TextView tv_type3 = (TextView)findViewById(R.id.type3);
 			tv_type3.setText(getTransactionString(TransactionsCursor.getInt(TransactionsCursor.getColumnIndex(TRANSACTION_TYPE))));
-			TextView tv_amt3 = (TextView)findViewById(R.id.amount2);
+			TextView tv_amt3 = (TextView)findViewById(R.id.amount3);
 			tv_amt3.setText("$"+TransactionsCursor.getString(TransactionsCursor.getColumnIndex(TRANSACTION_AMOUNT)));
 			TransactionsCursor.moveToNext();
-		}
-		//Set display information for fourth list item
-		if(!TransactionsCursor.isAfterLast()){
-			TextView tv_date4 = (TextView)findViewById(R.id.date3);
-			tv_date4.setText(getFormattedDate(TransactionsCursor.getString(TransactionsCursor.getColumnIndex(TRANSACTION_DATE))));
-			TextView tv_type4 = (TextView)findViewById(R.id.type3);
-			tv_type4.setText(getTransactionString(TransactionsCursor.getInt(TransactionsCursor.getColumnIndex(TRANSACTION_TYPE))));
-			TextView tv_amt4 = (TextView)findViewById(R.id.amount3);
-			tv_amt4.setText("$"+TransactionsCursor.getString(TransactionsCursor.getColumnIndex(TRANSACTION_AMOUNT)));
 		}
 	}
 	//Returns the date string in a date-like format (mm/dd/yyyy)
 	private String getFormattedDate(String str){
-		str = "0" + str;	//This will be removed once the date string is fixed
 		return str.substring(0,2)+"/"+str.substring(2,4)+"/"+str.substring(4,8);
 	}
 }
