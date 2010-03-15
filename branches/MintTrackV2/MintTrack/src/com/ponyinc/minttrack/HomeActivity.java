@@ -29,11 +29,12 @@ public class HomeActivity extends Activity {
 		Cursor TransactionsCursor = budget.getTransactions();
 		
 		if (AccountCursor.getCount() == 0)
-			budget.addAccount("Miscellaneous", 0.00);
+			budget.addAccount("Savings", 0.00);
+			budget.addAccount("Checking", 0.00);
 		
 		if (CategoryCursor.getCount() == 0){
-			budget.addCategory("Miscellaneous", 0.00, 0);
-			budget.addCategory("Miscellaneous", 0.00, 1);
+			budget.addCategory("Bills", 0.00, 0);
+			budget.addCategory("Food", 0.00, 1);
 		}
 		
 		CategoryCursor.close();

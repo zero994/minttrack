@@ -1,6 +1,5 @@
 package com.ponyinc.minttrack;
 
-import android.app.Activity;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;

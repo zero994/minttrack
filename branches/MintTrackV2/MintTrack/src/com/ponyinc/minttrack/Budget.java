@@ -72,9 +72,9 @@ public class Budget {
 	}
 
 	void Transfer(int ToAccount_ID, int FromAccount_ID, double Amount,
-			String Note, String Date) {
+			String Note, String Date, int Category) {
 		transactions.createTransfer(ToAccount_ID, FromAccount_ID, Amount, Note,
-				Date);
+				Date, Category);
 		Cursor Account_To = accounts.getAccount(ToAccount_ID);
 		Account_To.moveToNext();
 		EditAccountTotal(ToAccount_ID, Account_To.getDouble(2) + Amount);
