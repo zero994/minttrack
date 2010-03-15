@@ -1,10 +1,6 @@
 package com.ponyinc.minttrack;
 
 import static android.provider.BaseColumns._ID;
-import static com.ponyinc.minttrack.Constants.ACCOUNT_ACTIVE;
-import static com.ponyinc.minttrack.Constants.ACCOUNT_NAME;
-import static com.ponyinc.minttrack.Constants.ACCOUNT_TBLNAM;
-import static com.ponyinc.minttrack.Constants.ACCOUNT_TOTAL;
 import static com.ponyinc.minttrack.Constants.CATEGORY_NAME;
 import static com.ponyinc.minttrack.Constants.CATEGORY_TBLNAM;
 import static com.ponyinc.minttrack.Constants.CATEGORY_TOTAL;
@@ -12,8 +8,6 @@ import static com.ponyinc.minttrack.Constants.CATEGORY_TYPE;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.widget.SimpleCursorAdapter;
-import android.widget.Spinner;
 
 public class Categories {
 	private MintData MintLink;
