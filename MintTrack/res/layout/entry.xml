@@ -76,14 +76,29 @@
 							android:text="Change the date"
 							android:layout_weight="1" />
 					</LinearLayout>
-<!-- PAYMENT TYPE SPINNER-->
+<!-- PAYMENT TYPE_TO SPINNER-->
 					<TextView 
-						android:text="Payment Type:"
+						android:id="@+id/txt_type_to" 
+						android:text="Payment Type To:"
 						android:layout_width="fill_parent" 
 						android:layout_height="wrap_content"
 						android:layout_weight="1" />
 					<Spinner 
-						android:id="@+id/paytype" 
+						android:id="@+id/paytype_To" 
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content" 
+						android:drawSelectorOnTop="true"
+						android:prompt="@string/paytype_prompt" 
+						android:layout_weight="1" />
+<!-- PAYMENT TYPE_FROM SPINNER-->
+					<TextView 
+						android:id="@+id/txt_type_from" 
+						android:text="Payment Type From:"
+						android:layout_width="fill_parent" 
+						android:layout_height="wrap_content"
+						android:layout_weight="1" />
+					<Spinner 
+						android:id="@+id/paytype_From" 
 						android:layout_width="fill_parent"
 						android:layout_height="wrap_content" 
 						android:drawSelectorOnTop="true"
@@ -91,6 +106,7 @@
 						android:layout_weight="1" />
 <!-- REASON SPINNER-->
 					<TextView 
+						android:id="@+id/txt_reason" 
 						android:text="Reason:" 
 						android:layout_width="fill_parent"
 						android:layout_height="wrap_content" 
