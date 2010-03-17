@@ -20,39 +20,43 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 			<TextView
 		        android:text="Total Bill"
 		        android:textSize="15pt"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
+		        android:layout_width="150dip"
+		        android:layout_height="50dip"
+		        android:inputType="phone"
 		        android:layout_weight="1"/>
 		     <EditText
 		        android:id="@+id/bill_text"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
+		         android:layout_width="150dip"
+		        android:layout_height="40dip"
+		        android:inputType="phone"
 		        android:background="@android:drawable/editbox_background"/>
 		</TableRow>
 		<TableRow>
 			<TextView
 		        android:text="Tip (%)"
 		        android:textSize="15pt"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
+		        android:layout_width="150dip"
+		        android:layout_height="50dip"
 		        android:layout_weight="1"/>
 		     <EditText
 		        android:id="@+id/tip_text"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
+		        android:layout_width="150dip"
+		        android:layout_height="40dip"
+		        android:inputType="phone"
 		        android:background="@android:drawable/editbox_background"/>
 		</TableRow>
 		<TableRow>
 			<TextView
 		        android:text="Split"
 		        android:textSize="15pt"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
+		        android:layout_width="150dip"
+		        android:layout_height="50dip"
 		        android:layout_weight="1"/>
 		     <EditText
 		        android:id="@+id/split_text"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
+		        android:layout_width="150dip"
+		        android:layout_height="40dip"
+		        android:inputType="phone"
 		        android:background="@android:drawable/editbox_background"/>
 		</TableRow>
 		<Button
@@ -65,11 +69,9 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_weight="1"/>
-		     <EditText
+		     <TextView
 		        android:id="@+id/total_text"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:background="@android:drawable/editbox_background"/>
+		        android:textSize="18pt"/>
 		</TableRow>	
 		
 	</TableLayout>
