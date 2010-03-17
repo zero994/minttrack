@@ -37,8 +37,21 @@ public class Accounts {
 
 		return cursor;
 	}
+	
+	public Cursor getActiveAccounts() {
+		final String[] FROM = { _ID, ACCOUNT_NAME, ACCOUNT_TOTAL,
+				ACCOUNT_ACTIVE, };
+		final String ORDER_BY = _ID + " ASC";
 
-	public Cursor getAccounts() {
+		SQLiteDatabase db = MintLink.getReadableDatabase();
+
+		Cursor cursor = db.query(ACCOUNT_TBLNAM, FROM, "ACCOUNT_ACTIVE ='active'", null,
+				null, null, ORDER_BY);
+
+		return cursor;
+	}
+
+	public Cursor getAllAccounts() {
 		final String[] FROM = { _ID, ACCOUNT_NAME, ACCOUNT_TOTAL,
 				ACCOUNT_ACTIVE, };
 		final String ORDER_BY = _ID + " ASC";

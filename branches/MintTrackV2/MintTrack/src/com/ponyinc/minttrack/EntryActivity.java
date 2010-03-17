@@ -19,8 +19,10 @@ import android.widget.TextView;
 import android.widget.Button;
 
 public class EntryActivity extends Activity {
-	private TextView mDateDisplay;
-	private Button mPickDate;
+//	private TextView mDateDisplay;
+	private Button mPickDate, mSave, mIncomeButton, mExpenseButton, mTransButton;
+	private TextView mAmount, mNotes, mtxtPay_To, mtxtPay_From, mtxt_Reason;
+	private Spinner mReason, mPaymentType_To, mPaymentType_From;
 	private int mYear;
 	private int mMonth;
 	private int mDay;
@@ -28,46 +30,117 @@ public class EntryActivity extends Activity {
 
 	static final int DATE_DIALOG_ID = 0;
 
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.entry);
 		budget = new Budget(this);
-
-		// Date Box
-		mPickDate = (Button) findViewById(R.id.pickDate);
-
-		// add a click listener to the button
+//		budget.addAccount("TD Bank", 3500.65);
+//		budget.addCategory("Bills", 0.00, 1);
+//		budget.DeactivateAccount(3);
+//
+		SetWidgets();
+		
+		mSave.setOnClickListener(new View.OnClickListener(){
+					public void onClick(View v)
+					{
+						
+						SimpleCursorAdapter s1 = (SimpleCursorAdapter) mPaymentType_To.getAdapter();
+						SimpleCursorAdapter s2 = (SimpleCursorAdapter) mReason.getAdapter();
+						SimpleCursorAdapter s3 = (SimpleCursorAdapter) mPaymentType_From.getAdapter();
+						
+						Cursor To_acc_cursor = s1.getCursor();
+						Cursor cat_cursor = s2.getCursor();
+						Cursor From_acc_cursor = s3.getCursor();
+						
+						
+						To_acc_cursor.moveToPosition(mPaymentType_To.getSelectedItemPosition());
+						cat_cursor.moveToPosition(mReason.getSelectedItemPosition());
+						From_acc_cursor.moveToPosition(mPaymentType_From.getSelectedItemPosition());
+						
+						int cat_ID = cat_cursor.getInt(0);
+						int To_ID = To_acc_cursor.getInt(0);
+						int From_ID = From_acc_cursor.getInt(0);
+						String S_amount = String.valueOf(mAmount.getText());
+						String Date = String.format("%02d", mMonth+1) + String.format("%02d", mDay) + mYear;
+						String notes = String.valueOf(mNotes.getText());
+						
+						double amount = 0;					
+						if(S_amount.equals(""))
+							amount = 0;
+						else
+							amount = Double.parseDouble(S_amount);
+					
+						
+						if(!mIncomeButton.isEnabled())
+							budget.Income(To_ID, amount, notes, Date, cat_ID);
+						else if(!mExpenseButton.isEnabled())
+							budget.Expense(From_ID, amount, notes, Date, cat_ID);
+						else if(!mTransButton.isEnabled())
+							budget.Transfer(To_ID, From_ID, amount, notes, Date, cat_ID);
+						else
+							;
+					}
+				});
+		mIncomeButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) 
+			{
+				mIncomeButton.setEnabled(false);
+				mExpenseButton.setEnabled(true);
+				mTransButton.setEnabled(true);
+				mPaymentType_From.setVisibility(View.GONE);
+				mtxtPay_From.setVisibility(View.GONE);
+				mPaymentType_To.setVisibility(View.VISIBLE);
+				mtxtPay_To.setVisibility(View.VISIBLE);
+				mReason.setVisibility(View.VISIBLE);
+				mtxt_Reason.setVisibility(View.VISIBLE);
+			}
+		});
+		mExpenseButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) 
+			{
+				mIncomeButton.setEnabled(true);
+				mExpenseButton.setEnabled(false);
+				mTransButton.setEnabled(true);
+				mPaymentType_From.setVisibility(View.VISIBLE);
+				mtxtPay_From.setVisibility(View.VISIBLE);
+				mPaymentType_To.setVisibility(View.GONE);
+				mtxtPay_To.setVisibility(View.GONE);
+				mReason.setVisibility(View.VISIBLE);
+				mtxt_Reason.setVisibility(View.VISIBLE);
+			}
+		});
+		mTransButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) 
+			{
+				mIncomeButton.setEnabled(true);
+				mExpenseButton.setEnabled(true);
+				mTransButton.setEnabled(false);
+				mPaymentType_From.setVisibility(View.VISIBLE);
+				mtxtPay_From.setVisibility(View.VISIBLE);
+				mPaymentType_To.setVisibility(View.VISIBLE);
+				mtxtPay_To.setVisibility(View.VISIBLE);
+				mReason.setVisibility(View.GONE);
+				mtxt_Reason.setVisibility(View.GONE);
+			}
+		});
 		mPickDate.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				showDialog(DATE_DIALOG_ID);
 			}
 		});
-
-		Spinner ss = (Spinner) findViewById(R.id.reason1);
-		fillCatDropDown(ss);
 		
-		/*
-		 * Dropdown Reason Spinner s1 = (Spinner) findViewById(R.id.reason1);
-		 * ArrayAdapter adapter1 = ArrayAdapter.createFromResource(this,
-		 * R.array.reason, android.R.layout.simple_spinner_item); adapter1
-		 * .setDropDownViewResource
-		 * (android.R.layout.simple_spinner_dropdown_item);
-		 * s1.setAdapter(adapter1);
-		 */
-
 		// Dropdown Pay Type
-		Spinner s2 = (Spinner) findViewById(R.id.paytype);
-		fillAccountDropDown(s2);
-		
+		fillCatDropDown(mReason);
+		fillAccountDropDown(mPaymentType_To);
+		fillAccountDropDown(mPaymentType_From);
 		// get the current date
 		final Calendar c = Calendar.getInstance();
 		mYear = c.get(Calendar.YEAR);
 		mMonth = c.get(Calendar.MONTH);
 		mDay = c.get(Calendar.DAY_OF_MONTH);
 		
-		//example of hiding an element
-		//s2.setVisibility(s2.GONE);
 		// display the current date (this method is below)
 		updateDisplay();
 	}
@@ -113,7 +186,7 @@ public class EntryActivity extends Activity {
 		s.setAdapter(s1);
 	}
 	public void fillAccountDropDown(Spinner s) {
-		Cursor cursor = budget.getAccounts();
+		Cursor cursor = budget.getActiveAccounts();
 		SimpleCursorAdapter s1 = new SimpleCursorAdapter(this,
 				android.R.layout.simple_spinner_item, cursor, new String[] {
 				ACCOUNT_NAME, _ID }, new int[] { android.R.id.text1,
@@ -121,5 +194,24 @@ public class EntryActivity extends Activity {
 		s1
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		s.setAdapter(s1);
+	}
+	private void SetWidgets()
+	{
+		mSave = (Button) findViewById(R.id.saveButton);
+		mPickDate = (Button) findViewById(R.id.pickDate);
+		mReason = (Spinner) findViewById(R.id.reason1);
+		mPaymentType_To = (Spinner) findViewById(R.id.paytype_To);
+		mPaymentType_From = (Spinner) findViewById(R.id.paytype_From);
+		mAmount = (TextView) findViewById(R.id.entry1);
+		mNotes = (TextView) findViewById(R.id.notes);
+		mIncomeButton = (Button) findViewById(R.id.incomeButton);
+		mExpenseButton = (Button) findViewById(R.id.expenseButton);
+		mTransButton = (Button) findViewById(R.id.transferButton);
+		mtxtPay_To = (TextView) findViewById(R.id.txt_type_to);
+		mtxtPay_From = (TextView) findViewById(R.id.txt_type_from);
+		mtxt_Reason = (TextView) findViewById(R.id.txt_reason);
+		mIncomeButton.setEnabled(false);
+		mPaymentType_From.setVisibility(View.GONE);
+		mtxtPay_From.setVisibility(View.GONE);
 	}
 }

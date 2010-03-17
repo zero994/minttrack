@@ -23,8 +23,12 @@ public class Budget {
 		accounts.addAccount(strName, value);
 	}
 
-	Cursor getAccounts() {
-		return accounts.getAccounts();
+	Cursor getAllAccounts() {
+		return accounts.getAllAccounts();
+	}
+	
+	Cursor getActiveAccounts() {
+		return accounts.getActiveAccounts();
 	}
 
 	void DeactivateAccount(int acc_id) {
@@ -76,27 +80,47 @@ public class Budget {
 		transactions.createTransfer(ToAccount_ID, FromAccount_ID, Amount, Note,
 				Date, Category);
 		Cursor Account_To = accounts.getAccount(ToAccount_ID);
-		Account_To.moveToNext();
-		EditAccountTotal(ToAccount_ID, Account_To.getDouble(2) + Amount);
-
 		Cursor Account_From = accounts.getAccount(FromAccount_ID);
+		
+		Account_To.moveToNext();
 		Account_From.moveToNext();
+		
+		EditAccountTotal(ToAccount_ID, Account_To.getDouble(2) + Amount);
 		EditAccountTotal(FromAccount_ID, Account_From.getDouble(2) - Amount);
 	}
 
-	void Expense(int FromAccount_ID, double Amount, String Note, String Date,
-			int Category_ID) {
+	void Expense(int FromAccount_ID, double Amount, String Note, String Date, int Category_ID) {
 		transactions.createExpense(FromAccount_ID, Amount, Note, Date);
 		Cursor Account_From = accounts.getAccount(FromAccount_ID);
 		Cursor Category = categories.getCategory(Category_ID);
 
 		Account_From.moveToNext();
+		Category.moveToNext();
 		EditAccountTotal(FromAccount_ID, Account_From.getDouble(2) - Amount);
 		EditCategoryTotal(Category_ID, Category.getDouble(2) + Amount);
 
 	}
 
+	void Income(int ToAccount_ID, double Amount, String Note, String Date, int Category_ID) {
+		
+		transactions.createIncome(ToAccount_ID, Amount, Note, Date);
+		Cursor Account_To = accounts.getAccount(ToAccount_ID);
+		Cursor Category = categories.getCategory(Category_ID);
+
+		Account_To.moveToNext();
+		Category.moveToNext();
+		EditAccountTotal(ToAccount_ID, Account_To.getDouble(2) + Amount);
+		EditCategoryTotal(Category_ID, Category.getDouble(2) + Amount);		
+	
+		
+	}
+	
 	Cursor getTransactions() {
 		return transactions.getTransactions();
+	}
+	
+	void ClearTransTable()
+	{
+		transactions.ClearTable();
 	}
 }
