@@ -21,9 +21,10 @@ public class AuditActivity extends ListActivity {
 
 		budget = new Budget(this);
 		try {
-			budget.Transfer(1, 2, 2123.33, "Testing", "01022010", 1);
-			budget.Transfer(1, 2, 2123.33, "Testing", "01022010", 2);
+			//budget.Transfer(1, 2, 2123.33, "Testing", "01022010", 1);
+			//budget.Transfer(1, 2, 2123.33, "Testing", "01022010", 2);
 			test = budget.getTransactions();
+	//		test = budget.getActiveAccounts();
 			showEvents(test);
 		} finally {
 

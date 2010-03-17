@@ -4,7 +4,7 @@ import android.provider.BaseColumns;
 
 public interface Constants extends BaseColumns {
 	public static final String ACCOUNT_TBLNAM = "account";
-	public static final String CATEGORY_TBLNAM = "categorie";
+	public static final String CATEGORY_TBLNAM = "category";
 	public static final String TRANSACTION_TBLNAM = "tran_table";
 
 	// Columns in the Accounts Table
