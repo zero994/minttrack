@@ -5,6 +5,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import static com.ponyinc.minttrack.Constants.*;
 
@@ -27,17 +29,15 @@ public class AuditActivity extends ListActivity {
 
 		}
 	}
-
-	private static int[] TO = { R.id.transactionDate, R.id.transactionType, R.id.transactionAmount,R.id.transactionCategory,R.id.transactionNote, };
-	private static String[] FROM = { TRANSACTION_DATE, TRANSACTION_TYPE, TRANSACTION_AMOUNT, "CATNAME", TRANSACTION_NOTE,};
-
-	//	"ACT1NAME","ACT2NAME", };
-
-	//WARNING CURSOR MUST INCLUDED _ID
 	private void showEvents(Cursor cursor) {
 		// Set up data binding
-		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
-				R.layout.audititem, cursor, FROM, TO);
-		setListAdapter(adapter);
+		//SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
+		//		R.layout.audititem, cursor, FROM, TO);
+		setListAdapter(new AuditCursorAdapter(this, cursor));
 	}
+	public void onListItemClick(ListView l, View v, int position, long id) {
+        //need to interface to stephan's code
+    }
+	//private static int[] TO = { R.id.transactionDate, R.id.transactionType, R.id.transactionAmount,R.id.transactionCategory,R.id.transactionNote, };
+	//private static String[] FROM = { TRANSACTION_DATE, TRANSACTION_TYPE, TRANSACTION_AMOUNT, "CATNAME", TRANSACTION_NOTE,};
 }
