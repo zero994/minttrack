@@ -6,9 +6,10 @@
 		android:text="Date: " />
 	<TextView android:id="@+id/transactionDate" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:layout_toRightOf="@id/transactionDateLabel" />
-	
+	<TextView android:id="@+id/transactionTypeLabel" android:layout_marginLeft="25dip" android:layout_toRightOf="@id/transactionDate" android:layout_width="wrap_content" android:layout_height="wrap_content" 
+		android:text="Type: " />
 	<TextView android:id="@+id/transactionType" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:layout_toRightOf="@id/transactionDate" />
+		android:layout_height="wrap_content" android:layout_marginLeft="10dip" android:layout_toRightOf="@id/transactionTypeLabel" />
 	
 	<TextView android:id="@+id/transactionAmountLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" 
 		android:text="Amount: " android:layout_below="@id/transactionDateLabel" />
@@ -17,7 +18,7 @@
 		
 		
 	<TextView android:id="@+id/transactionCategoryLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" 
-		android:text="Reason: " android:layout_toRightOf="@id/transactionAmount" android:layout_below="@id/transactionDateLabel" />
+		android:text="Reason: " android:layout_marginLeft="10dip" android:layout_toRightOf="@id/transactionAmount" android:layout_below="@id/transactionDateLabel" />
 	<TextView android:id="@+id/transactionCategory" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:layout_toRightOf="@id/transactionCategoryLabel" android:layout_below="@id/transactionDateLabel" />
 	
