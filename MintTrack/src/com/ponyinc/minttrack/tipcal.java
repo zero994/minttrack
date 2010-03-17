@@ -10,6 +10,7 @@ import android.view.View;
 
 import android.os.Bundle;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.ponyinc.minttrack.R;
 
@@ -18,7 +19,7 @@ public class tipcal extends Activity
 		EditText bill;
 	    EditText tip;
 	    EditText split;
-	    EditText total;
+	    TextView total;
 	    /** Called when the activity is first created. */
 	    @Override
 	    public void onCreate(Bundle savedInstanceState) 
@@ -62,7 +63,7 @@ public class tipcal extends Activity
 	           // show the string in total editText	        
 	           String str = n.format(f_total);
 	           /**String t_total=total.toString();*/
-	           total = (EditText)findViewById(R.id.total_text);
+	           total = (TextView)findViewById(R.id.total_text);
 	           total.setText(str);           
 	       }
 	   };
