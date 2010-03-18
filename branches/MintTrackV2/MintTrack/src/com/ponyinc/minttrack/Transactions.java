@@ -33,7 +33,7 @@ public class Transactions {
 	}
 
 	public void createExpense(int FromAccount_ID, double Amount, String Note,
-			String Date) {
+			String Date, int Category) {
 
 		SQLiteDatabase db = MintLink.getWritableDatabase();
 
@@ -42,13 +42,14 @@ public class Transactions {
 		values.put(TRANSACTION_FROMACCOUNT, FromAccount_ID);
 		values.put(TRANSACTION_AMOUNT, Amount);
 		values.put(TRANSACTION_NOTE, Note);
+		values.put(TRANSACTION_CATEGORY, Category);
 		values.put(TRANSACTION_DATE, Date);
 		values.put(TRANSACTION_TYPE, 1);
 
 		db.insertOrThrow(TRANSACTION_TBLNAM, null, values);
 	}
 	public void createIncome(int ToAccount_ID, double Amount, String Note,
-			String Date) {
+			String Date, int Category) {
 
 		SQLiteDatabase db = MintLink.getWritableDatabase();
 
@@ -59,7 +60,8 @@ public class Transactions {
 		values.put(TRANSACTION_NOTE, Note);
 		values.put(TRANSACTION_DATE, Date);
 		values.put(TRANSACTION_TYPE, 0);
-
+		values.put(TRANSACTION_CATEGORY, Category);
+		
 		db.insertOrThrow(TRANSACTION_TBLNAM, null, values);
 	}
 

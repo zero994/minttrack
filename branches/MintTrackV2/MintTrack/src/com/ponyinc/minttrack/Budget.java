@@ -90,7 +90,7 @@ public class Budget {
 	}
 
 	void Expense(int FromAccount_ID, double Amount, String Note, String Date, int Category_ID) {
-		transactions.createExpense(FromAccount_ID, Amount, Note, Date);
+		transactions.createExpense(FromAccount_ID, Amount, Note, Date, Category_ID);
 		Cursor Account_From = accounts.getAccount(FromAccount_ID);
 		Cursor Category = categories.getCategory(Category_ID);
 
@@ -103,7 +103,7 @@ public class Budget {
 
 	void Income(int ToAccount_ID, double Amount, String Note, String Date, int Category_ID) {
 		
-		transactions.createIncome(ToAccount_ID, Amount, Note, Date);
+		transactions.createIncome(ToAccount_ID, Amount, Note, Date, Category_ID);
 		Cursor Account_To = accounts.getAccount(ToAccount_ID);
 		Cursor Category = categories.getCategory(Category_ID);
 
