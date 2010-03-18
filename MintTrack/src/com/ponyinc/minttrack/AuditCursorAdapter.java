@@ -1,9 +1,9 @@
 package com.ponyinc.minttrack;
 
-import java.sql.Date;
 import java.text.DateFormat;
 import java.text.NumberFormat;
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 import android.database.Cursor;
@@ -24,16 +24,22 @@ final class AuditCursorAdapter extends CursorAdapter {
     	TextView amountView =  (TextView) view.findViewById(R.id.transactionAmount);
     	TextView categoryView = (TextView) view.findViewById(R.id.transactionCategory);
     	TextView noteView =  (TextView) view.findViewById(R.id.transactionNote);
-    	
+    	java.util.Date transactionDate;
+    	DateFormat df = new SimpleDateFormat("MMddyyyy");
     	NumberFormat nf = NumberFormat.getInstance();
-    	long millis = cursor.getLong(cursor.getColumnIndex(TRANSACTION_DATE));
+    	String millis = cursor.getString(cursor.getColumnIndex(TRANSACTION_DATE));
     	double dblAmount = cursor.getDouble(cursor.getColumnIndex(TRANSACTION_AMOUNT));
     	int iTranType = cursor.getInt(cursor.getColumnIndex(TRANSACTION_TYPE));
     	String strCategory = cursor.getString(cursor.getColumnIndex("CATNAME"));
     	String strNote = cursor.getString(cursor.getColumnIndex(TRANSACTION_NOTE));
-    	
+
     	//transaction date
-    	dateView.setText(DateFormat.getDateInstance().format(new Date(millis)));
+    	try {
+			transactionDate = df.parse(millis);
+			dateView.setText(DateFormat.getDateInstance(DateFormat.LONG).format(transactionDate));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
     	
     	//transaction type
     	switch (iTranType) {
