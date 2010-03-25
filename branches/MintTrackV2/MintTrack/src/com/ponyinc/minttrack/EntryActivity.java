@@ -10,6 +10,8 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -43,46 +45,44 @@ public class EntryActivity extends Activity {
 		SetWidgets();
 		
 		mSave.setOnClickListener(new View.OnClickListener(){
-					public void onClick(View v)
-					{
-						
-						SimpleCursorAdapter s1 = (SimpleCursorAdapter) mPaymentType_To.getAdapter();
-						SimpleCursorAdapter s2 = (SimpleCursorAdapter) mReason.getAdapter();
-						SimpleCursorAdapter s3 = (SimpleCursorAdapter) mPaymentType_From.getAdapter();
-						
-						Cursor To_acc_cursor = s1.getCursor();
-						Cursor cat_cursor = s2.getCursor();
-						Cursor From_acc_cursor = s3.getCursor();
-						
-						
-						To_acc_cursor.moveToPosition(mPaymentType_To.getSelectedItemPosition());
-						cat_cursor.moveToPosition(mReason.getSelectedItemPosition());
-						From_acc_cursor.moveToPosition(mPaymentType_From.getSelectedItemPosition());
-						
-						int cat_ID = cat_cursor.getInt(0);
-						int To_ID = To_acc_cursor.getInt(0);
-						int From_ID = From_acc_cursor.getInt(0);
-						String S_amount = String.valueOf(mAmount.getText());
-						String Date = String.format("%02d", mMonth+1) + String.format("%02d", mDay) + mYear;
-						String notes = String.valueOf(mNotes.getText());
-						
-						double amount = 0;					
-						if(S_amount.equals(""))
-							amount = 0;
-						else
-							amount = Double.parseDouble(S_amount);
-					
-						
-						if(!mIncomeButton.isEnabled())
-							budget.Income(To_ID, amount, notes, Date, cat_ID);
-						else if(!mExpenseButton.isEnabled())
-							budget.Expense(From_ID, amount, notes, Date, cat_ID);
-						else if(!mTransButton.isEnabled())
-							budget.Transfer(To_ID, From_ID, amount, notes, Date, cat_ID);
-						else
-							;
-					}
-				});
+			public void onClick(View v)
+			{
+				SimpleCursorAdapter s1 = (SimpleCursorAdapter) mPaymentType_To.getAdapter();
+				SimpleCursorAdapter s2 = (SimpleCursorAdapter) mReason.getAdapter();
+				SimpleCursorAdapter s3 = (SimpleCursorAdapter) mPaymentType_From.getAdapter();
+				
+				Cursor To_acc_cursor = s1.getCursor();
+				Cursor cat_cursor = s2.getCursor();
+				Cursor From_acc_cursor = s3.getCursor();
+				
+				
+				To_acc_cursor.moveToPosition(mPaymentType_To.getSelectedItemPosition());
+				cat_cursor.moveToPosition(mReason.getSelectedItemPosition());
+				From_acc_cursor.moveToPosition(mPaymentType_From.getSelectedItemPosition());
+				
+				int cat_ID = cat_cursor.getInt(0);
+				int To_ID = To_acc_cursor.getInt(0);
+				int From_ID = From_acc_cursor.getInt(0);
+				String S_amount = String.valueOf(mAmount.getText());
+				String Date = String.format("%02d", mMonth+1) + String.format("%02d", mDay) + mYear;
+				String notes = String.valueOf(mNotes.getText());
+				
+				double amount = 0;					
+				if(S_amount.equals(""))
+					amount = 0;
+				else
+					amount = Double.parseDouble(S_amount);
+			
+				
+				if(!mIncomeButton.isEnabled())
+					budget.Income(To_ID, amount, notes, Date, cat_ID);
+				else if(!mExpenseButton.isEnabled())
+					budget.Expense(From_ID, amount, notes, Date, cat_ID);
+				else if(!mTransButton.isEnabled())
+					budget.Transfer(To_ID, From_ID, amount, notes, Date, cat_ID);
+				else;
+			}
+		});
 		mIncomeButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) 
 			{
@@ -143,6 +143,13 @@ public class EntryActivity extends Activity {
 		
 		// display the current date (this method is below)
 		updateDisplay();
+	}
+	
+	//Create menu
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.menu, menu);
+	    return true;
 	}
 
 	// updates the date in the TextView

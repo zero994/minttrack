@@ -5,6 +5,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -30,6 +32,13 @@ public class AuditActivity extends ListActivity {
 
 		}
 	}
+	//Create menu
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.menu, menu);
+	    return true;
+	}
+
 	private void showEvents(Cursor cursor) {
 		// Set up data binding
 		//SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
