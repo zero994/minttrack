@@ -10,6 +10,8 @@ import java.util.Locale;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.TextView;
 
@@ -51,6 +53,12 @@ public class HomeActivity extends Activity {
 			updateDisplay();
 		}
 	};
+	//Create menu
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.menu, menu);
+	    return true;
+	}
 	
 	//Updates the home screen display
 	private void updateDisplay(){

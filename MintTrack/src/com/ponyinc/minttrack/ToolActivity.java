@@ -8,6 +8,8 @@ import android.os.Bundle;
 
 import android.content.Intent;
 
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -28,9 +30,6 @@ public class ToolActivity extends Activity implements OnClickListener
         // Set up click listeners for all the buttons
         View tip_button = findViewById(R.id.tip_button);
         tip_button.setOnClickListener(this);
-        
-        
-    
 	}
 	
 	
@@ -41,6 +40,13 @@ public class ToolActivity extends Activity implements OnClickListener
 	        Intent i = new Intent(this, tipcal.class);
 	        startActivity(i);
 	 }
+	 
+	//Create menu
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.menu, menu);
+	    return true;
+	}
 			 
 	
 }
