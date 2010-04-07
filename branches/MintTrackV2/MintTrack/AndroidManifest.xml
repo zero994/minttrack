@@ -17,6 +17,10 @@
     <activity android:name=".HomeActivity"></activity>
     <activity android:name=".ToolActivity"></activity>
     <activity android:name=".tipcal"></activity>
+    <activity android:name=".HelpHome"></activity>
+    <activity android:name=".HelpEntry"></activity>
+    <activity android:name=".HelpTools"></activity>
+    <activity android:name=".AboutUs"></activity>
 </application>
     <uses-sdk android:minSdkVersion="3" />
 
