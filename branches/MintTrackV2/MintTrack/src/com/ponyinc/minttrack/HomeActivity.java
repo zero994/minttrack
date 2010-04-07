@@ -3,16 +3,20 @@ package com.ponyinc.minttrack;
 import static com.ponyinc.minttrack.Constants.TRANSACTION_AMOUNT;
 import static com.ponyinc.minttrack.Constants.TRANSACTION_DATE;
 import static com.ponyinc.minttrack.Constants.TRANSACTION_TYPE;
+import com.ponyinc.minttrack.HelpHome;
 
 import java.text.NumberFormat;
 import java.util.Locale;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 public class HomeActivity extends Activity {
@@ -53,6 +57,35 @@ public class HomeActivity extends Activity {
 			updateDisplay();
 		}
 	};
+	/* Handles item selections */
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId())
+	    {
+	    	case (R.id.help):
+	    		executeIntent();
+	    		return true;
+	    	case (R.id.info):
+	    		executeIntent2();
+	    		return true;
+	   
+	   
+	    }
+	    return false;
+	}
+	private void executeIntent()
+	{
+		 Intent i = new Intent(this, HelpHome.class);
+	     startActivity(i);
+	}
+	private void executeIntent2()
+	{
+		 Intent i = new Intent(this, AboutUs.class);
+	     startActivity(i);
+	}
+	
+	 
+
+	
 	//Create menu
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
