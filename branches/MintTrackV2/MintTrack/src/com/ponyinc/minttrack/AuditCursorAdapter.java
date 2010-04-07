@@ -1,3 +1,6 @@
+/** This class is a custom CursorAdapter that handles the joins of the Account/Transaction/Category for proper output on the AuditTab/HomeTab
+*	@author Christopher C. Wilkins
+*/
 package com.ponyinc.minttrack;
 
 import java.text.DateFormat;
@@ -14,11 +17,16 @@ import android.view.LayoutInflater;
 import static com.ponyinc.minttrack.Constants.*;
 
 final class AuditCursorAdapter extends CursorAdapter {
+	/** Secondary Contructor
+	*	@param	context The context that the adapter will be used
+	*	@param	c		A Cursor containing the prejoined database Cursor
+	*/
 	AuditCursorAdapter(Context context, Cursor c) {
         super(context, c);
     }
 
-    @Override public void bindView(View view, Context context, Cursor cursor) {              
+    @Override
+	public void bindView(View view, Context context, Cursor cursor) {              
     	TextView dateView = (TextView) view.findViewById(R.id.transactionDate);
     	TextView tranTypeView = (TextView) view.findViewById(R.id.transactionType);
     	TextView amountView =  (TextView) view.findViewById(R.id.transactionAmount);
@@ -57,7 +65,8 @@ final class AuditCursorAdapter extends CursorAdapter {
     	noteView.setText(strNote);
     }
 
-    @Override public View newView(Context context, Cursor cursor, ViewGroup parent) {        
+    @Override
+	public View newView(Context context, Cursor cursor, ViewGroup parent) {        
     	LayoutInflater ContextLayoutInflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
 
     	View view = ContextLayoutInflater.inflate(R.layout.audititem, null);

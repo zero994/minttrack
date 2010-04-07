@@ -1,3 +1,6 @@
+/** This class is used to represent the listactivity for reviewing transactions
+*	@author Christopher C. Wilkins
+*/
 package com.ponyinc.minttrack;
 
 import android.app.ListActivity;
@@ -15,7 +18,8 @@ import static com.ponyinc.minttrack.Constants.*;
 public class AuditActivity extends ListActivity {
 
 	Budget budget;
-
+	
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		Cursor test;
 		super.onCreate(savedInstanceState);
@@ -23,31 +27,30 @@ public class AuditActivity extends ListActivity {
 
 		budget = new Budget(this);
 		try {
-			//budget.Transfer(1, 2, 2123.33, "Testing", "01022010", 1);
-			//budget.Transfer(1, 2, 2123.33, "Testing", "01022010", 2);
 			test = budget.getTransactions();
-	//		test = budget.getActiveAccounts();
 			showEvents(test);
 		} finally {
 
 		}
 	}
-	//Create menu
+	/** Method used to inflate popup menu at bottom
+	*	@return boolean Whether the menu is successfully populated
+	* 	@param Menu The meny object that you want to populate 
+	*/
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
 	    inflater.inflate(R.menu.menu, menu);
 	    return true;
 	}
-
+	/** Method used to populate the ListActivity from a database Cursor
+	*	@param Cursor A cursor containing the rows of the transaction database that you want to display
+	*/
 	private void showEvents(Cursor cursor) {
-		// Set up data binding
-		//SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
-		//		R.layout.audititem, cursor, FROM, TO);
 		setListAdapter(new AuditCursorAdapter(this, cursor));
 	}
+	
+	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
         //need to interface to stephan's code
     }
-	//private static int[] TO = { R.id.transactionDate, R.id.transactionType, R.id.transactionAmount,R.id.transactionCategory,R.id.transactionNote, };
-	//private static String[] FROM = { TRANSACTION_DATE, TRANSACTION_TYPE, TRANSACTION_AMOUNT, "CATNAME", TRANSACTION_NOTE,};
 }
