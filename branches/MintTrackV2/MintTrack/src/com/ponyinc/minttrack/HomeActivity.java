@@ -1,3 +1,8 @@
+/**This class implements a summary screen to the MintTrack application.
+ * This summary screen displays an income, expense, and grand total of transactions as well as
+ * 		a short list of the last four transactions entered.
+ * @author Jeff Titus **/
+
 package com.ponyinc.minttrack;
 
 import static com.ponyinc.minttrack.Constants.TRANSACTION_AMOUNT;
@@ -16,14 +21,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 public class HomeActivity extends Activity {
 
 	Budget budget;
-
+	
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.home);
@@ -46,8 +50,6 @@ public class HomeActivity extends Activity {
 		AccountCursor.close();
 		
 		updateDisplay();
-		
-		//findViewById(R.id.refresh).setOnClickListener(homeOCL);
 	}
 	
 	@Override
@@ -55,7 +57,8 @@ public class HomeActivity extends Activity {
 		super.onResume();
 		updateDisplay();
 	}
-/* Handles item selections */
+	
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId())
 	    {
@@ -65,29 +68,31 @@ public class HomeActivity extends Activity {
 	    	case (R.id.info):
 	    		executeInfoIntent();
 	    		return true;
-	   
-	   
 	    }
 	    return false;
 	}
+	
+	/** Executes help functionality **/
 	private void executeHelpIntent()
 	{
 		 Intent i = new Intent(this, HelpHome.class);
 	     startActivity(i);
 	}
+	/** Executes Information screen **/
 	private void executeInfoIntent()
 	{
 		 Intent i = new Intent(this, AboutUs.class);
 	     startActivity(i);
 	}
-	//Create menu
+	
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
 	    inflater.inflate(R.menu.menu, menu);
 	    return true;
 	}
 	
-	//Updates the home screen display
+	/** Updates the display.<br>Called in <b>onCreate()</b> and <b>onResume()</b> **/
 	private void updateDisplay(){
 		Cursor TransactionsCursor = budget.getTransactions();
 		double d_inTotal = 0;
@@ -113,35 +118,34 @@ public class HomeActivity extends Activity {
 	
 	//Number format (US dollars)
 	NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.US);
-	//Text field variables
-	TextView tv_iTotal;
-	TextView tv_eTotal;
-	TextView tv_gTotal;
-	//Text field string variables holding number formats
-	String s_incomeTotal;
-	String s_expenseTotal;
-	String s_grandTotal;
-	//Displays the total value in the income text field
+
+	/**Displays the total value in the income text field
+	 * @param iT Income total**/
 	private void displayIncomeTotal(double iT){
-		s_incomeTotal=nf.format(iT);
-		tv_iTotal=(TextView)findViewById(R.id.in_total);
+		String s_incomeTotal=nf.format(iT);
+		TextView tv_iTotal=(TextView)findViewById(R.id.in_total);
 		tv_iTotal.setText(s_incomeTotal);
 	}
-	//Displays the total value in the expense text field
+	/**Displays the total value in the expense text field
+	 * @param eT Expense total**/
 	private void displayExpenseTotal(double eT){
-		s_expenseTotal=nf.format(eT);
-		tv_eTotal=(TextView)findViewById(R.id.ex_total);
+		String s_expenseTotal=nf.format(eT);
+		TextView tv_eTotal=(TextView)findViewById(R.id.ex_total);
 		tv_eTotal.setText(s_expenseTotal);
 	}
-	//Displays the total value in the grand total text field
+	/**Displays the total value in the grand total text field
+	 * @param gT Grand total**/
 	private void displayGrandTotal(double gT){
-		s_grandTotal = nf.format(gT);
-		tv_gTotal=(TextView)findViewById(R.id.gr_total);
+		String s_grandTotal = nf.format(gT);
+		TextView tv_gTotal=(TextView)findViewById(R.id.gr_total);
 		tv_gTotal.setText(s_grandTotal);
 	}
-	//Returns transaction type in string form
-	private String getTransactionString(int x){
-		switch(x)
+	/**Returns the transaction type in string form
+	 * @param transRefNum Transaction reference number
+	 * @return The transaction type as a String
+	 */
+	private String getTransactionString(int transRefNum){
+		switch(transRefNum)
 		{
 		case 0:
 			return "Income";
@@ -152,7 +156,10 @@ public class HomeActivity extends Activity {
 		}
 		return "";
 	}
-	//Displays recent transactions at bottom of home screen
+	/**Displays recent transactions at the bottom of the home tab
+	 * 
+	 * @param TransactionsCursor Iterator used to parse database entries
+	 */
 	private void displayRecentTransactions(Cursor TransactionsCursor){
 		//Cursor moved to first item in the table
 		TransactionsCursor.moveToLast();
@@ -196,7 +203,10 @@ public class HomeActivity extends Activity {
 			tv_amt4.setText("$"+TransactionsCursor.getString(TransactionsCursor.getColumnIndex(TRANSACTION_AMOUNT)));
 		}
 	}
-	//Returns the date string in a date-like format (mm/dd/yyyy)
+	/**Returns the date string in a date-like format (mm/dd/yyyy)
+	 * @param str An unformatted date string
+	 * @return String that shows the date of the transaction in mm/dd/yyyy format
+	 */
 	private String getFormattedDate(String str){
 		return str.substring(0,2)+"/"+str.substring(2,4)+"/"+str.substring(4,8);
 	}

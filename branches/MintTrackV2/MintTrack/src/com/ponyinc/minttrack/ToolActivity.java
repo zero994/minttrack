@@ -1,3 +1,7 @@
+/**This class implements a set of tools for the user including Account manager, Category manager, 
+ * 		and Tip calculator
+ * @author Pablo BajoLaso and Jeff Titus
+ */
 package com.ponyinc.minttrack;
 
 import android.app.Activity;
@@ -18,6 +22,7 @@ public class ToolActivity extends Activity implements OnClickListener
 
 	Budget budget;
 
+	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
@@ -35,7 +40,7 @@ public class ToolActivity extends Activity implements OnClickListener
         category_button.setOnClickListener(manCatListener);
 	}
 	 
-	//Manage Accounts Button Listener
+	/**Manage Accounts Button Listener**/
 	View.OnClickListener manAcctListener = new View.OnClickListener() {
 			
 		@Override
@@ -47,7 +52,7 @@ public class ToolActivity extends Activity implements OnClickListener
 		}
 	};
 	
-	//Manage Categories Button Listener
+	/**Manage Categories Button Listener**/
 	View.OnClickListener manCatListener = new View.OnClickListener() {
 		
 		@Override
@@ -59,7 +64,7 @@ public class ToolActivity extends Activity implements OnClickListener
 		}
 	};
 	
-	//Tip Calculator Button Listener
+	/**Tip Calculator Button Listener**/
 	View.OnClickListener tipCalcListener = new View.OnClickListener() {
 		
 		@Override
@@ -71,27 +76,37 @@ public class ToolActivity extends Activity implements OnClickListener
 		 }
 	};
 	 
-	//Create menu
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
 	    inflater.inflate(R.menu.menu, menu);
 	    return true;
 	}
 	
-	/* Handles item selections */
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId())
 	    {
 	    	case (R.id.help):
-	    		executeIntent();
+	    		executeHelpIntent();
 	    		return true;
-	   
+	    	case (R.id.info):
+	    		executeInfoIntent();
+	    		return true;
 	    }
 	    return false;
 	}
-	private void executeIntent()
+
+	/** Executes help functionality **/
+	private void executeHelpIntent()
 	{
-		 Intent i = new Intent(this, HelpTools.class);
+		 Intent i = new Intent(this, HelpHome.class);
+	     startActivity(i);
+	}
+	/** Executes Information screen **/
+	private void executeInfoIntent()
+	{
+		 Intent i = new Intent(this, AboutUs.class);
 	     startActivity(i);
 	}
 
