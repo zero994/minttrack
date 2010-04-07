@@ -21,6 +21,8 @@
     <activity android:name=".HelpEntry"></activity>
     <activity android:name=".HelpTools"></activity>
     <activity android:name=".AboutUs"></activity>
+    <activity android:name=".AccountManager"></activity>
+    <activity android:name=".CategoryManager"></activity>
 </application>
     <uses-sdk android:minSdkVersion="3" />
 

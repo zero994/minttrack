@@ -10,6 +10,7 @@ import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Intent;
+
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
@@ -46,46 +47,39 @@ public class HomeActivity extends Activity {
 		
 		updateDisplay();
 		
-		findViewById(R.id.refresh).setOnClickListener(homeOCL);
+		//findViewById(R.id.refresh).setOnClickListener(homeOCL);
 	}
 	
-	View.OnClickListener homeOCL = new View.OnClickListener() {
-		
-		@Override
-		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			updateDisplay();
-		}
-	};
-	/* Handles item selections */
+	@Override
+	public void onResume(){
+		super.onResume();
+		updateDisplay();
+	}
+/* Handles item selections */
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId())
 	    {
 	    	case (R.id.help):
-	    		executeIntent();
+	    		executeHelpIntent();
 	    		return true;
 	    	case (R.id.info):
-	    		executeIntent2();
+	    		executeInfoIntent();
 	    		return true;
 	   
 	   
 	    }
 	    return false;
 	}
-	private void executeIntent()
+	private void executeHelpIntent()
 	{
 		 Intent i = new Intent(this, HelpHome.class);
 	     startActivity(i);
 	}
-	private void executeIntent2()
+	private void executeInfoIntent()
 	{
 		 Intent i = new Intent(this, AboutUs.class);
 	     startActivity(i);
 	}
-	
-	 
-
-	
 	//Create menu
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
@@ -191,6 +185,15 @@ public class HomeActivity extends Activity {
 			TextView tv_amt3 = (TextView)findViewById(R.id.amount3);
 			tv_amt3.setText("$"+TransactionsCursor.getString(TransactionsCursor.getColumnIndex(TRANSACTION_AMOUNT)));
 			TransactionsCursor.moveToPrevious();
+		}
+		//Set display information for fourth list item
+		if(!TransactionsCursor.isBeforeFirst()){
+			TextView tv_date4 = (TextView)findViewById(R.id.date4);
+			tv_date4.setText(getFormattedDate(TransactionsCursor.getString(TransactionsCursor.getColumnIndex(TRANSACTION_DATE))));
+			TextView tv_type4 = (TextView)findViewById(R.id.type4);
+			tv_type4.setText(getTransactionString(TransactionsCursor.getInt(TransactionsCursor.getColumnIndex(TRANSACTION_TYPE))));
+			TextView tv_amt4 = (TextView)findViewById(R.id.amount4);
+			tv_amt4.setText("$"+TransactionsCursor.getString(TransactionsCursor.getColumnIndex(TRANSACTION_AMOUNT)));
 		}
 	}
 	//Returns the date string in a date-like format (mm/dd/yyyy)
