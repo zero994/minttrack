@@ -10,6 +10,7 @@ import android.content.Intent;
 
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -48,5 +49,20 @@ public class ToolActivity extends Activity implements OnClickListener
 	    return true;
 	}
 			 
-	
+	/* Handles item selections */
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId())
+	    {
+	    	case (R.id.help):
+	    		executeIntent();
+	    		return true;
+	   
+	    }
+	    return false;
+	}
+	private void executeIntent()
+	{
+		 Intent i = new Intent(this, HelpTools.class);
+	     startActivity(i);
+	}
 }
