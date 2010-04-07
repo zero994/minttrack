@@ -1,3 +1,6 @@
+/**This is an interface for the MintTrack application SQLite database
+ * @author Christopher C. Wilkins
+ */
 package com.ponyinc.minttrack;
 
 import android.provider.BaseColumns;

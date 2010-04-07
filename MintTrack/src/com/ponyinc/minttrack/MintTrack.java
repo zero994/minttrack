@@ -1,3 +1,6 @@
+/**This is the main class for the MintTrack application
+ * @author Christopher C. Wilkins
+ */
 package com.ponyinc.minttrack;
 
 import android.app.TabActivity;
@@ -7,7 +10,7 @@ import android.os.Bundle;
 import android.widget.TabHost;
 
 public class MintTrack extends TabActivity {
-	/** Called when the activity is first created. */
+
 	TabHost tabHost;
 
 	@Override

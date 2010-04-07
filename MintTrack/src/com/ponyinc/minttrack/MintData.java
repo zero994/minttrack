@@ -1,3 +1,7 @@
+/**This class creates the SQLite database for the MintTrack Application
+ * @author Christopher C. Wilkins
+ **/
+
 package com.ponyinc.minttrack;
 
 import static android.provider.BaseColumns._ID;
@@ -10,6 +14,9 @@ public class MintData extends SQLiteOpenHelper {
 	private static final String DATABASE_NAME = "mint.db";
 	private static final int DATABASE_VERSION = 1;
 
+	/**Secondary Constructor
+	 * @param ctx The context MintData is being created in
+	 */
 	public MintData(Context ctx) {
 		super(ctx, DATABASE_NAME, null, DATABASE_VERSION);
 	}
