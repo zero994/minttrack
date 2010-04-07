@@ -1,7 +1,5 @@
 package com.ponyinc.minttrack;
 
-
-
 import android.app.Activity;
 
 import android.os.Bundle;
@@ -25,22 +23,53 @@ public class ToolActivity extends Activity implements OnClickListener
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.tool);
 		budget = new Budget(this);
-		
-		// Bind the action for the save button.
        
         // Set up click listeners for all the buttons
         View tip_button = findViewById(R.id.tip_button);
-        tip_button.setOnClickListener(this);
+        tip_button.setOnClickListener(tipCalcListener);
+        
+        View account_button = findViewById(R.id.manage_accounts);
+        account_button.setOnClickListener(manAcctListener);
+        
+        View category_button = findViewById(R.id.manage_cats);
+        category_button.setOnClickListener(manCatListener);
 	}
+	 
+	//Manage Accounts Button Listener
+	View.OnClickListener manAcctListener = new View.OnClickListener() {
+			
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			Intent acctIntent = new Intent();
+			acctIntent.setClassName("com.ponyinc.minttrack", "com.ponyinc.minttrack.AccountManager");
+	        startActivity(acctIntent);
+		}
+	};
 	
+	//Manage Categories Button Listener
+	View.OnClickListener manCatListener = new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			Intent catIntent = new Intent();
+			catIntent.setClassName("com.ponyinc.minttrack", "com.ponyinc.minttrack.CategoryManager");
+	        startActivity(catIntent);
+		}
+	};
 	
-	 public void onClick(View v) 
-	 {
-		 	//to put a switch if we have more options.
-		 	//v.getId();
-	        Intent i = new Intent(this, tipcal.class);
-	        startActivity(i);
-	 }
+	//Tip Calculator Button Listener
+	View.OnClickListener tipCalcListener = new View.OnClickListener() {
+		
+		@Override
+		 public void onClick(View v) 
+		 {
+			Intent calcIntent = new Intent();
+			calcIntent.setClassName("com.ponyinc.minttrack", "com.ponyinc.minttrack.tipcal");
+	        startActivity(calcIntent);
+		 }
+	};
 	 
 	//Create menu
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -48,7 +77,7 @@ public class ToolActivity extends Activity implements OnClickListener
 	    inflater.inflate(R.menu.menu, menu);
 	    return true;
 	}
-			 
+	
 	/* Handles item selections */
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId())
@@ -65,4 +94,12 @@ public class ToolActivity extends Activity implements OnClickListener
 		 Intent i = new Intent(this, HelpTools.class);
 	     startActivity(i);
 	}
+
+	@Override
+	public void onClick(View arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+			 
+	
 }
