@@ -1,3 +1,7 @@
+/**
+*	Class represents the accounts object 
+*   and contains methods for interacting with them 
+*/
 package com.ponyinc.minttrack;
 
 import static android.provider.BaseColumns._ID;
@@ -8,12 +12,17 @@ import android.database.sqlite.SQLiteDatabase;
 
 public class Accounts {
 	private MintData MintLink;
-
+	/** Secondary Constructor
+	*	@param mintdata Takes a MintData object that represents the actual database object
+	*/
 	Accounts(MintData mintdata) {
 		MintLink = mintdata;
 
 	}
-
+	/** Method is used to add an account to the acount table.
+	*	@param strName The name of the account
+	*	@param initalValue The inital account balance of the account
+	*/
 	public void addAccount(String strName, double initalValue) {
 		// Insert a new record into the Events data source.
 		// You would do something similar for delete and update
@@ -24,7 +33,9 @@ public class Accounts {
 		values.put(ACCOUNT_ACTIVE, "active");
 		db.insertOrThrow(ACCOUNT_TBLNAM, null, values);
 	}
-
+	/** Method used to query the accounts table based on an accounts ID
+	*	@para _id Account ID that you wish to query
+	*/
 	public Cursor getAccount(int _id) {
 		final String[] FROM = { _ID, ACCOUNT_NAME, ACCOUNT_TOTAL,
 				ACCOUNT_ACTIVE, };
@@ -37,7 +48,9 @@ public class Accounts {
 
 		return cursor;
 	}
-	
+	/** Method is used to get a list of only accounts that have an active status
+	*	@return Returns a Cursor contains accounts that are active in the accounts table
+	*/
 	public Cursor getActiveAccounts() {
 		final String[] FROM = { _ID, ACCOUNT_NAME, ACCOUNT_TOTAL,
 				ACCOUNT_ACTIVE, };
@@ -50,7 +63,9 @@ public class Accounts {
 
 		return cursor;
 	}
-
+	/** Method is used to get a Cursor of all the accounts in the account table
+	*	@return A Cursor containing all the accounts on the account table
+	*/
 	public Cursor getAllAccounts() {
 		final String[] FROM = { _ID, ACCOUNT_NAME, ACCOUNT_TOTAL,
 				ACCOUNT_ACTIVE, };
@@ -60,7 +75,9 @@ public class Accounts {
 				ORDER_BY);
 		return cursor;
 	}
-
+	/** Method is used to deactivate an account
+	*	@param acc_id ID of the account which you wish to disable
+	*/
 	public void DeactivateAccount(int acc_id)
 	// set account to inactive
 	{
@@ -69,21 +86,29 @@ public class Accounts {
 		values.put(ACCOUNT_ACTIVE, "inactive");
 		db.update(ACCOUNT_TBLNAM, values, _ID + "=" + acc_id, null);
 	}
-
+	/** Method is used to edit the name of an existing account
+	*	@param acc_id ID of the account you want to modify
+	*	@param strName Name that will replace the account
+	*/
 	public void EditAccountName(int acc_id, String strName) {
 		SQLiteDatabase db = MintLink.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(ACCOUNT_NAME, strName);
 		db.update(ACCOUNT_TBLNAM, values, _ID + "=" + acc_id, null);
 	}
-
+	/** Method modifies the balance total of an account
+	*	@param acc_id ID of the account you want to modify
+	*	@param total New amount to be set as the balance of the account
+	*/
 	public void EditAccountTotal(int acc_id, double total) {
 		SQLiteDatabase db = MintLink.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(ACCOUNT_TOTAL, total);
 		db.update(ACCOUNT_TBLNAM, values, _ID + "=" + acc_id, null);
 	}
-
+	/** Method is used to reactive an inactive account that already exists
+	*	@param acc_id ID of account which you want to activate
+	*/
 	public void ReactivateAccount(int acc_id)
 	// set account to inactive
 	{
