@@ -154,7 +154,7 @@ public class EntryActivity extends Activity {
 	    return true;
 	}
 
-	// updates the date in the TextView
+	/** updates the date in the TextView*/
 	private void updateDisplay() {
 		mPickDate.setText(new StringBuilder()
 				// Month is 0 based so add 1
@@ -162,7 +162,7 @@ public class EntryActivity extends Activity {
 				.append(mYear).append(" "));
 	}
 
-	// the callback received when the user "sets" the date in the dialog
+	/** the callback received when the user "sets" the date in the dialog*/
 	private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
 
 		public void onDateSet(DatePicker view, int year, int monthOfYear,
@@ -183,7 +183,9 @@ public class EntryActivity extends Activity {
 		}
 		return null;
 	}
-
+	
+	/** Fill in category drop down
+	 *  @param s Spinner to be used to fill drop down*/
 	public void fillCatDropDown(Spinner s) {
 		Cursor cursor = budget.getCategorys();
 		SimpleCursorAdapter s1 = new SimpleCursorAdapter(this,
@@ -194,6 +196,9 @@ public class EntryActivity extends Activity {
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		s.setAdapter(s1);
 	}
+	
+	/** Fill in Account drop down
+	 * @param s Spinner to be used to fill drop down*/
 	public void fillAccountDropDown(Spinner s) {
 		Cursor cursor = budget.getActiveAccounts();
 		SimpleCursorAdapter s1 = new SimpleCursorAdapter(this,
@@ -204,6 +209,7 @@ public class EntryActivity extends Activity {
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		s.setAdapter(s1);
 	}
+	/**Set all widgets for this view */
 	private void SetWidgets()
 	{
 		mSave = (Button) findViewById(R.id.saveButton);
@@ -223,7 +229,9 @@ public class EntryActivity extends Activity {
 		mPaymentType_From.setVisibility(View.GONE);
 		mtxtPay_From.setVisibility(View.GONE);
 	}
-	/* Handles item selections */
+	/** Handles item selections
+	 * @param item 
+	 * @return True if help selected False if not*/
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId())
 	    {
@@ -234,6 +242,7 @@ public class EntryActivity extends Activity {
 	    }
 	    return false;
 	}
+	/** Starts Help*/
 	private void executeIntent()
 	{
 		 Intent i = new Intent(this, HelpEntry.class);

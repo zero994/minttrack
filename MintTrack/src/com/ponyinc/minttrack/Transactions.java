@@ -7,13 +7,26 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 
+/**Interface to transaction table */
 public class Transactions {
+	/**
+	 * hello
+	 */
 	private MintData MintLink;
 
+	/** Create an object to talk to transaction table
+	 *@param mintdata database to connect to
+	 */
 	Transactions(MintData mintdata) {
 		MintLink = mintdata;
 	}
-
+	/**Transfer founds from one account to another
+	 * @param ToAccount_ID id of account which money will transfered to
+	 * @param FromAccount_ID id of account which money will be transfered from
+	 * @param Amount the amount to be transfered
+	 * @param Note a note by the user
+	 * @param Date date transfer took place
+	 * @param Category reason for transfer*/
 	public void createTransfer(int ToAccount_ID, int FromAccount_ID,
 			double Amount, String Note, String Date, int Category)
 	// Date mmddyyyy - ex: 02052010 - no dashes or slashes- fill space with
@@ -32,6 +45,12 @@ public class Transactions {
 		db.insertOrThrow(TRANSACTION_TBLNAM, null, values);
 	}
 
+	/**Take founds from one account for a given reason
+	 * @param FromAccount_ID id of account which money will be taken from
+	 * @param Amount the amount to be taken
+	 * @param Note a note by the user
+	 * @param Date date expense took place
+	 * @param Category reason for expense*/
 	public void createExpense(int FromAccount_ID, double Amount, String Note,
 			String Date, int Category) {
 
@@ -48,6 +67,12 @@ public class Transactions {
 
 		db.insertOrThrow(TRANSACTION_TBLNAM, null, values);
 	}
+	/**Add founds to one account because of income
+	 * @param ToAccount_ID id of account which money will put into
+	 * @param Amount the amount to be add
+	 * @param Note a note by the user
+	 * @param Date date income too place
+	 * @param Category reason for income*/
 	public void createIncome(int ToAccount_ID, double Amount, String Note,
 			String Date, int Category) {
 
@@ -64,7 +89,9 @@ public class Transactions {
 		
 		db.insertOrThrow(TRANSACTION_TBLNAM, null, values);
 	}
-
+	/** get all transactions
+	 * @return Cursor of transactions
+	 */
 	public Cursor getTransactions(){
         SQLiteDatabase db = MintLink.getWritableDatabase();
         return db.rawQuery("SELECT " + TRANSACTION_TBLNAM + "._ID, " + TRANSACTION_AMOUNT + ", " + TRANSACTION_NOTE + ", " + TRANSACTION_TYPE + ", " 
@@ -74,6 +101,9 @@ public class Transactions {
         					+ " A2 ON " + TRANSACTION_FROMACCOUNT + " = A2." + _ID + " LEFT JOIN " + CATEGORY_TBLNAM + " C1 ON " 
         					+ TRANSACTION_CATEGORY + " = C1." + _ID, null);
 	}
+	/**
+	 * Clear Transaction table
+	 */
 	public void ClearTable()
 	{
 		SQLiteDatabase db = MintLink.getWritableDatabase();
