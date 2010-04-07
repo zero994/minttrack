@@ -8,10 +8,12 @@ import java.util.Calendar;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -221,4 +223,21 @@ public class EntryActivity extends Activity {
 		mPaymentType_From.setVisibility(View.GONE);
 		mtxtPay_From.setVisibility(View.GONE);
 	}
+	/* Handles item selections */
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId())
+	    {
+	    	case (R.id.help):
+	    		executeIntent();
+	    		return true;
+	   
+	    }
+	    return false;
+	}
+	private void executeIntent()
+	{
+		 Intent i = new Intent(this, HelpEntry.class);
+	     startActivity(i);
+	}
+	
 }
