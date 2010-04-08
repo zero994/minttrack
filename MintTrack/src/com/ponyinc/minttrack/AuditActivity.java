@@ -28,12 +28,14 @@ public class AuditActivity extends ListActivity {
 		budget = new Budget(this);
 		try {
 			test = budget.getTransactions();
-			showEvents(test);
+	//		showEvents(test);
 		} finally {
 
 		}
+		
+//		switchTabSpecial();
 	}
-		public void onResume()
+	public void onResume()
 	{
 		Cursor test;
 		super.onResume();
@@ -44,7 +46,7 @@ public class AuditActivity extends ListActivity {
 		//	budget.Transfer(1, 1, 2123.33, "Testing", "01022010");
 			test = budget.getTransactions();
 		//	test = budget.getActiveAccounts();
-			showEvents(test);
+//			showEvents(test);
 		//	showAccounts(test);
 		} finally {
 	//
@@ -71,4 +73,12 @@ public class AuditActivity extends ListActivity {
 	public void onListItemClick(ListView l, View v, int position, long id) {
         //need to interface to stephan's code
     }
+	
+	public void switchTabSpecial(){
+		MintTrack ParentActivity;
+		ParentActivity = (MintTrack) this.getParent();
+		ParentActivity.setTransactionID(1);
+		ParentActivity.switchTabSpecial(1);
+	}
+	
 }
