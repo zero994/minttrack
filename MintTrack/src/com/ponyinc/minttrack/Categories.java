@@ -34,6 +34,25 @@ public class Categories {
 				ORDER_BY);
 		return cursor;
 	}
+	/**
+	 * 
+	 * @param type 0 for income 1 for expense
+	 * @return Cursor of category of type income or expense
+	 */
+	public Cursor getCategorys(int type) 
+	{
+		final String[] FROM = { _ID, CATEGORY_NAME, CATEGORY_TOTAL,
+				CATEGORY_TYPE, };
+		final String ORDER_BY = CATEGORY_NAME + " DESC";
+		SQLiteDatabase db = MintLink.getReadableDatabase();
+		Cursor cursor;
+		
+		cursor = db.query(CATEGORY_TBLNAM, FROM, "CATEGORY_TYPE=" + type, null, null, null,
+				ORDER_BY);
+		
+		return cursor;
+	}
+	
 	/** Outputs a cursor containing all categories, allows DB passed in
 	*	@param MintLink 
 	*	@return A cursor containing all categories

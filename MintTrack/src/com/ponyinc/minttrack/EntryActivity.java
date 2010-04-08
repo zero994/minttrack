@@ -41,7 +41,7 @@ public class EntryActivity extends Activity {
 		setContentView(R.layout.entry);
 		budget = new Budget(this);
 //		budget.addAccount("TD Bank", 3500.65);
-//		budget.addCategory("Bills", 0.00, 1);
+//		budget.addCategory("tax return", 0.00, 0);
 //		budget.DeactivateAccount(3);
 //
 		SetWidgets();
@@ -49,6 +49,7 @@ public class EntryActivity extends Activity {
 		mSave.setOnClickListener(new View.OnClickListener(){
 			public void onClick(View v)
 			{
+				try{
 				SimpleCursorAdapter s1 = (SimpleCursorAdapter) mPaymentType_To.getAdapter();
 				SimpleCursorAdapter s2 = (SimpleCursorAdapter) mReason.getAdapter();
 				SimpleCursorAdapter s3 = (SimpleCursorAdapter) mPaymentType_From.getAdapter();
@@ -73,7 +74,7 @@ public class EntryActivity extends Activity {
 				if(S_amount.equals(""))
 					amount = 0;
 				else
-					amount = Double.parseDouble(S_amount);
+					amount = Math.abs(Double.parseDouble(S_amount));
 			
 				
 				if(!mIncomeButton.isEnabled())
@@ -83,6 +84,11 @@ public class EntryActivity extends Activity {
 				else if(!mTransButton.isEnabled())
 					budget.Transfer(To_ID, From_ID, amount, notes, Date, cat_ID);
 				else;
+				ResetTab();
+				}catch(Exception e)
+				{
+					
+				}
 			}
 		});
 		mIncomeButton.setOnClickListener(new View.OnClickListener() {
@@ -97,6 +103,7 @@ public class EntryActivity extends Activity {
 				mtxtPay_To.setVisibility(View.VISIBLE);
 				mReason.setVisibility(View.VISIBLE);
 				mtxt_Reason.setVisibility(View.VISIBLE);
+				fillCatDropDown(mReason, 0);
 			}
 		});
 		mExpenseButton.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +118,7 @@ public class EntryActivity extends Activity {
 				mtxtPay_To.setVisibility(View.GONE);
 				mReason.setVisibility(View.VISIBLE);
 				mtxt_Reason.setVisibility(View.VISIBLE);
+				fillCatDropDown(mReason, 1);
 			}
 		});
 		mTransButton.setOnClickListener(new View.OnClickListener() {
@@ -134,7 +142,7 @@ public class EntryActivity extends Activity {
 		});
 		
 		// Dropdown Pay Type
-		fillCatDropDown(mReason);
+		fillCatDropDown(mReason, 0);
 		fillAccountDropDown(mPaymentType_To);
 		fillAccountDropDown(mPaymentType_From);
 		// get the current date
@@ -185,9 +193,10 @@ public class EntryActivity extends Activity {
 	}
 	
 	/** Fill in category drop down
-	 *  @param s Spinner to be used to fill drop down*/
-	public void fillCatDropDown(Spinner s) {
-		Cursor cursor = budget.getCategorys();
+	 *  @param s Spinner to be used to fill drop down
+	 *  @param type fill for income(0) or expense(1)*/
+	public void fillCatDropDown(Spinner s, int type) {
+		Cursor cursor = budget.getCategorys(type);
 		SimpleCursorAdapter s1 = new SimpleCursorAdapter(this,
 				android.R.layout.simple_spinner_item, cursor, new String[] {
 						CATEGORY_NAME, _ID }, new int[] { android.R.id.text1,
@@ -247,6 +256,23 @@ public class EntryActivity extends Activity {
 	{
 		 Intent i = new Intent(this, HelpEntry.class);
 	     startActivity(i);
+	}
+	
+	/**
+	 * Reset all widgets to default
+	 */
+	void ResetTab()
+	{
+		mNotes.setText("");
+		mAmount.setText("");
+		mReason.setSelection(0);
+		mPaymentType_From.setSelection(0);
+		mPaymentType_To.setSelection(0);
+		final Calendar c = Calendar.getInstance();
+		mYear = c.get(Calendar.YEAR);
+		mMonth = c.get(Calendar.MONTH);
+		mDay = c.get(Calendar.DAY_OF_MONTH);
+		updateDisplay();
 	}
 	
 }
