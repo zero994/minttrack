@@ -71,7 +71,7 @@ public class ToolActivity extends Activity implements OnClickListener
 		 public void onClick(View v) 
 		 {
 			Intent calcIntent = new Intent();
-			calcIntent.setClassName("com.ponyinc.minttrack", "com.ponyinc.minttrack.tipcal");
+			calcIntent.setClassName("com.ponyinc.minttrack", "com.ponyinc.minttrack.TipCalculator");
 	        startActivity(calcIntent);
 		 }
 	};

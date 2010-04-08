@@ -5,17 +5,20 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
 	android:padding="15dip"
 	android:orientation="horizontal">
-	<TextView
-		android:layout_height="wrap_content"
-		android:layout_width="wrap_content"
-		android:layout_gravity="center"
-		android:layout_marginBottom="20dip"
-		android:textSize="24.5sp" />
 	<TableLayout
 		android:layout_height="wrap_content"
 		android:layout_width="wrap_content"
 		android:layout_gravity="center"
 		android:stretchColumns="*">
+		<TableRow>
+			<TextView
+				android:id="@+id/error_message"
+				android:layout_height="wrap_content"
+				android:layout_width="wrap_content"
+				android:textColor="#FF0000"
+				android:layout_marginBottom="20dip"
+				android:textSize="16px" />
+		</TableRow>
 		<TableRow>
 			<TextView
 		        android:text="Total Bill"
@@ -26,7 +29,7 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 		        android:layout_weight="1"/>
 		     <EditText
 		        android:id="@+id/bill_text"
-		         android:layout_width="150dip"
+		        android:layout_width="150dip"
 		        android:layout_height="40dip"
 		        android:inputType="phone"
 		        android:background="@android:drawable/editbox_background"/>
@@ -61,7 +64,7 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 		</TableRow>
 		<Button
 			android:id="@+id/execute_button"
-			android:text="Execute" />
+			android:text="Calculate Total Per Person" />
 		<TableRow>
 			<TextView
 		        android:text="Total"
@@ -72,7 +75,9 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 		     <TextView
 		        android:id="@+id/total_text"
 		        android:textSize="18pt"/>
-		</TableRow>	
-		
+		</TableRow>
+		<Button
+			android:id="@+id/clear_button"
+			android:text="Clear Fields" />
 	</TableLayout>
 </LinearLayout>
