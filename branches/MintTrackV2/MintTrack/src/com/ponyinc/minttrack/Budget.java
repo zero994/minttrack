@@ -197,6 +197,9 @@ public class Budget {
 	Cursor getTransactions() {
 		return transactions.getTransactions();
 	}
+	Cursor getTransaction(int _id){
+		return transactions.getTransaction(_id);
+	}
 	/** Method is a delegated version of ClearTransTable(). This method should always be used instead of the transactions Version directly.
 	*/
 	void ClearTransTable()

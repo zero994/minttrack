@@ -12,7 +12,7 @@ import android.widget.TabHost;
 public class MintTrack extends TabActivity {
 
 	TabHost tabHost;
-
+	int transactionID = -1;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -52,4 +52,15 @@ public class MintTrack extends TabActivity {
 		tabHost.setCurrentTab(0);
 
 	}
+	
+	public int getTransactionID(){
+		return transactionID;
+	}
+	public void setTransactionID(int iTransactionID){
+		transactionID = iTransactionID;
+	}
+	public void switchTabSpecial(int tab){
+		tabHost.setCurrentTab(tab);
+	}
+	
 }

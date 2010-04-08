@@ -102,6 +102,24 @@ public class Transactions {
         					+ TRANSACTION_CATEGORY + " = C1." + _ID, null);
 	}
 	/**
+	 * 
+	 * @param _id
+	 * @return cursor of 
+	 */
+	public Cursor getTransaction(int _id) {
+		final String[] FROM = { _ID, TRANSACTION_TOACCOUNT,
+				TRANSACTION_FROMACCOUNT, TRANSACTION_AMOUNT, TRANSACTION_TYPE,
+				TRANSACTION_DATE, TRANSACTION_CATEGORY, TRANSACTION_NOTE, };
+		final String ORDER_BY = _ID + " DESC";
+
+		SQLiteDatabase db = MintLink.getReadableDatabase();
+
+		Cursor cursor = db.query(TRANSACTION_TBLNAM, FROM, "_ID=" + _id, null,
+				null, null, ORDER_BY);
+
+		return cursor;
+	}
+	/**
 	 * Clear Transaction table
 	 */
 	public void ClearTable()

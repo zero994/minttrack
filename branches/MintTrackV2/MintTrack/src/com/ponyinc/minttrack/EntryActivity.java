@@ -153,6 +153,7 @@ public class EntryActivity extends Activity {
 		
 		// display the current date (this method is below)
 		updateDisplay();
+//	setEntryTab(1);
 	}
 	
 	//Create menu
@@ -160,6 +161,19 @@ public class EntryActivity extends Activity {
 	    MenuInflater inflater = getMenuInflater();
 	    inflater.inflate(R.menu.menu, menu);
 	    return true;
+	}
+	public void onResume()
+	{
+		super.onResume();
+	
+		ResetTab();
+		MintTrack mt = (MintTrack) this.getParent();
+		if(mt.getTransactionID() >= 0){
+			setEntryTab(mt.getTransactionID());
+			mt.setTransactionID(-1);
+		}
+
+//		setEntryTab(1);
 	}
 
 	/** updates the date in the TextView*/
@@ -273,6 +287,82 @@ public class EntryActivity extends Activity {
 		mMonth = c.get(Calendar.MONTH);
 		mDay = c.get(Calendar.DAY_OF_MONTH);
 		updateDisplay();
+	}
+	
+	/**
+	 * Get transaction and fill entry tab
+	 * @param trans_ID id to be used to fill tab
+	 */
+	private void setEntryTab(int trans_ID)
+	{
+			
+		
+	//	SetWidgets();
+		Cursor cursor_trans = budget.getTransaction(trans_ID);
+		cursor_trans.moveToFirst();
+		
+		String amount = cursor_trans.getString(cursor_trans.getColumnIndexOrThrow(TRANSACTION_AMOUNT));
+		String note = cursor_trans.getString(cursor_trans.getColumnIndex(TRANSACTION_NOTE));
+		int from_id = cursor_trans.getInt(cursor_trans.getColumnIndex(TRANSACTION_FROMACCOUNT));
+		int to_id = cursor_trans.getInt(cursor_trans.getColumnIndex(TRANSACTION_TOACCOUNT));
+		int cat_id = cursor_trans.getInt(cursor_trans.getColumnIndex(TRANSACTION_CATEGORY));
+		String date = cursor_trans.getString(cursor_trans.getColumnIndex(TRANSACTION_DATE));
+		 
+		SimpleCursorAdapter from = (SimpleCursorAdapter) mPaymentType_From.getAdapter();
+		SimpleCursorAdapter to = (SimpleCursorAdapter) mPaymentType_To.getAdapter();
+		SimpleCursorAdapter reason = (SimpleCursorAdapter) mReason.getAdapter();
+		
+		Cursor To_acc_cursor = to.getCursor();
+		To_acc_cursor.moveToFirst();
+		Cursor cat_cursor = reason.getCursor();
+		cat_cursor.moveToFirst();
+		Cursor From_acc_cursor = from.getCursor();
+		From_acc_cursor.moveToFirst();
+		
+		int to_pos = 0;
+		int from_pos = 0;
+		int cat_pos = 0;
+		
+		
+		for(int count = 0; To_acc_cursor.getPosition() < To_acc_cursor.getCount(); To_acc_cursor.moveToNext(), count++ )
+		{
+			if(To_acc_cursor.getInt(0) == to_id)
+			{
+				to_pos = To_acc_cursor.getPosition();
+				break;
+			}	
+		}
+		for(int count = 0; From_acc_cursor.getPosition() < From_acc_cursor.getCount(); From_acc_cursor.moveToNext(), count++  )
+		{
+			if(From_acc_cursor.getInt(0) == from_id)
+			{
+				from_pos = From_acc_cursor.getPosition();
+				break;
+			}
+		}
+		for(int count = 0;cat_cursor.getPosition() < cat_cursor.getCount(); cat_cursor.moveToNext(), count++  )
+		{
+			if(cat_cursor.getInt(0) == cat_id)
+			{
+				cat_pos = cat_cursor.getPosition();
+				break;
+			}
+		}
+		
+		/* fix string date from doping lead zero*/
+		
+		mAmount.setText(amount);
+		mNotes.setText(note);
+		mMonth = Integer.parseInt(date.substring(0, 2));
+		mDay = Integer.parseInt(date.substring(2, 4));
+		mYear = Integer.parseInt(date.substring(4));
+		mReason.setSelection(cat_pos);
+		mPaymentType_From.setSelection(from_pos);
+		mPaymentType_To.setSelection(to_pos);
+		
+		updateDisplay();
+		
+		
 	}
 	
 }
