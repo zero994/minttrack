@@ -33,6 +33,24 @@ public class AuditActivity extends ListActivity {
 
 		}
 	}
+		public void onResume()
+	{
+		Cursor test;
+		super.onResume();
+		setContentView(R.layout.audit);
+		
+		budget = new Budget(this);
+		try {
+		//	budget.Transfer(1, 1, 2123.33, "Testing", "01022010");
+			test = budget.getTransactions();
+		//	test = budget.getActiveAccounts();
+			showEvents(test);
+		//	showAccounts(test);
+		} finally {
+	//
+		}
+	}
+	
 	/** Method used to inflate popup menu at bottom
 	*	@return boolean Whether the menu is successfully populated
 	* 	@param Menu The meny object that you want to populate 

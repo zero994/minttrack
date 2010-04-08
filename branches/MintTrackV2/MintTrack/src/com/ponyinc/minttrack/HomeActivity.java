@@ -42,7 +42,7 @@ public class HomeActivity extends Activity {
 			budget.addAccount("Checking", 0.00);
 		}
 		if (CategoryCursor.getCount() == 0){
-			budget.addCategory("Bills", 0.00, 0);
+			budget.addCategory("Bills", 0.00, 1);
 			budget.addCategory("Food", 0.00, 1);
 		}
 		

@@ -80,6 +80,15 @@ public class Budget {
 	Cursor getCategorys() {
 		return categories.getCategorys();
 	}
+	/**
+	 * 
+	 * @param type 0 is for income and 1 is for expense
+	 * @return Cursor of category of type income our expense.
+	 */
+	Cursor getCategorys(int type) {
+		return categories.getCategorys(type);
+	}
+	
 	/** Method is a delegated version of getCategorys(). This method should always be used instead of the Categories Version directly.
 	*	@param MintLink Database object to be used
 	*	@return Cursor containg all existing categories
