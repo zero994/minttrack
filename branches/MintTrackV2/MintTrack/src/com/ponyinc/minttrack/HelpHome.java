@@ -14,9 +14,19 @@ public class HelpHome extends Activity
 	       setContentView(R.layout.helph);
 	       TextView text = (TextView)findViewById(R.id.help1);
 	       TextView text2 = (TextView)findViewById(R.id.help2);
+	       TextView text3 = (TextView)findViewById(R.id.help3);
+	       TextView text4 = (TextView)findViewById(R.id.help4);
 	       
-	       text.setText("Help for Home Tab");
-	       text2.setText("In the Home Tab you can check your Income Total, Expense Total, the Grant total and the Recent Transactions ");
+	       text.setText("Help for Home Tab\n");
+	       text2.setText("Components");
+	       text3.setText("·Income Total - the amount of the income total.\n" +
+	       		"·Expense Total - the amount of the income total.\n" +
+	       		"·Grant total- the amount of the income total.\n" +
+	       		"·Recent transactions - a list of the last four transactions.");
+	       text4.setText("Recent Transactions items:\n" +
+	       		"·Date - the date of the transaction.\n" +
+	       		"·Kind of transaction - income, expese or transfer.\n" +
+	       		"·Amount - the amount of the transaction.");
 	       
 	    }
 	
