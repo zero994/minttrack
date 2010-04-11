@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -74,11 +75,28 @@ public class AuditActivity extends ListActivity {
         //need to interface to stephan's code
     }
 	
-	public void switchTabSpecial(){
-		MintTrack ParentActivity;
-		ParentActivity = (MintTrack) this.getParent();
-		ParentActivity.setTransactionID(1);
-		ParentActivity.switchTabSpecial(1);
+	/* Handles item selections */
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId())
+	    {
+	    	case (R.id.help):
+	    		executeHelpIntent();
+	    		return true;
+	    	case (R.id.info):
+	    		executeInfoIntent();
+	    		return true;
+	    }
+	    return false;
+	}
+	private void executeHelpIntent()
+	{
+		 Intent i = new Intent(this, AuditHelp.class);
+	     startActivity(i);
+	}
+	private void executeInfoIntent()
+	{
+		 Intent i = new Intent(this, AboutUs.class);
+	     startActivity(i);
 	}
 	
 }
