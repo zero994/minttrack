@@ -18,7 +18,13 @@
   		android:id="@+id/help2"
 		android:layout_height="wrap_content"
 		android:layout_width="wrap_content"
-		android:layout_marginBottom="20dip"
-		android:textSize="24.5sp"/>
+		android:textSize="20sp"/>
+	<TextView
+  		android:id="@+id/help3"
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:layout_marginLeft="20dip"
+		android:layout_marginRight="0dip"
+		android:textSize="18sp"/>
    </LinearLayout>		
 </LinearLayout>
