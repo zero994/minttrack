@@ -1,6 +1,3 @@
-/**This is the main class for the MintTrack application
- * @author Christopher C. Wilkins
- */
 package com.ponyinc.minttrack;
 
 import android.app.TabActivity;
@@ -9,6 +6,9 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.widget.TabHost;
 
+/** This is the main class for the MintTrack application
+ *  @author Christopher C. Wilkins
+ */
 public class MintTrack extends TabActivity {
 
 	TabHost tabHost;

@@ -1,7 +1,3 @@
-/**This class creates the SQLite database for the MintTrack Application
- * @author Christopher C. Wilkins
- **/
-
 package com.ponyinc.minttrack;
 
 import static android.provider.BaseColumns._ID;
@@ -9,7 +5,9 @@ import static com.ponyinc.minttrack.Constants.*;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
+/**This class creates the SQLite database for the MintTrack Application
+ * @author Christopher C. Wilkins
+ **/
 public class MintData extends SQLiteOpenHelper {
 	private static final String DATABASE_NAME = "mint.db";
 	private static final int DATABASE_VERSION = 1;

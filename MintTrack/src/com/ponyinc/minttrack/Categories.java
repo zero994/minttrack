@@ -1,8 +1,3 @@
-/** 
-*	Class represents the Categories object 
-*   and contains methods for interacting with them
-*	@author Christopher C. Wilkins
-*/
 package com.ponyinc.minttrack;
 
 import static android.provider.BaseColumns._ID;
@@ -13,7 +8,11 @@ import static com.ponyinc.minttrack.Constants.CATEGORY_TYPE;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
+/** 
+*	Class represents the Categories object 
+*   and contains methods for interacting with them
+*	@author Christopher C. Wilkins
+*/
 public class Categories {
 	private MintData MintLink;
 	/** Secondary Constructor

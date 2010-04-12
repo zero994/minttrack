@@ -21,7 +21,10 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Button;
-
+/**
+ * This class represents the entry tab and all of it's pieces and interactions
+ * @author Stephan Krach
+ */
 public class EntryActivity extends Activity {
 //	private TextView mDateDisplay;
 	private Button mPickDate, mSave, mIncomeButton, mExpenseButton, mTransButton;

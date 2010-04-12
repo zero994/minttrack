@@ -1,21 +1,17 @@
-/**This class implements the Tip Calculator when called from the Tip Calculator button in the Tools Tab
- * @author Pablo BajoLaso and Jeff Titus
- */
 package com.ponyinc.minttrack;
 
 import java.text.NumberFormat;
 import java.util.Locale;
-
 import android.app.Activity;
-
 import android.view.View;
-
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import com.ponyinc.minttrack.R;
 
+/**This class implements the Tip Calculator when called from the Tip Calculator button in the Tools Tab
+ * @author Pablo BajoLaso and Jeff Titus
+ */
 public class TipCalculator extends Activity
 {
 	EditText bill;

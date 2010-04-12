@@ -1,3 +1,8 @@
+package com.ponyinc.minttrack;
+
+import android.content.Context;
+import android.database.Cursor;
+import android.widget.Spinner;
 /**	
 *	Class represents the Budget object 
 *   and contains methods for interacting with them.
@@ -5,12 +10,6 @@
 *	that work with all database objects to provide correct functionality
 *	@author Stephan Krach & Christopher Wilkins
 */
-package com.ponyinc.minttrack;
-
-import android.content.Context;
-import android.database.Cursor;
-import android.widget.Spinner;
-
 public class Budget {
 	private MintData MintLink;
 	private Accounts accounts;

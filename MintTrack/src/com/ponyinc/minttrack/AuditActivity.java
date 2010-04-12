@@ -1,10 +1,7 @@
-/** This class is used to represent the listactivity for reviewing transactions
-*	@author Christopher C. Wilkins
-*/
 package com.ponyinc.minttrack;
-
 import android.app.ListActivity;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -15,7 +12,9 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import static com.ponyinc.minttrack.Constants.*;
-
+/** This class is used to represent the listactivity for reviewing transactions
+*	@author Christopher C. Wilkins
+*/
 public class AuditActivity extends ListActivity {
 
 	Budget budget;
@@ -29,13 +28,14 @@ public class AuditActivity extends ListActivity {
 		budget = new Budget(this);
 		try {
 			test = budget.getTransactions();
-	//		showEvents(test);
+			showEvents(test);
 		} finally {
 
 		}
 		
 //		switchTabSpecial();
 	}
+	@Override
 	public void onResume()
 	{
 		Cursor test;
@@ -44,13 +44,9 @@ public class AuditActivity extends ListActivity {
 		
 		budget = new Budget(this);
 		try {
-		//	budget.Transfer(1, 1, 2123.33, "Testing", "01022010");
 			test = budget.getTransactions();
-		//	test = budget.getActiveAccounts();
-//			showEvents(test);
-		//	showAccounts(test);
 		} finally {
-	//
+			
 		}
 	}
 	
@@ -98,5 +94,10 @@ public class AuditActivity extends ListActivity {
 		 Intent i = new Intent(this, AboutUs.class);
 	     startActivity(i);
 	}
-	
+	public void switchTabSpecial(){
+		MintTrack ParentActivity;
+		ParentActivity = (MintTrack) this.getParent();
+		ParentActivity.setTransactionID(1);
+		ParentActivity.switchTabSpecial(1);
+	}
 }

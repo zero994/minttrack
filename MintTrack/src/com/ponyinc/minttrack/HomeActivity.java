@@ -1,28 +1,24 @@
-/**This class implements a summary screen to the MintTrack application.
- * This summary screen displays an income, expense, and grand total of transactions as well as
- * 		a short list of the last four transactions entered.
- * @author Jeff Titus **/
-
 package com.ponyinc.minttrack;
 
 import static com.ponyinc.minttrack.Constants.TRANSACTION_AMOUNT;
 import static com.ponyinc.minttrack.Constants.TRANSACTION_DATE;
 import static com.ponyinc.minttrack.Constants.TRANSACTION_TYPE;
 import com.ponyinc.minttrack.HelpHome;
-
 import java.text.NumberFormat;
 import java.util.Locale;
-
 import android.app.Activity;
 import android.content.Intent;
-
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
-
+/** This class implements a summary screen to the MintTrack application.
+ *  This summary screen displays an income, expense, and grand total of transactions as well as
+ *  a short list of the last four transactions entered.
+ * @author Jeff Titus 
+ **/
 public class HomeActivity extends Activity {
 
 	Budget budget;

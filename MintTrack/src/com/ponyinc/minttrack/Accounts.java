@@ -1,7 +1,3 @@
-/**
-*	Class represents the accounts object 
-*   and contains methods for interacting with them 
-*/
 package com.ponyinc.minttrack;
 
 import static android.provider.BaseColumns._ID;
@@ -9,7 +5,10 @@ import static com.ponyinc.minttrack.Constants.*;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
+/**
+*	Class represents the accounts object 
+*   and contains methods for interacting with them 
+*/
 public class Accounts {
 	private MintData MintLink;
 	/** Secondary Constructor
