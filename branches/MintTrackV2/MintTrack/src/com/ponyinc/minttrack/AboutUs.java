@@ -7,9 +7,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.View;
-
+/**This class implements the about us screen displayed after clicking the Information button in the options menu
+ * @author Pablo BajoLaso
+ */
 public class AboutUs extends Activity
 {
+	 @Override
 	 public void onCreate(Bundle savedInstanceState) 
 	    {
 	       super.onCreate(savedInstanceState);

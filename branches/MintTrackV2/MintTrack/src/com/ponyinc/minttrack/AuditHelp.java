@@ -6,7 +6,8 @@ import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.view.View;
-
+/** Help screen for the audit activity
+ */
 public class AuditHelp extends Activity
 {
 	 public void onCreate(Bundle savedInstanceState) 

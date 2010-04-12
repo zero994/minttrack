@@ -1,6 +1,3 @@
-/** This class is a custom CursorAdapter that handles the joins of the Account/Transaction/Category for proper output on the AuditTab/HomeTab
-*	@author Christopher C. Wilkins
-*/
 package com.ponyinc.minttrack;
 
 import java.text.DateFormat;
@@ -15,7 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
 import static com.ponyinc.minttrack.Constants.*;
-
+/** This class is a custom CursorAdapter that handles the joins of the Account/Transaction/Category for proper output on the AuditTab/HomeTab
+*	@author Christopher C. Wilkins
+*/
 final class AuditCursorAdapter extends CursorAdapter {
 	/** Secondary Contructor
 	*	@param	context The context that the adapter will be used

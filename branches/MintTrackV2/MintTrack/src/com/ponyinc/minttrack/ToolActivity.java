@@ -1,7 +1,3 @@
-/**This class implements a set of tools for the user including Account manager, Category manager, 
- * 		and Tip calculator
- * @author Pablo BajoLaso and Jeff Titus
- */
 package com.ponyinc.minttrack;
 
 import android.app.Activity;
@@ -16,7 +12,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-
+/**This class implements a set of tools for the user including Account manager, Category manager, 
+ * 		and Tip calculator
+ * @author Pablo BajoLaso and Jeff Titus
+ */
 public class ToolActivity extends Activity implements OnClickListener
 {
 
