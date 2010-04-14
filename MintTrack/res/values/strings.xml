@@ -4,17 +4,11 @@
     <string name="empty"></string>
     <string name="reason_prompt">Reason</string>
     <string name="paytype_prompt">Payment Type</string>
-    <string name="planet_prompt">Choose a planet</string>
-    <string-array name="planets">
+    <string name="catmgr_prompt">Select a Category</string>
+    <string name="catmgr_type_prompt">Select a Category Type</string>
+    <string-array name="cattype_array">
+    	<item>Income</item>
+    	<item>Expense</item>
     </string-array>
-    <string-array name="reason">
-        <item>Test 1</item>
-        <item>Test 2</item>
-        <item>Test 3</item>
-    </string-array>
-    <string-array name="paytype">
-        <item>Test 1</item>
-        <item>Test 2</item>
-        <item>Test 3</item>
-    </string-array>
+    <string name="acctmgr_prompt">Select an Account</string>
 </resources>
