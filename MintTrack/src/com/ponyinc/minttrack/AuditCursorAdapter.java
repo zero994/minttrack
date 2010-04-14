@@ -4,6 +4,8 @@ import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
+import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 import android.database.Cursor;
@@ -39,7 +41,11 @@ final class AuditCursorAdapter extends CursorAdapter {
     	int iTranType = cursor.getInt(cursor.getColumnIndex(TRANSACTION_TYPE));
     	String strCategory = cursor.getString(cursor.getColumnIndex("CATNAME"));
     	String strNote = cursor.getString(cursor.getColumnIndex(TRANSACTION_NOTE));
-
+    	Button deleteBtn = (Button) view.findViewById(R.id.deleteTransactionBtn);
+    	Button editBtn = (Button) view.findViewById(R.id.editTransactionBtn);
+    	
+    	editBtn.setVisibility(View.GONE);
+    	deleteBtn.setVisibility(View.GONE);
     	//transaction date
     	try {
 			transactionDate = df.parse(millis);

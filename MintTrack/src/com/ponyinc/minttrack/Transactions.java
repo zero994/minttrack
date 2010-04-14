@@ -2,6 +2,9 @@ package com.ponyinc.minttrack;
 
 import static android.provider.BaseColumns._ID;
 import static com.ponyinc.minttrack.Constants.*;
+
+import java.util.Date;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -101,12 +104,21 @@ public class Transactions {
         					+ " A2 ON " + TRANSACTION_FROMACCOUNT + " = A2." + _ID + " LEFT JOIN " + CATEGORY_TBLNAM + " C1 ON " 
         					+ TRANSACTION_CATEGORY + " = C1." + _ID, null);
 	}
+	public Cursor getTransactions(String FromDate, String ToDate){
+        SQLiteDatabase db = MintLink.getWritableDatabase();
+        return db.rawQuery("SELECT " + TRANSACTION_TBLNAM + "._ID, " + TRANSACTION_AMOUNT + ", " + TRANSACTION_NOTE + ", " + TRANSACTION_TYPE + ", " 
+        					+ TRANSACTION_DATE + ", " + TRANSACTION_CATEGORY + ", " + TRANSACTION_TOACCOUNT + ", " + TRANSACTION_FROMACCOUNT 
+        					+ ", C1." + CATEGORY_NAME + " AS CATNAME, A1." + ACCOUNT_NAME + " AS ACT1NAME, A2." + ACCOUNT_NAME + " AS ACT2NAME FROM " 
+        					+ TRANSACTION_TBLNAM + " LEFT JOIN " + ACCOUNT_TBLNAM + " A1 ON " + TRANSACTION_TOACCOUNT + " = A1." + _ID + " LEFT JOIN " + ACCOUNT_TBLNAM 
+        					+ " A2 ON " + TRANSACTION_FROMACCOUNT + " = A2." + _ID + " LEFT JOIN " + CATEGORY_TBLNAM + " C1 ON " 
+        					+ TRANSACTION_CATEGORY + " = C1." + _ID + " WHERE " + TRANSACTION_DATE + " BETWEEN '" + FromDate + "' AND '" + ToDate + "'" , null);
+	}
 	/**
 	 * 
-	 * @param _id
+	 * @param transID
 	 * @return cursor of 
 	 */
-	public Cursor getTransaction(int _id) {
+	public Cursor getTransaction(double transID) {
 		final String[] FROM = { _ID, TRANSACTION_TOACCOUNT,
 				TRANSACTION_FROMACCOUNT, TRANSACTION_AMOUNT, TRANSACTION_TYPE,
 				TRANSACTION_DATE, TRANSACTION_CATEGORY, TRANSACTION_NOTE, };
@@ -114,10 +126,64 @@ public class Transactions {
 
 		SQLiteDatabase db = MintLink.getReadableDatabase();
 
-		Cursor cursor = db.query(TRANSACTION_TBLNAM, FROM, "_ID=" + _id, null,
+		Cursor cursor = db.query(TRANSACTION_TBLNAM, FROM, "_ID=" + transID, null,
 				null, null, ORDER_BY);
 
 		return cursor;
+	}
+	public void deleteTransaction(double transID){
+		double transactionAmount;
+		long toAccountID, fromAccountID, categoryID;
+		int transactionType;
+		final String[] FROMTRANSACTION = { _ID, TRANSACTION_AMOUNT, TRANSACTION_TOACCOUNT,TRANSACTION_FROMACCOUNT, TRANSACTION_TYPE, TRANSACTION_CATEGORY };
+		final String[] FROMACCOUNT = { _ID, ACCOUNT_TOTAL };
+		final String[] FROMCATEGORY = { _ID, CATEGORY_TOTAL };
+		final String ORDER_BY = _ID + " ASC";
+		
+		SQLiteDatabase db = MintLink.getWritableDatabase();
+		Cursor cursor = db.query(TRANSACTION_TBLNAM, FROMTRANSACTION, "_ID =" + transID, null,
+				null, null, ORDER_BY);
+		cursor.moveToNext();
+		
+		transactionType = cursor.getInt(cursor.getColumnIndex(TRANSACTION_TYPE));
+		toAccountID = cursor.getLong(cursor.getColumnIndex(TRANSACTION_TOACCOUNT));
+		fromAccountID = cursor.getLong(cursor.getColumnIndex(TRANSACTION_FROMACCOUNT));
+		categoryID = cursor.getLong(cursor.getColumnIndex(TRANSACTION_CATEGORY));
+		transactionAmount = cursor.getDouble(cursor.getColumnIndex(TRANSACTION_AMOUNT));
+		
+		if(transactionType == 0){
+			double categoryTotal,accountTotal;
+			
+			cursor = db.query(ACCOUNT_TBLNAM, FROMACCOUNT, "_ID =" + toAccountID, null,
+					null, null, ORDER_BY);
+			cursor.moveToNext();
+			
+			accountTotal = cursor.getLong(cursor.getColumnIndex(ACCOUNT_TOTAL));
+			//update account table total
+			db.rawQuery("UPDATE " + ACCOUNT_TBLNAM + " SET " + ACCOUNT_TOTAL + " = " + (accountTotal - transactionAmount) + " WHERE _ID=" + toAccountID , null);
+			
+			cursor = db.query(CATEGORY_TBLNAM, FROMCATEGORY, "_ID =" + categoryID, null,
+					null, null, ORDER_BY);
+			cursor.moveToNext();
+			
+			categoryTotal = cursor.getLong(cursor.getColumnIndex(CATEGORY_TOTAL));
+			
+			//update category table total
+			db.rawQuery("UPDATE " + CATEGORY_TBLNAM + " SET " + CATEGORY_TOTAL + " = " + (categoryTotal - transactionAmount) + " WHERE _ID=" + categoryID , null);
+			
+		}
+		else if (transactionType == 1){
+			
+		}
+		else if (transactionType == 2){
+			
+		}
+		else{
+			//throw error
+		}
+		
+		//do delete
+		db.rawQuery("DELETE FROM " + TRANSACTION_TBLNAM + " WHERE _ID=" + transID, null);
 	}
 	/**
 	 * Clear Transaction table

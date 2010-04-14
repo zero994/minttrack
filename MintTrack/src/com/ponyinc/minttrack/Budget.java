@@ -196,8 +196,14 @@ public class Budget {
 	Cursor getTransactions() {
 		return transactions.getTransactions();
 	}
-	Cursor getTransaction(int _id){
-		return transactions.getTransaction(_id);
+	Cursor getTransactions(String FromDate, String ToDate) {
+		return transactions.getTransactions(FromDate,ToDate);
+	}
+	Cursor getTransaction(double transID){
+		return transactions.getTransaction(transID);
+	}
+	void deleteTransaction(double transID){
+		transactions.deleteTransaction(transID);
 	}
 	/** Method is a delegated version of ClearTransTable(). This method should always be used instead of the transactions Version directly.
 	*/
