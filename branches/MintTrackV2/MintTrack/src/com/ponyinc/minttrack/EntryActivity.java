@@ -23,7 +23,7 @@ import android.widget.TextView;
 import android.widget.Button;
 /**
  * This class represents the entry tab and all of it's pieces and interactions
- * @author Stephan Krach
+ * @author Stephan Krach & Christopher Wilkins
  */
 public class EntryActivity extends Activity {
 //	private TextView mDateDisplay;
@@ -296,7 +296,7 @@ public class EntryActivity extends Activity {
 	 * Get transaction and fill entry tab
 	 * @param trans_ID id to be used to fill tab
 	 */
-	private void setEntryTab(int trans_ID)
+	private void setEntryTab(double trans_ID)
 	{
 			
 		
