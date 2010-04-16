@@ -204,6 +204,6 @@ public class HomeActivity extends Activity {
 	 * @return String that shows the date of the transaction in mm/dd/yyyy format
 	 */
 	private String getFormattedDate(String str){
-		return str.substring(0,2)+"/"+str.substring(2,4)+"/"+str.substring(4,8);
+		return str.substring(4, 6)+"/"+str.substring(6)+"/"+str.substring(0,4);
 	}
 }

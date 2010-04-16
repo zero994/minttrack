@@ -1,19 +1,17 @@
 package com.ponyinc.minttrack;
 
+import static com.ponyinc.minttrack.Constants.*;
 import android.app.Activity;
-
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.*;
+import android.widget.AdapterView.OnItemSelectedListener;
 
 public class AccountManager extends Activity {
 	private Budget budget;
 	private Spinner accountSpinner;
-	private EditText nameText, balText;
+	private TextView nameText, balText;
 	private Button saveButton, newAccount, editAccount;
 	private CheckBox activateCb;
 	private TextView tvAccountName, tvBalance, tvActive;
@@ -31,6 +29,9 @@ public class AccountManager extends Activity {
 		 findViewById(R.id.save_acct).setOnClickListener(saveAccountListener);
 		
 		setWidgets();
+	
+		fillAccountDropDown(accountSpinner);
+		accountSpinner.setOnItemSelectedListener(spinnerListener);
 	}
 	
 	private void setWidgets(){
@@ -84,8 +85,8 @@ public class AccountManager extends Activity {
 			accountSpinner.setVisibility(View.VISIBLE);
 			tvAccountName.setVisibility(View.VISIBLE);
 			nameText.setVisibility(View.VISIBLE);
-			tvBalance.setVisibility(View.GONE);
-			balText.setVisibility(View.GONE);
+			tvBalance.setVisibility(View.VISIBLE);
+			balText.setVisibility(View.VISIBLE);
 			saveButton.setVisibility(View.VISIBLE);
 			tvActive.setVisibility(View.VISIBLE);
 			activateCb.setVisibility(View.VISIBLE);
@@ -108,6 +109,55 @@ public class AccountManager extends Activity {
 			saveButton.setVisibility(View.GONE);
 			tvActive.setVisibility(View.GONE);
 			activateCb.setVisibility(View.GONE);
+			
+			if(!newAccount.isEnabled())
+				budget.addAccount(String.valueOf(nameText.getText()), Double.parseDouble(String.valueOf(balText.getText())));
+			else if(!editAccount.isEnabled())
+				//TODO
+				;
+			fillAccountDropDown(accountSpinner);
 		}
 	};
+
+	AdapterView.OnItemSelectedListener spinnerListener = new OnItemSelectedListener(){
+
+		@Override
+		public void onItemSelected(AdapterView<?> arg0, View arg1,
+				int arg2, long arg3) {
+			
+			SimpleCursorAdapter s = (SimpleCursorAdapter) accountSpinner.getAdapter();
+			Cursor spinCoursor = s.getCursor();
+			
+	//		spinCoursor.moveToPosition(accountSpinner.getSelectedItemPosition());
+			spinCoursor.moveToPosition(arg2);
+			Cursor cursor = budget.getAccount(spinCoursor.getInt(0));
+			cursor.moveToFirst();
+			
+			String name = cursor.getString(cursor.getColumnIndex(ACCOUNT_NAME));
+			String amount = cursor.getString(cursor.getColumnIndex(ACCOUNT_TOTAL));
+			
+			nameText.setText(name);
+			balText.setText(amount);
+			
+		}
+
+		@Override
+		public void onNothingSelected(AdapterView<?> arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+	};
+	
+	/** Fill in Account drop down
+	 * @param s Spinner to be used to fill drop down*/
+	public void fillAccountDropDown(Spinner s) {
+		Cursor cursor = budget.getAllAccounts();
+		SimpleCursorAdapter s1 = new SimpleCursorAdapter(this,
+				android.R.layout.simple_spinner_item, cursor, new String[] {
+				ACCOUNT_NAME, _ID }, new int[] { android.R.id.text1,
+						android.R.id.text2 });
+		s1
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		s.setAdapter(s1);
+	}
 }
