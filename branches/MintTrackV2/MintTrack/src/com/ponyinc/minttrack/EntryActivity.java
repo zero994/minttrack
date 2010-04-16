@@ -30,9 +30,11 @@ public class EntryActivity extends Activity {
 	private Button mPickDate, mSave, mIncomeButton, mExpenseButton, mTransButton;
 	private TextView mAmount, mNotes, mtxtPay_To, mtxtPay_From, mtxt_Reason;
 	private Spinner mReason, mPaymentType_To, mPaymentType_From;
-	private int mYear;
-	private int mMonth;
-	private int mDay;
+	private int mYear, mMonth, mDay;
+	 
+	private boolean isUpdate = false;
+	private long trans_ID;
+	
 	Budget budget;
 
 	static final int DATE_DIALOG_ID = 0;
@@ -70,7 +72,9 @@ public class EntryActivity extends Activity {
 				int To_ID = To_acc_cursor.getInt(0);
 				int From_ID = From_acc_cursor.getInt(0);
 				String S_amount = String.valueOf(mAmount.getText());
-				String Date = String.format("%02d", mMonth+1) + String.format("%02d", mDay) + mYear;
+				String Date = mYear + String.format("%02d", mMonth) + String.format("%02d", mDay);
+				
+				
 				String notes = String.valueOf(mNotes.getText());
 				
 				double amount = 0;					
@@ -80,14 +84,30 @@ public class EntryActivity extends Activity {
 					amount = Math.abs(Double.parseDouble(S_amount));
 			
 				
-				if(!mIncomeButton.isEnabled())
-					budget.Income(To_ID, amount, notes, Date, cat_ID);
-				else if(!mExpenseButton.isEnabled())
-					budget.Expense(From_ID, amount, notes, Date, cat_ID);
-				else if(!mTransButton.isEnabled())
-					budget.Transfer(To_ID, From_ID, amount, notes, Date, cat_ID);
-				else;
-				ResetTab();
+				if(isUpdate) //update old
+				{
+					if(!mIncomeButton.isEnabled())
+						budget.updateIncome(trans_ID, To_ID, amount, notes, Date, cat_ID);
+					else if(!mExpenseButton.isEnabled())
+						budget.updateExpense(trans_ID, From_ID, amount, notes, Date, cat_ID);
+					else if(!mTransButton.isEnabled())
+						budget.updateTransfer(trans_ID, To_ID, From_ID, amount, notes, Date, cat_ID);
+					else;
+					ResetTab();
+					isUpdate = false;//set back to create new
+				}
+				else//create new
+				{
+					if(!mIncomeButton.isEnabled())
+						budget.Income(To_ID, amount, notes, Date, cat_ID);
+					else if(!mExpenseButton.isEnabled())
+						budget.Expense(From_ID, amount, notes, Date, cat_ID);
+					else if(!mTransButton.isEnabled())
+						budget.Transfer(To_ID, From_ID, amount, notes, Date, cat_ID);
+					else;
+					ResetTab();
+				}	
+				
 				}catch(Exception e)
 				{
 					
@@ -170,10 +190,17 @@ public class EntryActivity extends Activity {
 		super.onResume();
 	
 		ResetTab();
+		
+		fillCatDropDown(mReason, 0);
+		fillAccountDropDown(mPaymentType_To);
+		fillAccountDropDown(mPaymentType_From);
+		
 		MintTrack mt = (MintTrack) this.getParent();
 		if(mt.getTransactionID() >= 0){
-			setEntryTab(mt.getTransactionID());
+			trans_ID = mt.getTransactionID();
+			setEntryTab(trans_ID);
 			mt.setTransactionID(-1);
+			isUpdate = true; //set to update new
 		}
 
 //		setEntryTab(1);
@@ -356,9 +383,9 @@ public class EntryActivity extends Activity {
 		
 		mAmount.setText(amount);
 		mNotes.setText(note);
-		mMonth = Integer.parseInt(date.substring(0, 2));
-		mDay = Integer.parseInt(date.substring(2, 4));
-		mYear = Integer.parseInt(date.substring(4));
+		mMonth = Integer.parseInt(date.substring(4, 6));
+		mDay = Integer.parseInt(date.substring(6));
+		mYear = Integer.parseInt(date.substring(0, 4));
 		mReason.setSelection(cat_pos);
 		mPaymentType_From.setSelection(from_pos);
 		mPaymentType_To.setSelection(to_pos);

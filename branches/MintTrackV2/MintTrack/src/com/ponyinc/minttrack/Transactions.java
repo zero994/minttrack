@@ -185,6 +185,65 @@ public class Transactions {
 		//do delete
 		db.rawQuery("DELETE FROM " + TRANSACTION_TBLNAM + " WHERE _ID=" + transID, null);
 	}
+	
+	public void updateTransfer(long trans_ID, int ToAccount_ID, int FromAccount_ID,
+			double Amount, String Note, String Date, int Category)
+	// Date mmddyyyy - ex: 02052010 - no dashes or slashes- fill space with
+	// leading zeros
+	{
+		SQLiteDatabase db = MintLink.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(TRANSACTION_TOACCOUNT, ToAccount_ID);
+		values.put(TRANSACTION_FROMACCOUNT, FromAccount_ID);
+		values.put(TRANSACTION_AMOUNT, Amount);
+		values.put(TRANSACTION_CATEGORY, Category);
+		values.put(TRANSACTION_NOTE, Note);
+		values.put(TRANSACTION_DATE, Date);
+		values.put(TRANSACTION_TYPE, 2);
+
+		db.update(TRANSACTION_TBLNAM, values,  _ID + "=" + trans_ID, null);
+	}
+	
+	public void updateExpense(long trans_ID, int FromAccount_ID, double Amount, String Note,
+			String Date, int Category) {
+
+		SQLiteDatabase db = MintLink.getWritableDatabase();
+
+		ContentValues values = new ContentValues();
+
+		values.put(TRANSACTION_FROMACCOUNT, FromAccount_ID);
+		values.put(TRANSACTION_AMOUNT, Amount);
+		values.put(TRANSACTION_NOTE, Note);
+		values.put(TRANSACTION_CATEGORY, Category);
+		values.put(TRANSACTION_DATE, Date);
+		values.put(TRANSACTION_TYPE, 1);
+
+		db.update(TRANSACTION_TBLNAM, values,  _ID + "=" + trans_ID, null);
+	}
+
+	public void updateIncome(long trans_ID, int ToAccount_ID, double Amount, String Note,
+			String Date, int Category) {
+
+		SQLiteDatabase db = MintLink.getWritableDatabase();
+
+		ContentValues values = new ContentValues();
+
+		values.put(TRANSACTION_TOACCOUNT, ToAccount_ID);
+		values.put(TRANSACTION_AMOUNT, Amount);
+		values.put(TRANSACTION_NOTE, Note);
+		values.put(TRANSACTION_DATE, Date);
+		values.put(TRANSACTION_TYPE, 0);
+		values.put(TRANSACTION_CATEGORY, Category);
+		
+		db.update(TRANSACTION_TBLNAM, values,  _ID + "=" + trans_ID, null);
+	}
+	
+	void removeTransaction(long trans_ID)
+	{
+		SQLiteDatabase db = MintLink.getWritableDatabase();
+		
+		db.delete(TRANSACTION_TBLNAM, "_ID =" + trans_ID , null);
+	}
 	/**
 	 * Clear Transaction table
 	 */

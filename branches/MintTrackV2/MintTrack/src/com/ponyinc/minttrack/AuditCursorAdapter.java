@@ -18,7 +18,7 @@ import static com.ponyinc.minttrack.Constants.*;
 *	@author Christopher C. Wilkins
 */
 final class AuditCursorAdapter extends CursorAdapter {
-	/** Secondary Contructor
+	/** Secondary Constructor
 	*	@param	context The context that the adapter will be used
 	*	@param	c		A Cursor containing the prejoined database Cursor
 	*/
@@ -34,7 +34,7 @@ final class AuditCursorAdapter extends CursorAdapter {
     	TextView categoryView = (TextView) view.findViewById(R.id.transactionCategory);
     	TextView noteView =  (TextView) view.findViewById(R.id.transactionNote);
     	java.util.Date transactionDate;
-    	DateFormat df = new SimpleDateFormat("MMddyyyy");
+    	DateFormat df = new SimpleDateFormat("yyyyMMdd");
     	NumberFormat nf = NumberFormat.getInstance();
     	String millis = cursor.getString(cursor.getColumnIndex(TRANSACTION_DATE));
     	double dblAmount = cursor.getDouble(cursor.getColumnIndex(TRANSACTION_AMOUNT));
@@ -49,6 +49,7 @@ final class AuditCursorAdapter extends CursorAdapter {
     	//transaction date
     	try {
 			transactionDate = df.parse(millis);
+			transactionDate.setMonth(transactionDate.getMonth()+1);// Month is 0 based so add 1
 			dateView.setText(DateFormat.getDateInstance(DateFormat.LONG).format(transactionDate));
 		} catch (ParseException e) {
 			e.printStackTrace();

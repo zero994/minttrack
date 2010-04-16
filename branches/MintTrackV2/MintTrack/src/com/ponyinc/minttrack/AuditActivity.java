@@ -22,7 +22,7 @@ import android.widget.TextView;
 public class AuditActivity extends ListActivity {
 
 	public Budget budget;
-	public Button btnToDate, btnFromDate, btnQuery, btnEdit, btnDelete;
+	public Button btnToDate, btnFromDate, btnQuery, btnEdit, btnUndo, btnDelete;
 	TextView stupid;
 	private int toYear;
 	private int toMonth;
@@ -117,37 +117,56 @@ public class AuditActivity extends ListActivity {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		clickItemID = id;
-		if(btnEdit == null || btnDelete == null){
+		if(btnEdit == null || btnDelete == null || btnUndo == null){
 		btnEdit = (Button) v.findViewById(R.id.editTransactionBtn);
+		btnUndo = (Button) v.findViewById(R.id.undoTransactionBtn);
 		btnDelete = (Button) v.findViewById(R.id.deleteTransactionBtn);
 		btnEdit.setVisibility(View.VISIBLE);
+		btnUndo.setVisibility(View.VISIBLE);
 		btnDelete.setVisibility(View.VISIBLE);
 			btnEdit.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
 					switchTabSpecial(clickItemID);
 				}
 			});
+			btnUndo.setOnClickListener(new View.OnClickListener() {
+				public void onClick(View v) {
+					// TODO implement undo button
+					
+				}
+			});
 			btnDelete.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
 					budget.deleteTransaction(clickItemID);
-				}
+					Query();
+;				}
 			});
 		}
 		else{
 			btnEdit.setVisibility(View.GONE);
+			btnUndo.setVisibility(View.GONE);
 			btnDelete.setVisibility(View.GONE);
 			btnEdit = (Button) v.findViewById(R.id.editTransactionBtn);
+			btnUndo = (Button) v.findViewById(R.id.undoTransactionBtn);
 			btnDelete = (Button) v.findViewById(R.id.deleteTransactionBtn);
 			btnEdit.setVisibility(View.VISIBLE);
+			btnUndo.setVisibility(View.VISIBLE);
 			btnDelete.setVisibility(View.VISIBLE);
 			btnEdit.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
 					switchTabSpecial(clickItemID);
 				}
 			});
+			btnUndo.setOnClickListener(new View.OnClickListener() {
+				public void onClick(View v) {
+					// TODO implement undo button
+					
+				}
+			});
 			btnDelete.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
 					budget.deleteTransaction(clickItemID);
+					Query();
 				}
 			});
 		}
@@ -213,13 +232,28 @@ public class AuditActivity extends ListActivity {
 		 */
 		btnQuery.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				Cursor test;
-				//check to make sure from date is less than too date
-				//make sure no date is greater than the current date
-				test = budget.getTransactions(String.format("%02d", fromMonth+1) + String.format("%02d", fromDay) + fromYear,String.format("%02d", toMonth+1) + String.format("%02d", toDay) + toYear);
-				showEvents(test);
-				//switchTabSpecial();
+				Query();
 			}
 		});
+	}
+	void Query()
+	{
+		Cursor test;
+		String toDate = toYear + String.format("%02d", toMonth) + String.format("%02d", toDay);
+		String fromDate = fromYear + String.format("%02d", fromMonth) + String.format("%02d", fromDay);
+		long td = Integer.parseInt(toDate);
+		long fd = Integer.parseInt(fromDate);
+		
+		//check to make sure from date is less than too date
+		//make sure no date is greater than the current date
+		//TODO add dialog box for error message
+		if(td >= fd)
+		{
+			test = budget.getTransactions(fromDate,toDate);
+			showEvents(test);
+		}
+		else
+			;
+			//switchTabSpecial();
 	}
 }
