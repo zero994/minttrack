@@ -1,31 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent" android:layout_height="fill_parent"
-	android:orientation="horizontal" android:padding="20sp">
-	<TextView android:id="@+id/transactionDateLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" 
+<RelativeLayout 
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="fill_parent" 
+		android:layout_height="fill_parent"
+		android:orientation="horizontal" 
+		android:padding="20sp">
+	<TextView 
+		android:id="@+id/transactionDateLabel" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" 
 		android:text="Date: " />
-	<TextView android:id="@+id/transactionDate" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:layout_toRightOf="@id/transactionDateLabel" />
-	<TextView android:id="@+id/transactionTypeLabel" android:layout_marginLeft="25dip" android:layout_toRightOf="@id/transactionDate" android:layout_width="wrap_content" android:layout_height="wrap_content" 
+	<TextView 
+		android:id="@+id/transactionDate" 
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" 
+		android:layout_toRightOf="@id/transactionDateLabel" />
+	<TextView 
+		android:id="@+id/transactionTypeLabel" 
+		android:layout_marginLeft="25dip" 
+		android:layout_toRightOf="@id/transactionDate" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" 
 		android:text="Type: " />
-	<TextView android:id="@+id/transactionType" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:layout_marginLeft="10dip" android:layout_toRightOf="@id/transactionTypeLabel" />
+	<TextView 
+		android:id="@+id/transactionType" 
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" 
+		android:layout_marginLeft="10dip" 
+		android:layout_toRightOf="@id/transactionTypeLabel" />
 	
-	<TextView android:id="@+id/transactionAmountLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" 
-		android:text="Amount: " android:layout_below="@id/transactionDateLabel" />
-	<TextView android:id="@+id/transactionAmount" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:layout_below="@id/transactionDateLabel" android:layout_toRightOf="@id/transactionAmountLabel" />
-	<TextView android:id="@+id/transactionCategoryLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" 
-		android:text="Reason: " android:layout_marginLeft="10dip" android:layout_toRightOf="@id/transactionAmount" android:layout_below="@id/transactionDateLabel" />
-	<TextView android:id="@+id/transactionCategory" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:layout_toRightOf="@id/transactionCategoryLabel" android:layout_below="@id/transactionDateLabel" />
+	<TextView 
+		android:id="@+id/transactionAmountLabel" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" 
+		android:text="Amount: " 
+		android:layout_below="@id/transactionDateLabel" />
+	<TextView 
+		android:id="@+id/transactionAmount" 
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" 
+		android:layout_below="@id/transactionDateLabel" 
+		android:layout_toRightOf="@id/transactionAmountLabel" />
+	<TextView 
+		android:id="@+id/transactionCategoryLabel" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" 
+		android:text="Reason: " 
+		android:layout_marginLeft="10dip" 
+		android:layout_toRightOf="@id/transactionAmount" 
+		android:layout_below="@id/transactionDateLabel" />
+	<TextView 
+		android:id="@+id/transactionCategory" 
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" 
+		android:layout_toRightOf="@id/transactionCategoryLabel" 
+		android:layout_below="@id/transactionDateLabel" />
 	
-	<TextView android:id="@+id/transactionNoteLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" 
-		android:text="Note: " android:layout_below="@id/transactionCategoryLabel" />
-	<TextView android:id="@+id/transactionNote" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:layout_below="@id/transactionCategoryLabel" android:layout_toRightOf="@id/transactionNoteLabel" />
-	<Button android:id="@+id/editTransactionBtn" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:visibility="gone" android:text="Edit" android:layout_below="@id/transactionNote"/>
-	<Button android:id="@+id/deleteTransactionBtn" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:text="Delete" android:layout_below="@id/transactionNote" android:visibility="gone" android:layout_toRightOf="@id/editTransactionBtn" android:ellipsize="end"/>
+	<TextView 
+		android:id="@+id/transactionNoteLabel" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" 
+		android:text="Note: " 
+		android:layout_below="@id/transactionCategoryLabel" />
+	<TextView 
+		android:id="@+id/transactionNote" 
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" 
+		android:layout_below="@id/transactionCategoryLabel" 
+		android:layout_toRightOf="@id/transactionNoteLabel" />
+	<Button 
+		android:id="@+id/editTransactionBtn" 
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" 
+		android:visibility="gone" 
+		android:text="Edit"
+		android:layout_below="@id/transactionNote"/>
+	<Button 
+		android:id="@+id/undoTransactionBtn" 
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" 
+		android:text="Undo" 
+		android:layout_below="@id/transactionNote" 
+		android:visibility="gone" 
+		android:layout_toRightOf="@id/editTransactionBtn" 
+		android:ellipsize="end"/>
+	<Button 
+		android:id="@+id/deleteTransactionBtn" 
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" 
+		android:text="Delete" 
+		android:layout_below="@id/transactionNote" 
+		android:visibility="gone" 
+		android:layout_toRightOf="@+id/undoTransactionBtn" 
+		android:ellipsize="end"/>
+	
 </RelativeLayout>
