@@ -227,9 +227,6 @@ public class AuditActivity extends ListActivity {
 				showDialog(FROMDATE_DIALOG_ID);
 			}
 		});
-		/** 
-		 * @ToDo Implement error checking in method
-		 */
 		btnQuery.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				Query();

@@ -31,10 +31,12 @@ public class Budget {
 	}
 	/** Method is a delegated version of addAccount.  This method should always be used instead of the Account Version directly.
 	*	@param strName Name of the account being added
-	*	@param value Inital balance of the account
+	*	@param value Initial balance of the account
+	*	@param isActive Is account active
 	*/
-	void addAccount(String strName, double value) {
-		accounts.addAccount(strName, value);
+	void addAccount(String strName, double value, boolean isActive) {
+		accounts.addAccount(strName, value, isActive);
+		
 	}
 	/** Method is a delegated version of getAllAccounts(). This method should always be used instead of the Account Version directly.
 	*	@return A cursor containing all accounts.

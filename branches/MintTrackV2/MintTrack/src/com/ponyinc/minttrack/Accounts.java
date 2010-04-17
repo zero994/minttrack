@@ -20,16 +20,20 @@ public class Accounts {
 	}
 	/** Method is used to add an account to the acount table.
 	*	@param strName The name of the account
-	*	@param initalValue The inital account balance of the account
+	*	@param initalValue The initial account balance of the account
+	*	@param isActive Is account active
 	*/
-	public void addAccount(String strName, double initalValue) {
+	public void addAccount(String strName, double initalValue, boolean isActive) {
 		// Insert a new record into the Events data source.
 		// You would do something similar for delete and update
 		SQLiteDatabase db = MintLink.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(ACCOUNT_NAME, strName);
 		values.put(ACCOUNT_TOTAL, initalValue);
-		values.put(ACCOUNT_ACTIVE, "active");
+		if(isActive == true)
+			values.put(ACCOUNT_ACTIVE, "active");
+		else
+			values.put(ACCOUNT_ACTIVE, "inactive");
 		db.insertOrThrow(ACCOUNT_TBLNAM, null, values);
 	}
 	/** Method used to query the accounts table based on an accounts ID
