@@ -15,7 +15,6 @@ public class AccountManager extends Activity {
 	private Button saveButton, newAccount, editAccount;
 	private CheckBox activateCb;
 	private TextView tvAccountName, tvBalance, tvActive;
-	private EntryActivity eA;
 	
 	/**mode for manage account*/
 	private static final int Default = 1;
@@ -95,14 +94,14 @@ public class AccountManager extends Activity {
 				
 				spinCoursor.moveToPosition(accountSpinner.getSelectedItemPosition());
 			
-				budget.EditAccountName(spinCoursor.getInt(0), String.valueOf(nameText.getText()));
-				budget.EditAccountTotal(spinCoursor.getInt(0), Double.parseDouble(String.valueOf(balText.getText())));
+				budget.EditAccountName(spinCoursor.getInt(spinCoursor.getColumnIndex(_ID)), String.valueOf(nameText.getText()));
+				budget.EditAccountTotal(spinCoursor.getInt(spinCoursor.getColumnIndex(_ID)), Double.parseDouble(String.valueOf(balText.getText())));
 				
 				if(activateCb.isChecked() == true)
-					budget.ReactivateAccount(spinCoursor.getInt(0));
+					budget.ReactivateAccount(spinCoursor.getInt(spinCoursor.getColumnIndex(_ID)));
 				
 				else if(activateCb.isChecked() == false)
-					budget.DeactivateAccount(spinCoursor.getInt(0));
+					budget.DeactivateAccount(spinCoursor.getInt(spinCoursor.getColumnIndex(_ID)));
 			}
 			fillAccountDropDown(accountSpinner);
 			

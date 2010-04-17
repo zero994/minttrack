@@ -1,10 +1,7 @@
 package com.ponyinc.minttrack;
 
-import static android.provider.BaseColumns._ID;
-import static com.ponyinc.minttrack.Constants.CATEGORY_NAME;
-import static com.ponyinc.minttrack.Constants.CATEGORY_TBLNAM;
-import static com.ponyinc.minttrack.Constants.CATEGORY_TOTAL;
-import static com.ponyinc.minttrack.Constants.CATEGORY_TYPE;
+
+import static com.ponyinc.minttrack.Constants.*;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -69,7 +66,7 @@ public class Categories {
 	*	@param intID ID of the category you want
 	*	@return A cursor contain the category based on the ID handed to the method
 	*/
-	public Cursor getCategory(int intID) {
+	public Cursor getCategory(long intID) {
 		final String[] FROM = { _ID, CATEGORY_NAME, CATEGORY_TOTAL,
 				CATEGORY_TYPE, };
 		final String ORDER_BY = CATEGORY_NAME + " DESC";
@@ -99,7 +96,7 @@ public class Categories {
 	*	@param iCatId The ID of the category being modified
 	*	@param iType New type for the category
 	*/
-	public void EditCategoryType(int iCatId, int iType) {
+	public void EditCategoryType(long iCatId, int iType) {
 		// Insert a new record into the Events data source.
 		// You would do something similar for delete and update
 		SQLiteDatabase db = MintLink.getWritableDatabase();
@@ -111,7 +108,7 @@ public class Categories {
 	*	@param iCatID iCatId The ID of the category being modified
 	*	@param strCatName New name to be applied to the category
 	*/
-	public void EditCategoryName(int iCatID, String strCatName) {
+	public void EditCategoryName(long iCatID, String strCatName) {
 		// Insert a new record into the Events data source.
 		// You would do something similar for delete and update
 		SQLiteDatabase db = MintLink.getWritableDatabase();
@@ -123,7 +120,7 @@ public class Categories {
 	*	@param iCatID ID of the category being modified
 	*	@param dblTotal New balance amount for the category
 	*/
-	public void updateCategory(int iCatID, double dblTotal) {
+	public void updateCategory(long iCatID, double dblTotal) {
 		// Insert a new record into the Events data source.
 		// You would do something similar for delete and update
 		SQLiteDatabase db = MintLink.getWritableDatabase();
