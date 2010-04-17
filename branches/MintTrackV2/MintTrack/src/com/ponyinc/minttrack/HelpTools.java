@@ -2,9 +2,8 @@ package com.ponyinc.minttrack;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.view.View;
+
 /** Help screen for the Tools activity
  */
 public class HelpTools extends Activity

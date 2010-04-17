@@ -2,7 +2,6 @@ package com.ponyinc.minttrack;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.widget.Spinner;
 import static com.ponyinc.minttrack.Constants.*;
 /**	
 *	Class represents the Budget object 
@@ -45,7 +44,7 @@ public class Budget {
 		return accounts.getAllAccounts();
 	}
 	
-	Cursor getAccount(int acc_ID)
+	Cursor getAccount(long acc_ID)
 	{
 		return accounts.getAccount(acc_ID);
 	}
@@ -58,27 +57,27 @@ public class Budget {
 	/** Method is a delegated version of DeactivateAccount(). This method should always be used instead of the Account Version directly.
 	*	@param acc_id ID of the account to be deactivated
 	*/
-	void DeactivateAccount(int acc_id) {
+	void DeactivateAccount(long acc_id) {
 		accounts.DeactivateAccount(acc_id);
 	}
 	/** Method is a delegated version of EditAccountName(). This method should always be used instead of the Account Version directly.
 	*	@param acc_id ID of account being modified
 	*	@param strName New name to be applied to existing account
 	*/
-	void EditAccountName(int acc_id, String strName) {
+	void EditAccountName(long acc_id, String strName) {
 		accounts.EditAccountName(acc_id, strName);
 	}
 	/** Method is a delegated version of EditAccountTotal(). This method should always be used instead of the Account Version directly.
 	*	@param acc_id ID of account to be modified
 	*	@param total New total to be applied to existing account
 	*/
-	void EditAccountTotal(int acc_id, double total) {
+	void EditAccountTotal(long acc_id, double total) {
 		accounts.EditAccountTotal(acc_id, total);
 	}
 	/** Method is a delegated version of ReactivateAccount(). This method should always be used instead of the Account Version directly.
 	*	@param acc_id ID of existing account being reactivated
 	*/
-	void ReactivateAccount(int acc_id) {
+	void ReactivateAccount(long acc_id) {
 		accounts.ReactivateAccount(acc_id);
 	}
 	/** Method is a delegated version of getCategorys(). This method should always be used instead of the Categories Version directly.
@@ -107,7 +106,7 @@ public class Budget {
 	*	@param intID ID of the category that you want returned in a query
 	*	@return Cursor containing the cursor requested
 	*/
-	Cursor getCategory(int intID) {
+	Cursor getCategory(long intID) {
 		return categories.getCategory(intID);
 	}
 	/** Method is a delegated version of addCategory(). This method should always be used instead of the Categories Version directly.
@@ -122,21 +121,21 @@ public class Budget {
 	*	@param iCatId ID of category being modified
 	*	@param iType New type for the account
 	*/
-	void EditCategoryType(int iCatId, int iType) {
+	void EditCategoryType(long iCatId, int iType) {
 		categories.EditCategoryType(iCatId, iType);
 	}
 	/** Method is a delegated version of getCategorys(). This method should always be used instead of the Categories Version directly.
 	*	@param iCatID ID of category being modified
 	*	@param strCatName New name for the category
 	*/
-	void EditCategoryName(int iCatID, String strCatName) {
+	void EditCategoryName(long iCatID, String strCatName) {
 		categories.EditCategoryName(iCatID, strCatName);
 	}
 	/** Method is a delegated version of getCategorys(). This method should always be used instead of the Categories Version directly.
 	*	@param iCatID ID of category being modified
 	*	@param dblTotal New total for the category
 	*/
-	void EditCategoryTotal(int iCatID, double dblTotal) {
+	void EditCategoryTotal(long iCatID, double dblTotal) {
 		categories.updateCategory(iCatID, dblTotal);
 	}
 	/** Method is used to create a transfer transaction.  A transfer is any transaction that results in money being moved from one account to another.
@@ -147,8 +146,8 @@ public class Budget {
 	*	@param Date Date the transaction is being created
 	*	@param Category The category or reason that the transfer is occurring
 	*/
-	void Transfer(int ToAccount_ID, int FromAccount_ID, double Amount,
-			String Note, String Date, int Category) {
+	void Transfer(long ToAccount_ID, long FromAccount_ID, double Amount,
+			String Note, String Date, long Category) {
 		transactions.createTransfer(ToAccount_ID, FromAccount_ID, Amount, Note,
 				Date, Category);
 		Cursor Account_To = accounts.getAccount(ToAccount_ID);
@@ -157,12 +156,12 @@ public class Budget {
 		Account_To.moveToNext();
 		Account_From.moveToNext();
 		
-		EditAccountTotal(ToAccount_ID, Account_To.getDouble(2) + Amount);
-		EditAccountTotal(FromAccount_ID, Account_From.getDouble(2) - Amount);
+		EditAccountTotal(ToAccount_ID, Account_To.getDouble(Account_To.getColumnIndex(ACCOUNT_TOTAL)) + Amount);
+		EditAccountTotal(FromAccount_ID, Account_From.getDouble(Account_From.getColumnIndex(ACCOUNT_TOTAL)) - Amount);
 	}
 	
-	void updateTransfer(long trans_ID, int ToAccount_ID, int FromAccount_ID, double newAmount,
-			String Note, String Date, int Category)
+	void updateTransfer(long trans_ID, long ToAccount_ID, long FromAccount_ID, double newAmount,
+			String Note, String Date, long Category)
 	{
 		Cursor trans = transactions.getTransaction(trans_ID);
 		trans.moveToFirst();
@@ -177,11 +176,11 @@ public class Budget {
 		Account_To.moveToNext();
 		Account_From.moveToNext();
 		
-		EditAccountTotal(ToAccount_ID, Account_To.getDouble(2) - oldAmount);
-		EditAccountTotal(FromAccount_ID, Account_From.getDouble(2) + oldAmount);
+		EditAccountTotal(ToAccount_ID, Account_To.getDouble(Account_To.getColumnIndex(ACCOUNT_TOTAL)) - oldAmount);
+		EditAccountTotal(FromAccount_ID, Account_From.getDouble(Account_From.getColumnIndex(ACCOUNT_TOTAL)) + oldAmount);
 		
-		EditAccountTotal(ToAccount_ID, Account_To.getDouble(2) + newAmount);
-		EditAccountTotal(FromAccount_ID, Account_From.getDouble(2) - newAmount);
+		EditAccountTotal(ToAccount_ID, Account_To.getDouble(Account_To.getColumnIndex(ACCOUNT_TOTAL)) + newAmount);
+		EditAccountTotal(FromAccount_ID, Account_From.getDouble(Account_From.getColumnIndex(ACCOUNT_TOTAL)) - newAmount);
 	}
 	/** Method is used to create an expense transaction.  An expense transaction is one that removes money to an account and places that money into an categorys value.
 	*	@param FromAccount_ID Account the money is being deducted from
@@ -190,20 +189,20 @@ public class Budget {
 	*	@param Date Date the transaction is being created
 	*	@param Category_ID The category or reason that the expense is occurring
 	*/
-	void Expense(int FromAccount_ID, double Amount, String Note, String Date, int Category_ID) {
+	void Expense(long FromAccount_ID, double Amount, String Note, String Date, long Category_ID) {
 		transactions.createExpense(FromAccount_ID, Amount, Note, Date, Category_ID);
 		Cursor Account_From = accounts.getAccount(FromAccount_ID);
 		Cursor Category = categories.getCategory(Category_ID);
 
 		Account_From.moveToNext();
 		Category.moveToNext();
-		EditAccountTotal(FromAccount_ID, Account_From.getDouble(2) - Amount);
-		EditCategoryTotal(Category_ID, Category.getDouble(2) + Amount);
+		EditAccountTotal(FromAccount_ID, Account_From.getDouble(Account_From.getColumnIndex(ACCOUNT_TOTAL)) - Amount);
+		EditCategoryTotal(Category_ID, Category.getDouble(Category.getColumnIndex(CATEGORY_TOTAL)) + Amount);
 
 	}
 	
-	void updateExpense(long trans_ID, int FromAccount_ID, double newAmount,
-			String Note, String Date, int Category_ID)
+	void updateExpense(long trans_ID, long FromAccount_ID, double newAmount,
+			String Note, String Date, long Category_ID)
 	{
 		
 		Cursor trans = transactions.getTransaction(trans_ID);
@@ -219,11 +218,11 @@ public class Budget {
 		Account_From.moveToNext();
 		Category.moveToNext();
 		
-		EditAccountTotal(FromAccount_ID, Account_From.getDouble(2) + oldAmount);
-		EditCategoryTotal(Category_ID, Category.getDouble(2) - oldAmount);
+		EditAccountTotal(FromAccount_ID, Account_From.getDouble(Account_From.getColumnIndex(ACCOUNT_TOTAL)) + oldAmount);
+		EditCategoryTotal(Category_ID, Category.getDouble(Category.getColumnIndex(CATEGORY_TOTAL)) - oldAmount);
 		
-		EditAccountTotal(FromAccount_ID, Account_From.getDouble(2) - newAmount);
-		EditCategoryTotal(Category_ID, Category.getDouble(2) + newAmount);
+		EditAccountTotal(FromAccount_ID, Account_From.getDouble(Account_From.getColumnIndex(ACCOUNT_TOTAL)) - newAmount);
+		EditCategoryTotal(Category_ID, Category.getDouble(Category.getColumnIndex(CATEGORY_TOTAL)) + newAmount);
 	}
 	/** Method is used to create an Income transaction.  An income transaction is one that added money to an account and to a category from thin air.
 	*	@param ToAccount_ID Account the money is being added to
@@ -232,7 +231,7 @@ public class Budget {
 	*	@param Date Date the transaction is being created
 	*	@param Category_ID The category or reason that the expense is occurring	
 	*/
-	void Income(int ToAccount_ID, double Amount, String Note, String Date, int Category_ID) {
+	void Income(long ToAccount_ID, double Amount, String Note, String Date, long Category_ID) {
 		
 		transactions.createIncome(ToAccount_ID, Amount, Note, Date, Category_ID);
 		Cursor Account_To = accounts.getAccount(ToAccount_ID);
@@ -240,13 +239,13 @@ public class Budget {
 
 		Account_To.moveToNext();
 		Category.moveToNext();
-		EditAccountTotal(ToAccount_ID, Account_To.getDouble(2) + Amount);
-		EditCategoryTotal(Category_ID, Category.getDouble(2) + Amount);		
+		EditAccountTotal(ToAccount_ID, Account_To.getDouble(Account_To.getColumnIndex(ACCOUNT_TOTAL)) + Amount);
+		EditCategoryTotal(Category_ID, Category.getDouble(Category.getColumnIndex(CATEGORY_TOTAL)) + Amount);		
 	
 		
 	}
 	
-	void updateIncome(long trans_ID, int ToAccount_ID, double newAmount, String Note, String Date, int Category_ID) {
+	void updateIncome(long trans_ID, long ToAccount_ID, double newAmount, String Note, String Date, long Category_ID) {
 		
 		Cursor trans = transactions.getTransaction(trans_ID);
 		trans.moveToFirst();
@@ -260,11 +259,11 @@ public class Budget {
 		Account_To.moveToNext();
 		Category.moveToNext();
 		
-		EditAccountTotal(ToAccount_ID, Account_To.getDouble(2) - oldAmount);
-		EditCategoryTotal(Category_ID, Category.getDouble(2) - oldAmount);		
+		EditAccountTotal(ToAccount_ID, Account_To.getDouble(Account_To.getColumnIndex(ACCOUNT_TOTAL)) - oldAmount);
+		EditCategoryTotal(Category_ID, Category.getDouble(Category.getColumnIndex(CATEGORY_TOTAL)) - oldAmount);		
 		
-		EditAccountTotal(ToAccount_ID, Account_To.getDouble(2) + newAmount);
-		EditCategoryTotal(Category_ID, Category.getDouble(2) + newAmount);	
+		EditAccountTotal(ToAccount_ID, Account_To.getDouble(Account_To.getColumnIndex(ACCOUNT_TOTAL)) + newAmount);
+		EditCategoryTotal(Category_ID, Category.getDouble(Category.getColumnIndex(CATEGORY_TOTAL)) + newAmount);	
 	
 		
 	}
@@ -277,7 +276,7 @@ public class Budget {
 	Cursor getTransactions(String FromDate, String ToDate) {
 		return transactions.getTransactions(FromDate,ToDate);
 	}
-	Cursor getTransaction(double transID){
+	Cursor getTransaction(long transID){
 		return transactions.getTransaction(transID);
 	}
 /*	
@@ -295,9 +294,9 @@ public class Budget {
 		
 		double Amount = trans.getDouble(trans.getColumnIndex(TRANSACTION_AMOUNT));
 		
-		int ToAccount_ID = trans.getInt(trans.getColumnIndex(TRANSACTION_TOACCOUNT));
-		int FromAccount_ID = trans.getInt(trans.getColumnIndex(TRANSACTION_FROMACCOUNT));
-		int Category_ID = trans.getInt(trans.getColumnIndex(TRANSACTION_CATEGORY));
+		long ToAccount_ID = trans.getInt(trans.getColumnIndex(TRANSACTION_TOACCOUNT));
+		long FromAccount_ID = trans.getInt(trans.getColumnIndex(TRANSACTION_FROMACCOUNT));
+		long Category_ID = trans.getInt(trans.getColumnIndex(TRANSACTION_CATEGORY));
 		
 		Cursor Account_To = accounts.getAccount(ToAccount_ID);
 		Cursor Account_From = accounts.getAccount(FromAccount_ID);
@@ -308,11 +307,11 @@ public class Budget {
 		Category.moveToFirst();
 		
 		if(Account_To.getCount()!= 0)
-			EditAccountTotal(ToAccount_ID, Account_To.getDouble(2) - Amount);
+			EditAccountTotal(ToAccount_ID, Account_To.getDouble(Account_To.getColumnIndex(ACCOUNT_TOTAL)) - Amount);
 		if(Category.getCount()!= 0)
-			EditCategoryTotal(Category_ID, Category.getDouble(2) - Amount);
+			EditCategoryTotal(Category_ID, Category.getDouble(Category.getColumnIndex(CATEGORY_TOTAL)) - Amount);
 		if(Account_From.getCount()!= 0)
-			EditAccountTotal(FromAccount_ID, Account_From.getDouble(2) + Amount);
+			EditAccountTotal(FromAccount_ID, Account_From.getDouble(Account_From.getColumnIndex(ACCOUNT_TOTAL)) + Amount);
 		
 		transactions.removeTransaction(trans_ID);
 	}

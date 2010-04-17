@@ -1,8 +1,6 @@
 package com.ponyinc.minttrack;
 
-import static com.ponyinc.minttrack.Constants.TRANSACTION_AMOUNT;
-import static com.ponyinc.minttrack.Constants.TRANSACTION_DATE;
-import static com.ponyinc.minttrack.Constants.TRANSACTION_TYPE;
+import static com.ponyinc.minttrack.Constants.*;
 import com.ponyinc.minttrack.HelpHome;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -38,8 +36,8 @@ public class HomeActivity extends Activity {
 			budget.addAccount("Checking", 0.00, true);
 		}
 		if (CategoryCursor.getCount() == 0){
-			budget.addCategory("Bills", 0.00, 1);
-			budget.addCategory("Food", 0.00, 1);
+			budget.addCategory("Bills", 0.00, REASON_TYPE_EXPENSE);
+			budget.addCategory("Food", 0.00, REASON_TYPE_EXPENSE);
 		}
 		
 		CategoryCursor.close();
@@ -97,9 +95,9 @@ public class HomeActivity extends Activity {
 		//Search through transactions table and sum up all income and expenses
 		while(!TransactionsCursor.isAfterLast())
 		{
-			if(TransactionsCursor.getInt(TransactionsCursor.getColumnIndex(TRANSACTION_TYPE)) == 0)
+			if(TransactionsCursor.getInt(TransactionsCursor.getColumnIndex(TRANSACTION_TYPE)) == TRANS_TYPE_INCOME)
 				d_inTotal+=TransactionsCursor.getDouble(TransactionsCursor.getColumnIndex(TRANSACTION_AMOUNT));
-			else if(TransactionsCursor.getInt(TransactionsCursor.getColumnIndex(TRANSACTION_TYPE)) == 1)
+			else if(TransactionsCursor.getInt(TransactionsCursor.getColumnIndex(TRANSACTION_TYPE)) == TRANS_TYPE_EXPENSE)
 				d_exTotal+=TransactionsCursor.getDouble(TransactionsCursor.getColumnIndex(TRANSACTION_AMOUNT));
 			TransactionsCursor.moveToNext();
 		}
@@ -143,11 +141,11 @@ public class HomeActivity extends Activity {
 	private String getTransactionString(int transRefNum){
 		switch(transRefNum)
 		{
-		case 0:
+		case TRANS_TYPE_INCOME:
 			return "Income";
-		case 1:
+		case TRANS_TYPE_EXPENSE:
 			return "Expense";
-		case 2:
+		case TRANS_TYPE_TRANSFER:
 			return "Transfer";
 		}
 		return "";

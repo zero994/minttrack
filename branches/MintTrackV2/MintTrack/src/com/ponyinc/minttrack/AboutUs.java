@@ -3,10 +3,8 @@ package com.ponyinc.minttrack;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.view.View;
+
 /**This class implements the about us screen displayed after clicking the Information button in the options menu
  * @author Pablo BajoLaso
  */

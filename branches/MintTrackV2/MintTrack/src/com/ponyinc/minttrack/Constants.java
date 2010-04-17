@@ -35,5 +35,13 @@ public interface Constants extends BaseColumns {
 	public static final String TRANSACTION_NOTE = "tran_note";
 	//The type of transaction 0=Income 1= Expense 2=Transfer
 	public static final String TRANSACTION_TYPE = "tran_type";
-
+	
+	//Used Constants
+	
+	public static final int REASON_TYPE_INCOME = 0;
+	public static final int REASON_TYPE_EXPENSE = 1;
+	
+	public static final int TRANS_TYPE_INCOME = 0;
+	public static final int TRANS_TYPE_EXPENSE = 1;
+	public static final int TRANS_TYPE_TRANSFER = 2;
 }
