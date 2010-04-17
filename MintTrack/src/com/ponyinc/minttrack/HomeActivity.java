@@ -34,8 +34,8 @@ public class HomeActivity extends Activity {
 		Cursor CategoryCursor = budget.getCategorys();
 		
 		if (AccountCursor.getCount() == 0){
-			budget.addAccount("Savings", 0.00);
-			budget.addAccount("Checking", 0.00);
+			budget.addAccount("Savings", 0.00, true);
+			budget.addAccount("Checking", 0.00, true);
 		}
 		if (CategoryCursor.getCount() == 0){
 			budget.addCategory("Bills", 0.00, 1);
