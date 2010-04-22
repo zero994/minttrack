@@ -2,9 +2,10 @@
 <RelativeLayout 
 		xmlns:android="http://schemas.android.com/apk/res/android"
 		android:layout_width="fill_parent" 
-		android:layout_height="fill_parent"
 		android:orientation="horizontal" 
-		android:padding="20sp">
+		android:paddingBottom="41sp"
+		android:paddingLeft="20sp"
+		android:paddingRight="20sp">
 	<TextView 
 		android:id="@+id/transactionDateLabel" 
 		android:layout_width="wrap_content" 
@@ -71,14 +72,14 @@
 	<Button 
 		android:id="@+id/editTransactionBtn" 
 		android:layout_width="wrap_content"
-		android:layout_height="wrap_content" 
+		android:layout_height="40sp" 
 		android:visibility="gone" 
 		android:text="Edit"
 		android:layout_below="@id/transactionNote"/>
 	<Button 
 		android:id="@+id/undoTransactionBtn" 
 		android:layout_width="wrap_content"
-		android:layout_height="wrap_content" 
+		android:layout_height="40sp" 
 		android:text="Undo" 
 		android:layout_below="@id/transactionNote" 
 		android:visibility="gone" 
@@ -87,7 +88,7 @@
 	<Button 
 		android:id="@+id/deleteTransactionBtn" 
 		android:layout_width="wrap_content"
-		android:layout_height="wrap_content" 
+		android:layout_height="40sp" 
 		android:text="Delete" 
 		android:layout_below="@id/transactionNote" 
 		android:visibility="gone" 

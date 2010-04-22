@@ -99,7 +99,7 @@ public class ToolActivity extends Activity implements OnClickListener
 	/** Executes help functionality **/
 	private void executeHelpIntent()
 	{
-		 Intent i = new Intent(this, HelpHome.class);
+		 Intent i = new Intent(this, HelpTools.class);
 	     startActivity(i);
 	}
 	/** Executes Information screen **/

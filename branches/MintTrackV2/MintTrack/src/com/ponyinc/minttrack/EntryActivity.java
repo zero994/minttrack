@@ -164,16 +164,25 @@ public class EntryActivity extends Activity {
 	    switch (item.getItemId())
 	    {
 	    	case (R.id.help):
-	    		executeIntent();
+	    		executeHelpIntent();
 	    		return true;
-	   
+	    	case (R.id.info):
+	    		executeInfoIntent();
+	    		return true;
 	    }
 	    return false;
 	}
 	/** Starts Help*/
-	private void executeIntent()
+	private void executeHelpIntent()
 	{
 		 Intent i = new Intent(this, HelpEntry.class);
+	     startActivity(i);
+	}
+	
+	/** Starts Help*/
+	private void executeInfoIntent()
+	{
+		 Intent i = new Intent(this, AboutUs.class);
 	     startActivity(i);
 	}
 	
