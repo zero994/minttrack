@@ -16,11 +16,11 @@ public class HelpTools extends Activity
 	       TextView text2 = (TextView)findViewById(R.id.help2);
 	       TextView text3 = (TextView)findViewById(R.id.help3);
 	       
-	       text.setText("Help for Entry Tab");
+	       text.setText("Help for Tools Tab");
 	       text2.setText("Components");
-	       text3.setText("Manage Accounts buttom - to open the tab manage accounts.\n" +
-	       				"Manage Accounts buttom - to open the tab manage categories.\n" +
-	       				"Tip Calculator buttom - to open the application Tip Calculator.\n");
+	       text3.setText("Manage Accounts button - to open the tab manage accounts.\n" +
+	       				"Manage Accounts button - to open the tab manage categories.\n" +
+	       				"Tip Calculator button - to open the application Tip Calculator.\n");
 	       
 	    }
 	
