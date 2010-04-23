@@ -3,9 +3,7 @@
 		xmlns:android="http://schemas.android.com/apk/res/android"
 		android:layout_width="fill_parent" 
 		android:orientation="horizontal" 
-		android:paddingBottom="41sp"
-		android:paddingLeft="20sp"
-		android:paddingRight="20sp">
+		android:padding="10sp">
 	<TextView 
 		android:id="@+id/transactionDateLabel" 
 		android:layout_width="wrap_content" 
