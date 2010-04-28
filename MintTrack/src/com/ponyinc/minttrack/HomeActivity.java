@@ -36,7 +36,7 @@ public class HomeActivity extends Activity {
 			budget.addAccount("Checking", 0.00, true);
 		}
 		if (CategoryCursor.getCount() == 0){
-			budget.addCategory("Bills", 0.00, REASON_TYPE_EXPENSE);
+			budget.addCategory("Bills", 0.00, REASON_TYPE_INCOME);
 			budget.addCategory("Food", 0.00, REASON_TYPE_EXPENSE);
 		}
 		
@@ -89,6 +89,7 @@ public class HomeActivity extends Activity {
 	/** Updates the display.<br>Called in <b>onCreate()</b> and <b>onResume()</b> **/
 	private void updateDisplay(){
 		Cursor TransactionsCursor = budget.getTransactions();
+		TransactionsCursor.requery();
 		double d_inTotal = 0;
 		double d_exTotal = 0;
 		TransactionsCursor.moveToFirst();
@@ -155,45 +156,63 @@ public class HomeActivity extends Activity {
 	 * @param TransactionsCursor Iterator used to parse database entries
 	 */
 	private void displayRecentTransactions(Cursor TransactionsCursor){
+		TextView tv_date1 = (TextView)findViewById(R.id.date1);
+		TextView tv_type1 = (TextView)findViewById(R.id.type1);
+		TextView tv_amt1 = (TextView)findViewById(R.id.amount1);
+		TextView tv_date2 = (TextView)findViewById(R.id.date2);
+		TextView tv_type2 = (TextView)findViewById(R.id.type2);
+		TextView tv_amt2 = (TextView)findViewById(R.id.amount2);
+		TextView tv_date3 = (TextView)findViewById(R.id.date3);
+		TextView tv_type3 = (TextView)findViewById(R.id.type3);
+		TextView tv_amt3 = (TextView)findViewById(R.id.amount3);
+		TextView tv_date4 = (TextView)findViewById(R.id.date4);
+		TextView tv_type4 = (TextView)findViewById(R.id.type4);
+		TextView tv_amt4 = (TextView)findViewById(R.id.amount4);
+		
+		//Clean up display before generation
+		tv_date1.setText("");
+		tv_type1.setText("");
+		tv_amt1.setText("");
+		tv_date2.setText("");
+		tv_type2.setText("");
+		tv_amt2.setText("");
+		tv_date3.setText("");
+		tv_type3.setText("");
+		tv_amt3.setText("");
+		tv_date4.setText("");
+		tv_date4.setText("");
+		tv_amt4.setText("");
+		
 		//Cursor moved to first item in the table
 		TransactionsCursor.moveToLast();
 		//Set display information for first list item
 		if(!TransactionsCursor.isBeforeFirst()){
-			TextView tv_date1 = (TextView)findViewById(R.id.date1);
 			tv_date1.setText(getFormattedDate(TransactionsCursor.getString(TransactionsCursor.getColumnIndex(TRANSACTION_DATE))));
-			TextView tv_type1 = (TextView)findViewById(R.id.type1);
 			tv_type1.setText(getTransactionString(TransactionsCursor.getInt(TransactionsCursor.getColumnIndex(TRANSACTION_TYPE))));
-			TextView tv_amt1 = (TextView)findViewById(R.id.amount1);
 			tv_amt1.setText("$"+TransactionsCursor.getString(TransactionsCursor.getColumnIndex(TRANSACTION_AMOUNT)));
 			TransactionsCursor.moveToPrevious();
 		}
 		//Set display information for second list item
 		if(!TransactionsCursor.isBeforeFirst()){
-			TextView tv_date2 = (TextView)findViewById(R.id.date2);
 			tv_date2.setText(getFormattedDate(TransactionsCursor.getString(TransactionsCursor.getColumnIndex(TRANSACTION_DATE))));
-			TextView tv_type2 = (TextView)findViewById(R.id.type2);
 			tv_type2.setText(getTransactionString(TransactionsCursor.getInt(TransactionsCursor.getColumnIndex(TRANSACTION_TYPE))));
-			TextView tv_amt2 = (TextView)findViewById(R.id.amount2);
 			tv_amt2.setText("$"+TransactionsCursor.getString(TransactionsCursor.getColumnIndex(TRANSACTION_AMOUNT)));
 			TransactionsCursor.moveToPrevious();
 		}
 		//Set display information for third list item
 		if(!TransactionsCursor.isBeforeFirst()){
-			TextView tv_date3 = (TextView)findViewById(R.id.date3);
 			tv_date3.setText(getFormattedDate(TransactionsCursor.getString(TransactionsCursor.getColumnIndex(TRANSACTION_DATE))));
-			TextView tv_type3 = (TextView)findViewById(R.id.type3);
 			tv_type3.setText(getTransactionString(TransactionsCursor.getInt(TransactionsCursor.getColumnIndex(TRANSACTION_TYPE))));
-			TextView tv_amt3 = (TextView)findViewById(R.id.amount3);
 			tv_amt3.setText("$"+TransactionsCursor.getString(TransactionsCursor.getColumnIndex(TRANSACTION_AMOUNT)));
 			TransactionsCursor.moveToPrevious();
 		}
 		//Set display information for fourth list item
 		if(!TransactionsCursor.isBeforeFirst()){
-			TextView tv_date4 = (TextView)findViewById(R.id.date4);
+			
 			tv_date4.setText(getFormattedDate(TransactionsCursor.getString(TransactionsCursor.getColumnIndex(TRANSACTION_DATE))));
-			TextView tv_type4 = (TextView)findViewById(R.id.type4);
+			
 			tv_type4.setText(getTransactionString(TransactionsCursor.getInt(TransactionsCursor.getColumnIndex(TRANSACTION_TYPE))));
-			TextView tv_amt4 = (TextView)findViewById(R.id.amount4);
+			
 			tv_amt4.setText("$"+TransactionsCursor.getString(TransactionsCursor.getColumnIndex(TRANSACTION_AMOUNT)));
 		}
 	}

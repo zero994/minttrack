@@ -22,8 +22,7 @@ import android.widget.TextView;
 public class AuditActivity extends ListActivity {
 
 	public Budget budget;
-	public Button btnToDate, btnFromDate, btnQuery, btnEdit, btnUndo, btnDelete;
-	TextView stupid;
+	public Button btnToDate, btnFromDate, btnQuery, btnEdit, btnDelete;
 	private int toYear;
 	private int toMonth;
 	private int toDay;
@@ -37,7 +36,6 @@ public class AuditActivity extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		final Calendar c = Calendar.getInstance();
-		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.audit);
 		initializeButtons();
@@ -50,10 +48,10 @@ public class AuditActivity extends ListActivity {
 		fromYear = c.get(Calendar.YEAR);
 		fromMonth = c.get(Calendar.MONTH);
 		fromDay = c.get(Calendar.DAY_OF_MONTH);
-		
+		getListView().setEmptyView(findViewById(R.id.empty));
 		updateDisplay();
-//		switchTabSpecial();
 	}
+
 	/** the callback received when the user "sets" the date in the dialog*/
 	private DatePickerDialog.OnDateSetListener ToDateSetListener = new DatePickerDialog.OnDateSetListener() {
 
@@ -117,22 +115,14 @@ public class AuditActivity extends ListActivity {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		clickItemID = id;
-		if(btnEdit == null || btnDelete == null || btnUndo == null){
+		if(btnEdit == null || btnDelete == null){
 		btnEdit = (Button) v.findViewById(R.id.editTransactionBtn);
-		btnUndo = (Button) v.findViewById(R.id.undoTransactionBtn);
 		btnDelete = (Button) v.findViewById(R.id.deleteTransactionBtn);
 		btnEdit.setVisibility(View.VISIBLE);
-		btnUndo.setVisibility(View.VISIBLE);
 		btnDelete.setVisibility(View.VISIBLE);
 			btnEdit.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
 					switchTabSpecial(clickItemID);
-				}
-			});
-			btnUndo.setOnClickListener(new View.OnClickListener() {
-				public void onClick(View v) {
-					// TODO implement undo button
-					
 				}
 			});
 			btnDelete.setOnClickListener(new View.OnClickListener() {
@@ -144,23 +134,14 @@ public class AuditActivity extends ListActivity {
 		}
 		else{
 			btnEdit.setVisibility(View.GONE);
-			btnUndo.setVisibility(View.GONE);
 			btnDelete.setVisibility(View.GONE);
 			btnEdit = (Button) v.findViewById(R.id.editTransactionBtn);
-			btnUndo = (Button) v.findViewById(R.id.undoTransactionBtn);
 			btnDelete = (Button) v.findViewById(R.id.deleteTransactionBtn);
 			btnEdit.setVisibility(View.VISIBLE);
-			btnUndo.setVisibility(View.VISIBLE);
 			btnDelete.setVisibility(View.VISIBLE);
 			btnEdit.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
 					switchTabSpecial(clickItemID);
-				}
-			});
-			btnUndo.setOnClickListener(new View.OnClickListener() {
-				public void onClick(View v) {
-					// TODO implement undo button
-					
 				}
 			});
 			btnDelete.setOnClickListener(new View.OnClickListener() {
@@ -235,7 +216,7 @@ public class AuditActivity extends ListActivity {
 	}
 	void Query()
 	{
-		Cursor test;
+		Cursor curser;
 		String toDate = toYear + String.format("%02d", toMonth) + String.format("%02d", toDay);
 		String fromDate = fromYear + String.format("%02d", fromMonth) + String.format("%02d", fromDay);
 		long td = Integer.parseInt(toDate);
@@ -243,14 +224,10 @@ public class AuditActivity extends ListActivity {
 		
 		//check to make sure from date is less than too date
 		//make sure no date is greater than the current date
-		//TODO add dialog box for error message
 		if(td >= fd)
 		{
-			test = budget.getTransactions(fromDate,toDate);
-			showEvents(test);
+			curser = budget.getTransactions(fromDate,toDate);
+			showEvents(curser);
 		}
-		else
-			;
-			//switchTabSpecial();
 	}
 }
