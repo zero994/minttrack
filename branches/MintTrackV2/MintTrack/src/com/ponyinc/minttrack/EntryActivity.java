@@ -14,7 +14,7 @@ import android.widget.*;
  */
 public class EntryActivity extends Activity {
 //	private TextView mDateDisplay;
-	private Button mPickDate, mSave, mIncomeButton, mExpenseButton, mTransButton;
+	private Button mPickDate, mSave, mIncomeButton, mExpenseButton, mTransButton, mCancelButton;
 	private TextView mAmount, mNotes, mtxtPay_To, mtxtPay_From, mtxt_Reason;
 	private Spinner mReason, mPaymentType_To, mPaymentType_From;
 	private int mYear, mMonth, mDay;
@@ -68,6 +68,7 @@ public class EntryActivity extends Activity {
 		super.onResume();
 	
 		ResetTab();
+		
 		fillCatDropDown(mReason, REASON_TYPE_INCOME);
 		fillAccountDropDown(mPaymentType_To);
 		fillAccountDropDown(mPaymentType_From);
@@ -77,6 +78,7 @@ public class EntryActivity extends Activity {
 			trans_ID = mt.getTransactionID();
 			setEntryTab(trans_ID);
 			mt.setTransactionID(-1);
+			mCancelButton.setVisibility(View.VISIBLE);
 			isUpdate = true; //set to update new
 		}
 	}
@@ -142,6 +144,7 @@ public class EntryActivity extends Activity {
 	{
 		mSave = (Button) findViewById(R.id.saveButton);
 		mPickDate = (Button) findViewById(R.id.pickDate);
+		mCancelButton = (Button) findViewById(R.id.cancelButton);
 		mReason = (Spinner) findViewById(R.id.reason1);
 		mPaymentType_To = (Spinner) findViewById(R.id.paytype_To);
 		mPaymentType_From = (Spinner) findViewById(R.id.paytype_From);
@@ -200,6 +203,12 @@ public class EntryActivity extends Activity {
 		mYear = c.get(Calendar.YEAR);
 		mMonth = c.get(Calendar.MONTH);
 		mDay = c.get(Calendar.DAY_OF_MONTH);
+		mIncomeButton.setEnabled(false);
+		mExpenseButton.setEnabled(true);
+		mTransButton.setEnabled(true);
+		mCancelButton.setVisibility(View.GONE);
+		isUpdate = false;
+		trans_ID = -1;
 		updateDisplay();
 	}
 	
@@ -334,6 +343,12 @@ public class EntryActivity extends Activity {
 	}
 	void setListeners()
 	{
+		mCancelButton.setOnClickListener(new View.OnClickListener(){
+			public void onClick(View v)
+			{
+				ResetTab();
+			}
+		});
 		mSave.setOnClickListener(new View.OnClickListener(){
 			public void onClick(View v)
 			{

@@ -33,6 +33,10 @@ final class AuditCursorAdapter extends CursorAdapter {
     	TextView amountView =  (TextView) view.findViewById(R.id.transactionAmount);
     	TextView categoryView = (TextView) view.findViewById(R.id.transactionCategory);
     	TextView noteView =  (TextView) view.findViewById(R.id.transactionNote);
+    	TextView ToAccountView = (TextView) view.findViewById(R.id.transactionToAccount);
+    	TextView ToAccountLbl = (TextView) view.findViewById(R.id.transactionToAccountLabel);
+    	TextView FromAccountView = (TextView) view.findViewById(R.id.transactionFromAccount);
+    	TextView FromAccountLbl = (TextView) view.findViewById(R.id.transactionFromAccountLabel);
     	java.util.Date transactionDate;
     	DateFormat df = new SimpleDateFormat("yyyyMMdd");
     	NumberFormat nf = NumberFormat.getInstance();
@@ -40,12 +44,15 @@ final class AuditCursorAdapter extends CursorAdapter {
     	double dblAmount = cursor.getDouble(cursor.getColumnIndex(TRANSACTION_AMOUNT));
     	int iTranType = cursor.getInt(cursor.getColumnIndex(TRANSACTION_TYPE));
     	String strCategory = cursor.getString(cursor.getColumnIndex("CATNAME"));
+    	String strToAccount = cursor.getString(cursor.getColumnIndex("ACT1NAME"));
+    	String strFromAccount = cursor.getString(cursor.getColumnIndex("ACT2NAME"));
     	String strNote = cursor.getString(cursor.getColumnIndex(TRANSACTION_NOTE));
     	Button deleteBtn = (Button) view.findViewById(R.id.deleteTransactionBtn);
     	Button editBtn = (Button) view.findViewById(R.id.editTransactionBtn);
     	
     	editBtn.setVisibility(View.GONE);
     	deleteBtn.setVisibility(View.GONE);
+    	
     	//transaction date
     	try {
 			transactionDate = df.parse(millis);
@@ -55,16 +62,26 @@ final class AuditCursorAdapter extends CursorAdapter {
 			e.printStackTrace();
 		}
     	
-    	//transaction type
-    	switch (iTranType) {
-        case 0:  tranTypeView.setText("Income"); break;
-        case 1:  tranTypeView.setText("Expense"); break;
-        case 2:  tranTypeView.setText("Transfer"); break;
+    	if(iTranType == 0){
+    		tranTypeView.setText("Income");
+    		ToAccountView.setText(strToAccount);
+    		FromAccountView.setText("N/A");
     	}
-
+    	else if(iTranType == 1){
+    		tranTypeView.setText("Expense");
+    		FromAccountView.setText(strFromAccount);
+    		ToAccountView.setText("N/A");
+    	}
+    	else if(iTranType == 2){
+    		tranTypeView.setText("Transfer");
+    		ToAccountView.setText(strToAccount);
+    		FromAccountView.setText(strFromAccount);
+    	}
+    	
     	//transaction amount
     	nf.getCurrency();
     	amountView.setText("$" + nf.format(dblAmount));
+    	
     	//transaction category
     	categoryView.setText(strCategory);
     	//transaction note
