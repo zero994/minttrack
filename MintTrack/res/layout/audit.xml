@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout 
-	android:layout_width="fill_parent"
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_height="fill_parent">
-	<TableRow 
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent" 
-		android:layout_gravity="center_horizontal">
 		<LinearLayout 
 			xmlns:android="http://schemas.android.com/apk/res/android"
 			android:layout_width="fill_parent" 
 			android:layout_height="fill_parent"
+			android:orientation="vertical" 
+			android:layout_weight="1">
+		<LinearLayout 
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
 			android:orientation="horizontal" 
 			android:layout_weight="1">
 			<Button 
@@ -35,25 +32,21 @@
 				android:layout_weight="1" />
 			
 		</LinearLayout>
-	</TableRow>
-	<TableRow 
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent" 
-		android:layout_gravity="center_horizontal">
 		<LinearLayout 
 			android:layout_width="fill_parent"
-			android:layout_height="fill_parent">
+			android:layout_height="fill_parent"
+			android:layout_weight="6"
+			android:orientation="vertical">
 			<ListView 
 				android:id="@android:id/list"
-				android:layout_width="300dip" 
-				android:layout_height="330dip"
-				android:scrollbars="none" />
+				android:layout_width="fill_parent"
+				android:layout_height="fill_parent"
+				android:layout_weight="1" />
 			<TextView 
 				android:id="@+id/empty"
-				android:layout_width="wrap_content" 
-				android:layout_height="wrap_content"
+				android:layout_width="fill_parent"
+				android:layout_height="fill_parent"
 				android:paddingTop="10dip"
 				android:text="- Please select a date range and press query." />
 		</LinearLayout>
-	</TableRow>
-</TableLayout>
+		</LinearLayout>
