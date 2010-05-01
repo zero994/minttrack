@@ -34,9 +34,7 @@ final class AuditCursorAdapter extends CursorAdapter {
     	TextView categoryView = (TextView) view.findViewById(R.id.transactionCategory);
     	TextView noteView =  (TextView) view.findViewById(R.id.transactionNote);
     	TextView ToAccountView = (TextView) view.findViewById(R.id.transactionToAccount);
-    	TextView ToAccountLbl = (TextView) view.findViewById(R.id.transactionToAccountLabel);
     	TextView FromAccountView = (TextView) view.findViewById(R.id.transactionFromAccount);
-    	TextView FromAccountLbl = (TextView) view.findViewById(R.id.transactionFromAccountLabel);
     	java.util.Date transactionDate;
     	DateFormat df = new SimpleDateFormat("yyyyMMdd");
     	NumberFormat nf = NumberFormat.getInstance();

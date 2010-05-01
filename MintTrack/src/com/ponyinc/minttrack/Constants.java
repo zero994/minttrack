@@ -18,6 +18,7 @@ public interface Constants extends BaseColumns {
 	public static final String CATEGORY_NAME = "category_name";
 	public static final String CATEGORY_TOTAL = "category_total";
 	public static final String CATEGORY_TYPE = "category_type";
+	public static final String CATEGORY_ACTIVE = "category_active";
 
 	// Columns in the Transaction Table
 	

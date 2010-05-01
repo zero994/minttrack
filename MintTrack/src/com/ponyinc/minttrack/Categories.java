@@ -21,12 +21,24 @@ public class Categories {
 	/** Outputs a cursor containing all categories
 	*	@return A cursor containing all categories
 	*/
-	public Cursor getCategorys() {
+	public Cursor getAllCategorys() {
 		final String[] FROM = { _ID, CATEGORY_NAME, CATEGORY_TOTAL,
-				CATEGORY_TYPE, };
+				CATEGORY_TYPE, CATEGORY_ACTIVE,};
 		final String ORDER_BY = CATEGORY_NAME + " DESC";
 		SQLiteDatabase db = MintLink.getReadableDatabase();
 		Cursor cursor = db.query(CATEGORY_TBLNAM, FROM, null, null, null, null,
+				ORDER_BY);
+		return cursor;
+	}
+	/** Outputs a cursor containing all categories
+	*	@return A cursor containing all categories
+	*/
+	public Cursor getActiveCategorys() {
+		final String[] FROM = { _ID, CATEGORY_NAME, CATEGORY_TOTAL,
+				CATEGORY_TYPE, CATEGORY_ACTIVE,};
+		final String ORDER_BY = CATEGORY_NAME + " DESC";
+		SQLiteDatabase db = MintLink.getReadableDatabase();
+		Cursor cursor = db.query(CATEGORY_TBLNAM, FROM, "CATEGORY_ACTIVE = 'active'", null, null, null,
 				ORDER_BY);
 		return cursor;
 	}
@@ -38,7 +50,7 @@ public class Categories {
 	public Cursor getCategorys(int type) 
 	{
 		final String[] FROM = { _ID, CATEGORY_NAME, CATEGORY_TOTAL,
-				CATEGORY_TYPE, };
+				CATEGORY_TYPE, CATEGORY_ACTIVE,};
 		final String ORDER_BY = CATEGORY_NAME + " DESC";
 		SQLiteDatabase db = MintLink.getReadableDatabase();
 		Cursor cursor;
@@ -48,14 +60,13 @@ public class Categories {
 		
 		return cursor;
 	}
-	
 	/** Outputs a cursor containing all categories, allows DB passed in
 	*	@param MintLink 
 	*	@return A cursor containing all categories
 	*/
 	public Cursor getCategorys(MintData MintLink) {
 		final String[] FROM = { _ID, CATEGORY_NAME, CATEGORY_TOTAL,
-				CATEGORY_TYPE, };
+				CATEGORY_TYPE, CATEGORY_ACTIVE};
 		final String ORDER_BY = CATEGORY_NAME + " DESC";
 		SQLiteDatabase db = MintLink.getReadableDatabase();
 		Cursor cursor = db.query(CATEGORY_TBLNAM, FROM, null, null, null, null,
@@ -68,7 +79,7 @@ public class Categories {
 	*/
 	public Cursor getCategory(long intID) {
 		final String[] FROM = { _ID, CATEGORY_NAME, CATEGORY_TOTAL,
-				CATEGORY_TYPE, };
+				CATEGORY_TYPE, CATEGORY_ACTIVE,};
 		final String ORDER_BY = CATEGORY_NAME + " DESC";
 		final String SELECTION = "_ID=" + intID;
 
@@ -82,7 +93,7 @@ public class Categories {
 	*	@param initalValue Inital balance the category will be initalized to
 	*	@param iType Type of category that it is
 	*/
-	public void addCategory(String strName, double initalValue, int iType) {
+	public void addCategory(String strName, double initalValue, int iType, boolean isActive) {
 		// Insert a new record into the Events data source.
 		// You would do something similar for delete and update
 		SQLiteDatabase db = MintLink.getWritableDatabase();
@@ -90,7 +101,34 @@ public class Categories {
 		values.put(CATEGORY_NAME, strName);
 		values.put(CATEGORY_TOTAL, initalValue);
 		values.put(CATEGORY_TYPE, iType);
+		if(isActive == true)
+			values.put(CATEGORY_ACTIVE, "active");
+		else
+			values.put(CATEGORY_ACTIVE, "inactive");
+		
 		db.insertOrThrow(CATEGORY_TBLNAM, null, values);
+	}
+	/** Method is used to deactivate an category
+	*	@param acc_id ID of the category which you wish to disable
+	*/
+	public void DeactivateCategory(long acc_id)
+	// set category to inactive
+	{
+		SQLiteDatabase db = MintLink.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(CATEGORY_ACTIVE, "inactive");
+		db.update(CATEGORY_TBLNAM, values, _ID + "=" + acc_id, null);
+	}
+	/** Method is used to reactive an inactive category that already exists
+	*	@param acc_id ID of category which you want to activate
+	*/
+	public void ReactivateCategory(long cat_id)
+	// set category to active
+	{
+		SQLiteDatabase db = MintLink.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(CATEGORY_ACTIVE, "active");
+		db.update(CATEGORY_TBLNAM, values, _ID + "=" + cat_id, null);
 	}
 	/** Used to edit an existing categories type
 	*	@param iCatId The ID of the category being modified
