@@ -1,25 +1,28 @@
 package com.ponyinc.minttrack;
 
+
+import static com.ponyinc.minttrack.Constants.*;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.SimpleCursorAdapter;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.*;
+import android.widget.AdapterView.OnItemSelectedListener;
 
 public class CategoryManager extends Activity {
 	private Budget budget;
 	private Spinner categorySpinner, categoryTypeSpinner;
-	private EditText nameText;
+	private TextView nameText;
 	private Button saveCategory, newCategory, editCategory;
 	private CheckBox activateCb;
 	private TextView tvCategoryName, tvType, tvActive;
-	private Categories categoryAccessor;
+	
+	/**mode for manage account*/
+	private static final int Default = 1;
+	/**mode for editing account	*/
+	private static final int Update = 2;
+	/**mode for creating new account*/
+	private static final int New = 3;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -34,10 +37,16 @@ public class CategoryManager extends Activity {
 		
 		setWidgets();
 		
+		//Fill the spinner for category types
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
 	            this, R.array.cattype_array, android.R.layout.simple_spinner_item);
 	    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    categoryTypeSpinner.setAdapter(adapter);
+	    
+	    fillCatDropDown(categorySpinner,REASON_TYPE_INCOME);
+	    categorySpinner.setOnItemSelectedListener(spinnerListener);
+
+	    
 	}
 
 	
@@ -48,21 +57,14 @@ public class CategoryManager extends Activity {
 		newCategory = (Button)findViewById(R.id.new_cat);
 		editCategory = (Button)findViewById(R.id.edit_cat);
 		categorySpinner = (Spinner)findViewById(R.id.cat_spinner);
-		categorySpinner.setVisibility(View.GONE);
 		tvCategoryName = (TextView)findViewById(R.id.tv_catname);
-		tvCategoryName.setVisibility(View.GONE);
 		nameText = (EditText)findViewById(R.id.cat_name);
-		nameText.setVisibility(View.GONE);
 		tvType = (TextView)findViewById(R.id.tv_cattype);
-		tvType.setVisibility(View.GONE);
 		categoryTypeSpinner = (Spinner)findViewById(R.id.cat_type);
-		categoryTypeSpinner.setVisibility(View.GONE);
 		saveCategory = (Button)findViewById(R.id.save_cat);
-		saveCategory.setVisibility(View.GONE);
 		tvActive = (TextView)findViewById(R.id.tv_catactive);
-		tvActive.setVisibility(View.GONE);
-		activateCb = (CheckBox)findViewById(R.id.active_cat);
-		activateCb.setVisibility(View.GONE);
+		activateCb = (CheckBox) findViewById(R.id.active_cat);
+		setWidgetVisiblity(Default);
 	}
 	
 	/**OnClickListener for New Category button**/
@@ -70,17 +72,8 @@ public class CategoryManager extends Activity {
 	{	   
 		@Override
 		public void onClick(View v) 
-		{		   
-			newCategory.setEnabled(false);
-			editCategory.setEnabled(true);
-			categorySpinner.setVisibility(View.GONE);
-			tvCategoryName.setVisibility(View.VISIBLE);
-			nameText.setVisibility(View.VISIBLE);
-			tvType.setVisibility(View.VISIBLE);
-			categoryTypeSpinner.setVisibility(View.VISIBLE);
-			saveCategory.setVisibility(View.VISIBLE);
-			tvActive.setVisibility(View.VISIBLE);
-			activateCb.setVisibility(View.VISIBLE);
+		{
+			setWidgetVisiblity(New);
 		}
 	};
 	   
@@ -89,17 +82,8 @@ public class CategoryManager extends Activity {
 	{	   
 		@Override
 		public void onClick(View v) 
-		{		   
-			newCategory.setEnabled(true);
-			editCategory.setEnabled(false);
-			categorySpinner.setVisibility(View.VISIBLE);
-			tvCategoryName.setVisibility(View.VISIBLE);
-			nameText.setVisibility(View.VISIBLE);
-			tvType.setVisibility(View.VISIBLE);
-			categoryTypeSpinner.setVisibility(View.VISIBLE);
-			saveCategory.setVisibility(View.VISIBLE);
-			tvActive.setVisibility(View.VISIBLE);
-			activateCb.setVisibility(View.VISIBLE);
+		{	
+			setWidgetVisiblity(Update);
 		}
 	};
    
@@ -109,36 +93,162 @@ public class CategoryManager extends Activity {
 		@Override
 		public void onClick(View v) 
 		{
-			//If a new category is being created
-/*			if(!newCategory.isEnabled()){
-				SimpleCursorAdapter catAdapter = (SimpleCursorAdapter) categoryTypeSpinner.getAdapter();
-				Cursor catTypeCursor = catAdapter.getCursor();
-				
-				String name = nameText.getText().toString();
-				int type = categoryTypeSpinner.getSelectedItemPosition();
-				categoryAccessor.addCategory(name, 0.0, type);
+			String name = String.valueOf(nameText.getText());
+			if(name.equals("") == false)
+			{
+				//If a new category is being created
+				if(!newCategory.isEnabled()){
+					int type = categoryTypeSpinner.getSelectedItemPosition();
+					if(activateCb.isChecked())
+					{
+						budget.addCategory(String.valueOf(nameText.getText()), 0.0, type, true);
+					}
+					else
+					{
+						budget.addCategory(String.valueOf(nameText.getText()), 0.0, type, false);
+					}
+				}
+				//On update of pre-existing category
+				else
+				{
+					SimpleCursorAdapter s1 = (SimpleCursorAdapter) categorySpinner.getAdapter();
+					
+					Cursor catCursor = s1.getCursor();
+					catCursor.moveToPosition(categorySpinner.getSelectedItemPosition());
+	
+					budget.EditCategoryName(catCursor.getInt(catCursor.getColumnIndex(_ID)), String.valueOf(nameText.getText()));
+					budget.EditCategoryType(catCursor.getInt(catCursor.getColumnIndex(_ID)), categoryTypeSpinner.getSelectedItemPosition());
+					
+					if(activateCb.isChecked() == true)
+						budget.ReactivateCategory(catCursor.getInt(catCursor.getColumnIndex(_ID)));
+					
+					else if(activateCb.isChecked() == false)
+						budget.DeactivateCategory(catCursor.getInt(catCursor.getColumnIndex(_ID)));
+				}
+	
+				fillCatDropDown(categorySpinner, REASON_TYPE_INCOME);
+				setWidgetVisiblity(Default);
 			}
-			//On update of pre-existing category
-			else{
-				SimpleCursorAdapter s1 = (SimpleCursorAdapter) categorySpinner.getAdapter();
-				SimpleCursorAdapter s2 = (SimpleCursorAdapter) categoryTypeSpinner.getAdapter();
-				
-				Cursor catCursor = s1.getCursor();
-				Cursor catTypeCursor = s2.getCursor();
-			}
-*/			//For all cases
-			newCategory.setEnabled(true);
-			editCategory.setEnabled(true);
-			categorySpinner.setVisibility(View.GONE);
-			tvCategoryName.setVisibility(View.GONE);
-			nameText.setText("");
-			nameText.setVisibility(View.GONE);
-			tvType.setVisibility(View.GONE);
-			categoryTypeSpinner.setVisibility(View.GONE);
-			saveCategory.setVisibility(View.GONE);
-			tvActive.setVisibility(View.GONE);
-			activateCb.setChecked(true);
-			activateCb.setVisibility(View.GONE);
+			else ;
+			//TODO add error message
+			
 		}
 	};
+	/**
+	 * 
+	 */
+	AdapterView.OnItemSelectedListener spinnerListener = new OnItemSelectedListener(){
+
+		@Override
+		public void onItemSelected(AdapterView<?> arg0, View arg1,
+				int arg2, long arg3) {
+			
+			SimpleCursorAdapter s = (SimpleCursorAdapter) categorySpinner.getAdapter();
+			Cursor spinCoursor = s.getCursor();
+			
+			spinCoursor.moveToPosition(arg2);
+			Cursor cursor = budget.getCategory(spinCoursor.getInt(spinCoursor.getColumnIndex(_ID)));
+			cursor.moveToFirst();
+			
+			String name = cursor.getString(cursor.getColumnIndex(CATEGORY_NAME));
+			int type = cursor.getInt(cursor.getColumnIndex(CATEGORY_TYPE));
+			String activity = cursor.getString(cursor.getColumnIndex(CATEGORY_ACTIVE));
+			
+			nameText.setText(name);
+			if(type == REASON_TYPE_INCOME){
+				categoryTypeSpinner.setSelection(0);
+			}
+			else {
+				categoryTypeSpinner.setSelection(1);
+			}
+			
+			if(activity.equals("active"))
+				activateCb.setChecked(true);
+			else
+				activateCb.setChecked(false);
+			
+		}
+
+		@Override
+		public void onNothingSelected(AdapterView<?> arg0) {
+			// nothing needed here
+			
+		}
+	};
+	/** Fill in category drop down
+	 *  @param s Spinner to be used to fill drop down
+	 *  @param type fill for income(0) or expense(1)*/
+	public void fillCatDropDown(Spinner s, int type) {
+		Cursor cursor = budget.getAllCategorys();
+		SimpleCursorAdapter s1 = new SimpleCursorAdapter(this,
+				android.R.layout.simple_spinner_item, cursor, new String[] {
+						CATEGORY_NAME, _ID }, new int[] { android.R.id.text1,
+						android.R.id.text2 });
+		s1
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		s.setAdapter(s1);
+	}
+	/**
+	 * @param mode which visibility setting is used
+	 * @see Default
+	 * @see Update
+	 * @see New
+	 */
+	private void setWidgetVisiblity(int mode)
+	{
+		switch(mode)
+		{
+			case(Default):
+			{
+				newCategory.setEnabled(true);
+				editCategory.setEnabled(true);
+					
+				nameText.setText("");				
+				
+				categorySpinner.setVisibility(View.GONE);
+				tvCategoryName.setVisibility(View.GONE);
+				nameText.setVisibility(View.GONE);
+				tvType.setVisibility(View.GONE);
+				categoryTypeSpinner.setVisibility(View.GONE);
+				saveCategory.setVisibility(View.GONE);
+				tvActive.setVisibility(View.GONE);
+				activateCb.setVisibility(View.GONE);
+				break;
+			}	
+			case(Update):
+			{
+				spinnerListener.onItemSelected(categorySpinner, null, 0, 0);
+				newCategory.setEnabled(true);
+				editCategory.setEnabled(false);
+				
+				categorySpinner.setVisibility(View.VISIBLE);
+				tvCategoryName.setVisibility(View.VISIBLE);
+				nameText.setVisibility(View.VISIBLE);
+				tvType.setVisibility(View.VISIBLE);
+				categoryTypeSpinner.setVisibility(View.VISIBLE);
+				saveCategory.setVisibility(View.VISIBLE);
+				tvActive.setVisibility(View.VISIBLE);
+				activateCb.setVisibility(View.VISIBLE);
+				break;
+			}
+			case(New):
+			{
+				nameText.setText("");
+			
+				newCategory.setEnabled(false);
+				editCategory.setEnabled(true);
+								
+				categorySpinner.setVisibility(View.GONE);
+				tvCategoryName.setVisibility(View.VISIBLE);
+				nameText.setVisibility(View.VISIBLE);
+				tvType.setVisibility(View.VISIBLE);
+				categoryTypeSpinner.setVisibility(View.VISIBLE);
+				saveCategory.setVisibility(View.VISIBLE);
+				tvActive.setVisibility(View.VISIBLE);
+				activateCb.setVisibility(View.VISIBLE);
+				break;
+			}
+			default:
+		}			
+	}
 }

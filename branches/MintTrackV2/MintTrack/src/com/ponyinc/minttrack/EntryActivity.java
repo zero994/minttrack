@@ -15,7 +15,7 @@ import android.widget.*;
 public class EntryActivity extends Activity {
 //	private TextView mDateDisplay;
 	private Button mPickDate, mSave, mIncomeButton, mExpenseButton, mTransButton, mCancelButton;
-	private TextView mAmount, mNotes, mtxtPay_To, mtxtPay_From, mtxt_Reason;
+	private TextView mAmount, mNotes, mtxtPay_To, mtxtPay_From, mtxt_Reason, mWarning;
 	private Spinner mReason, mPaymentType_To, mPaymentType_From;
 	private int mYear, mMonth, mDay;
 	 
@@ -73,12 +73,18 @@ public class EntryActivity extends Activity {
 		fillAccountDropDown(mPaymentType_To);
 		fillAccountDropDown(mPaymentType_From);
 		
+		setWidgetMode(INCOME_MODE);
+		
 		MintTrack mt = (MintTrack) this.getParent();
 		if(mt.getTransactionID() >= 0){
 			trans_ID = mt.getTransactionID();
 			setEntryTab(trans_ID);
 			mt.setTransactionID(-1);
 			mCancelButton.setVisibility(View.VISIBLE);
+			mWarning.setVisibility(View.VISIBLE);
+			mIncomeButton.setEnabled(false);
+			mExpenseButton.setEnabled(false);
+			mTransButton.setEnabled(false);
 			isUpdate = true; //set to update new
 		}
 	}
@@ -156,6 +162,8 @@ public class EntryActivity extends Activity {
 		mtxtPay_To = (TextView) findViewById(R.id.txt_type_to);
 		mtxtPay_From = (TextView) findViewById(R.id.txt_type_from);
 		mtxt_Reason = (TextView) findViewById(R.id.txt_reason);
+		mWarning = (TextView) findViewById(R.id.Warning);
+		mWarning.setVisibility(View.VISIBLE);
 		mIncomeButton.setEnabled(false);
 		mPaymentType_From.setVisibility(View.GONE);
 		mtxtPay_From.setVisibility(View.GONE);
@@ -207,6 +215,7 @@ public class EntryActivity extends Activity {
 		mExpenseButton.setEnabled(true);
 		mTransButton.setEnabled(true);
 		mCancelButton.setVisibility(View.GONE);
+		mWarning.setVisibility(View.GONE);
 		isUpdate = false;
 		trans_ID = -1;
 		updateDisplay();
@@ -306,6 +315,7 @@ public class EntryActivity extends Activity {
 				mtxtPay_To.setVisibility(View.VISIBLE);
 				mReason.setVisibility(View.VISIBLE);
 				mtxt_Reason.setVisibility(View.VISIBLE);
+				mWarning.setVisibility(View.GONE);
 				fillCatDropDown(mReason, REASON_TYPE_INCOME);
 				break;
 			}
@@ -322,6 +332,7 @@ public class EntryActivity extends Activity {
 				mReason.setVisibility(View.VISIBLE);
 				mtxt_Reason.setVisibility(View.VISIBLE);
 				fillCatDropDown(mReason, REASON_TYPE_EXPENSE);
+				mWarning.setVisibility(View.GONE);
 				break;
 			}
 			
@@ -336,6 +347,7 @@ public class EntryActivity extends Activity {
 				mtxtPay_To.setVisibility(View.VISIBLE);
 				mReason.setVisibility(View.GONE);
 				mtxt_Reason.setVisibility(View.GONE);
+				mWarning.setVisibility(View.GONE);
 				break;
 			}
 			default:

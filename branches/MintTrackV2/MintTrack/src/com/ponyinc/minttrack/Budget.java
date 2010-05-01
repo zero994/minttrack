@@ -80,11 +80,29 @@ public class Budget {
 	void ReactivateAccount(long acc_id) {
 		accounts.ReactivateAccount(acc_id);
 	}
+	/** Method is a delegated version of ReactivateCategorys(). This method should always be used instead of the Categorys Version directly.
+	*	@param acc_id ID of existing category being reactivated
+	*/
+	void DeactivateCategory(long acc_id) {
+		categories.DeactivateCategory(acc_id);
+	}
+	/** Method is a delegated version of DeactivateCategorys(). This method should always be used instead of the Categorys Version directly.
+	*	@param acc_id ID of existing category being deactivated
+	*/
+	void ReactivateCategory(long acc_id) {
+		categories.ReactivateCategory(acc_id);
+	}
 	/** Method is a delegated version of getCategorys(). This method should always be used instead of the Categories Version directly.
 	*	@return Cursor containg all existing categories
 	*/
-	Cursor getCategorys() {
-		return categories.getCategorys();
+	Cursor getAllCategorys() {
+		return categories.getAllCategorys();
+	}
+	/** Method is a delegated version of getCategorys(). This method should always be used instead of the Categories Version directly.
+	*	@return Cursor containing all active existing categories
+	*/
+	Cursor getActiveCategorys() {
+		return categories.getActiveCategorys();
 	}
 	/**
 	 * 
@@ -93,14 +111,6 @@ public class Budget {
 	 */
 	Cursor getCategorys(int type) {
 		return categories.getCategorys(type);
-	}
-	
-	/** Method is a delegated version of getCategorys(). This method should always be used instead of the Categories Version directly.
-	*	@param MintLink Database object to be used
-	*	@return Cursor containg all existing categories
-	*/
-	Cursor getCategorys(MintData MintLink) {
-		return categories.getCategorys();
 	}
 	/** Method is a delegated version of getCategory(). This method should always be used instead of the Categories Version directly.
 	*	@param intID ID of the category that you want returned in a query
@@ -111,11 +121,12 @@ public class Budget {
 	}
 	/** Method is a delegated version of addCategory(). This method should always be used instead of the Categories Version directly.
 	*	@param strName Name of new category
-	*	@param initalValue Inital balance of new category
+	*	@param initalValue Initial balance of new category
 	*	@param iType Type of category that it is
+	*	@param isActive sets new category to active or inactive
 	*/
-	void addCategory(String strName, double initalValue, int iType) {
-		categories.addCategory(strName, initalValue, iType);
+	void addCategory(String strName, double initalValue, int iType, boolean isActive) {
+		categories.addCategory(strName, initalValue, iType, isActive);
 	}
 	/** Method is a delegated version of EditCategoryType(). This method should always be used instead of the Categories Version directly.
 	*	@param iCatId ID of category being modified

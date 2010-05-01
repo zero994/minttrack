@@ -79,34 +79,41 @@ public class AccountManager extends Activity {
 	{	   
 		@Override
 		public void onClick(View v) 
-		{		   			
-			if(!newAccount.isEnabled())
+		{	
+			String name = String.valueOf(nameText.getText());
+			String bal = String.valueOf(balText.getText());
+			
+			if((name.equals("") == false) && (bal.equals("") == false))
 			{
-				if(activateCb.isChecked() == true)
-					budget.addAccount(String.valueOf(nameText.getText()), Double.parseDouble(String.valueOf(balText.getText())), true);
-				else
-					budget.addAccount(String.valueOf(nameText.getText()), Double.parseDouble(String.valueOf(balText.getText())), false);
+				if(!newAccount.isEnabled())
+				{
+					if(activateCb.isChecked() == true)
+						budget.addAccount(String.valueOf(nameText.getText()), Double.parseDouble(String.valueOf(balText.getText())), true);
+					else
+						budget.addAccount(String.valueOf(nameText.getText()), Double.parseDouble(String.valueOf(balText.getText())), false);
+				}
+				else if(!editAccount.isEnabled())
+				{
+					SimpleCursorAdapter s = (SimpleCursorAdapter) accountSpinner.getAdapter();
+					Cursor spinCoursor = s.getCursor();
+					
+					spinCoursor.moveToPosition(accountSpinner.getSelectedItemPosition());
+				
+					budget.EditAccountName(spinCoursor.getInt(spinCoursor.getColumnIndex(_ID)), String.valueOf(nameText.getText()));
+					budget.EditAccountTotal(spinCoursor.getInt(spinCoursor.getColumnIndex(_ID)), Double.parseDouble(String.valueOf(balText.getText())));
+					
+					if(activateCb.isChecked() == true)
+						budget.ReactivateAccount(spinCoursor.getInt(spinCoursor.getColumnIndex(_ID)));
+					
+					else if(activateCb.isChecked() == false)
+						budget.DeactivateAccount(spinCoursor.getInt(spinCoursor.getColumnIndex(_ID)));
+				}
+				fillAccountDropDown(accountSpinner);
+				
+				setWidgetVisiblity(Default);
 			}
-			else if(!editAccount.isEnabled())
-			{
-				SimpleCursorAdapter s = (SimpleCursorAdapter) accountSpinner.getAdapter();
-				Cursor spinCoursor = s.getCursor();
-				
-				spinCoursor.moveToPosition(accountSpinner.getSelectedItemPosition());
-			
-				budget.EditAccountName(spinCoursor.getInt(spinCoursor.getColumnIndex(_ID)), String.valueOf(nameText.getText()));
-				budget.EditAccountTotal(spinCoursor.getInt(spinCoursor.getColumnIndex(_ID)), Double.parseDouble(String.valueOf(balText.getText())));
-				
-				if(activateCb.isChecked() == true)
-					budget.ReactivateAccount(spinCoursor.getInt(spinCoursor.getColumnIndex(_ID)));
-				
-				else if(activateCb.isChecked() == false)
-					budget.DeactivateAccount(spinCoursor.getInt(spinCoursor.getColumnIndex(_ID)));
-			}
-			fillAccountDropDown(accountSpinner);
-			
-			setWidgetVisiblity(Default);
-			
+			else;
+			//TODO add error message
 		}
 	};
 
@@ -121,7 +128,7 @@ public class AccountManager extends Activity {
 			
 	//		spinCoursor.moveToPosition(accountSpinner.getSelectedItemPosition());
 			spinCoursor.moveToPosition(arg2);
-			Cursor cursor = budget.getAccount(spinCoursor.getInt(0));
+			Cursor cursor = budget.getAccount(spinCoursor.getInt(spinCoursor.getColumnIndex(_ID)));
 			cursor.moveToFirst();
 			
 			String name = cursor.getString(cursor.getColumnIndex(ACCOUNT_NAME));
@@ -138,7 +145,7 @@ public class AccountManager extends Activity {
 
 		@Override
 		public void onNothingSelected(AdapterView<?> arg0) {
-			// TODO Auto-generated method stub
+			// nothing needed here
 			
 		}
 	};
@@ -186,6 +193,7 @@ public class AccountManager extends Activity {
 			}	
 			case(Update):
 			{
+				spinnerListener.onItemSelected(accountSpinner, null, 0, 0);
 				newAccount.setEnabled(true); //
 				editAccount.setEnabled(false);//
 				accountSpinner.setVisibility(View.VISIBLE);//

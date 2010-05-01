@@ -28,16 +28,16 @@ public class HomeActivity extends Activity {
 		
 		budget = new Budget(this);
 		
-		Cursor AccountCursor =  budget.getAllAccounts();
-		Cursor CategoryCursor = budget.getCategorys();
+		Cursor AccountCursor =  budget.getActiveAccounts();
+		Cursor CategoryCursor = budget.getActiveCategorys();
 		
 		if (AccountCursor.getCount() == 0){
 			budget.addAccount("Savings", 0.00, true);
 			budget.addAccount("Checking", 0.00, true);
 		}
 		if (CategoryCursor.getCount() == 0){
-			budget.addCategory("Bills", 0.00, REASON_TYPE_INCOME);
-			budget.addCategory("Food", 0.00, REASON_TYPE_EXPENSE);
+			budget.addCategory("Bills", 0.00, REASON_TYPE_INCOME, true);
+			budget.addCategory("Food", 0.00, REASON_TYPE_EXPENSE, true);
 		}
 		
 		CategoryCursor.close();

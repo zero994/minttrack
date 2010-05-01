@@ -1,20 +1,12 @@
 package com.ponyinc.minttrack;
-import java.util.Calendar;
 
-import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.ListActivity;
+import java.util.Calendar;
+import android.app.*;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.view.*;
+import android.widget.*;
 
 /** This class is used to represent the listactivity for reviewing transactions
 *	@author Christopher C. Wilkins
