@@ -21,7 +21,8 @@ public class TipCalculator extends Activity
 	EditText bill;
     EditText tip;
     EditText split;
-    TextView total;
+    TextView totalCheck;
+    TextView checkPerPerson;
     TextView errorString;
     
     @Override
@@ -34,7 +35,8 @@ public class TipCalculator extends Activity
        bill = (EditText)findViewById(R.id.bill_text);
        tip = (EditText)findViewById(R.id.tip_text);
        split = (EditText)findViewById(R.id.split_text);
-       total = (TextView)findViewById(R.id.total_text);
+       totalCheck = (TextView)findViewById(R.id.total_check);
+       checkPerPerson = (TextView)findViewById(R.id.total_per_person);
        errorString = (TextView)findViewById(R.id.error_message);
        
        // Bind the action for the save button.
@@ -71,11 +73,13 @@ public class TipCalculator extends Activity
 	           float f_bill= new Float(s_bill).floatValue(); 
 	           float f_tip= new Float(s_tip).floatValue();
 	           float f_split= new Float(s_split).floatValue();
-	           double f_total=(f_bill+(f_bill*f_tip/100))/f_split;
-	
+	           double d_total=(f_bill+(f_bill*f_tip/100));
+	           double d_perPerson = d_total/f_split;
 	           // show the string in total editText	        
-	           String str = n.format(f_total);
-	           total.setText(str);
+	           String s_totalBill = n.format(d_total);
+	           String s_totalPerPerson = n.format(d_perPerson);
+	           totalCheck.setText(s_totalBill);
+	           checkPerPerson.setText(s_totalPerPerson);
 		   }
        }
    };
@@ -90,7 +94,8 @@ public class TipCalculator extends Activity
 		    bill.setText("");
 	 	  	tip.setText("");
 	 	  	split.setText("");
-	 	  	total.setText("");
+	 	  	totalCheck.setText("");
+	 	  	checkPerPerson.setText("");
        }
    };
 }
