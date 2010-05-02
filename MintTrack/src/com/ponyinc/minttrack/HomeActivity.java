@@ -19,12 +19,15 @@ import android.widget.TextView;
  **/
 public class HomeActivity extends Activity {
 
-	Budget budget;
-	
+	private Budget budget;
+	private TextView tv_date1, tv_type1, tv_amt1, tv_date2, tv_type2, tv_amt2,
+			tv_date3, tv_type3, tv_amt3, tv_date4, tv_type4, tv_amt4;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.home);
+		
+		SetTextViews();
 		
 		budget = new Budget(this);
 		
@@ -112,7 +115,7 @@ public class HomeActivity extends Activity {
 	}
 	
 	//Number format (US dollars)
-	NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.US);
+	private NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.US);
 
 	/**Displays the total value in the income text field
 	 * @param iT Income total**/
@@ -151,23 +154,29 @@ public class HomeActivity extends Activity {
 		}
 		return "";
 	}
+	private void SetTextViews()
+	{
+		tv_date1 = (TextView)findViewById(R.id.date1);
+		tv_type1 = (TextView)findViewById(R.id.type1);
+		tv_amt1 = (TextView)findViewById(R.id.amount1);
+		tv_date2 = (TextView)findViewById(R.id.date2);
+		tv_type2 = (TextView)findViewById(R.id.type2);
+		tv_amt2 = (TextView)findViewById(R.id.amount2);
+		tv_date3 = (TextView)findViewById(R.id.date3);
+		tv_type3 = (TextView)findViewById(R.id.type3);
+		tv_amt3 = (TextView)findViewById(R.id.amount3);
+		tv_date4 = (TextView)findViewById(R.id.date4);
+		tv_type4 = (TextView)findViewById(R.id.type4);
+		tv_amt4 = (TextView)findViewById(R.id.amount4);
+	}
+	
+	
 	/**Displays recent transactions at the bottom of the home tab
 	 * 
 	 * @param TransactionsCursor Iterator used to parse database entries
 	 */
 	private void displayRecentTransactions(Cursor TransactionsCursor){
-		TextView tv_date1 = (TextView)findViewById(R.id.date1);
-		TextView tv_type1 = (TextView)findViewById(R.id.type1);
-		TextView tv_amt1 = (TextView)findViewById(R.id.amount1);
-		TextView tv_date2 = (TextView)findViewById(R.id.date2);
-		TextView tv_type2 = (TextView)findViewById(R.id.type2);
-		TextView tv_amt2 = (TextView)findViewById(R.id.amount2);
-		TextView tv_date3 = (TextView)findViewById(R.id.date3);
-		TextView tv_type3 = (TextView)findViewById(R.id.type3);
-		TextView tv_amt3 = (TextView)findViewById(R.id.amount3);
-		TextView tv_date4 = (TextView)findViewById(R.id.date4);
-		TextView tv_type4 = (TextView)findViewById(R.id.type4);
-		TextView tv_amt4 = (TextView)findViewById(R.id.amount4);
+
 		
 		//Clean up display before generation
 		tv_date1.setText("");
@@ -180,7 +189,7 @@ public class HomeActivity extends Activity {
 		tv_type3.setText("");
 		tv_amt3.setText("");
 		tv_date4.setText("");
-		tv_date4.setText("");
+		tv_type4.setText("");
 		tv_amt4.setText("");
 		
 		//Cursor moved to first item in the table
