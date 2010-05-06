@@ -36,10 +36,7 @@ public class EntryActivity extends Activity {
 
 		setContentView(R.layout.entry);
 		budget = new Budget(this);
-//		budget.addAccount("TD Bank", 3500.65);
-//		budget.addCategory("tax return", 0.00, REASON_TYPE_INCOME);
-//		budget.DeactivateAccount(3);
-//
+
 		SetWidgets();
 		
 		setListeners();
@@ -82,9 +79,6 @@ public class EntryActivity extends Activity {
 			mt.setTransactionID(-1);
 			mCancelButton.setVisibility(View.VISIBLE);
 			mWarning.setVisibility(View.VISIBLE);
-			mIncomeButton.setEnabled(false);
-			mExpenseButton.setEnabled(false);
-			mTransButton.setEnabled(false);
 			isUpdate = true; //set to update new
 		}
 	}
@@ -215,7 +209,6 @@ public class EntryActivity extends Activity {
 		mExpenseButton.setEnabled(true);
 		mTransButton.setEnabled(true);
 		mCancelButton.setVisibility(View.GONE);
-		mWarning.setVisibility(View.GONE);
 		isUpdate = false;
 		trans_ID = -1;
 		updateDisplay();
@@ -227,8 +220,6 @@ public class EntryActivity extends Activity {
 	 */
 	private void setEntryTab(long trans_ID)
 	{
-			
-		
 	//	SetWidgets();
 		Cursor cursor_trans = budget.getTransaction(trans_ID);
 		cursor_trans.moveToFirst();
@@ -315,8 +306,9 @@ public class EntryActivity extends Activity {
 				mtxtPay_To.setVisibility(View.VISIBLE);
 				mReason.setVisibility(View.VISIBLE);
 				mtxt_Reason.setVisibility(View.VISIBLE);
-				mWarning.setVisibility(View.GONE);
 				fillCatDropDown(mReason, REASON_TYPE_INCOME);
+				if(!isUpdate)
+					mWarning.setVisibility(View.GONE);
 				break;
 			}
 			
@@ -332,7 +324,8 @@ public class EntryActivity extends Activity {
 				mReason.setVisibility(View.VISIBLE);
 				mtxt_Reason.setVisibility(View.VISIBLE);
 				fillCatDropDown(mReason, REASON_TYPE_EXPENSE);
-				mWarning.setVisibility(View.GONE);
+				if(!isUpdate)
+					mWarning.setVisibility(View.GONE);
 				break;
 			}
 			
@@ -347,7 +340,8 @@ public class EntryActivity extends Activity {
 				mtxtPay_To.setVisibility(View.VISIBLE);
 				mReason.setVisibility(View.GONE);
 				mtxt_Reason.setVisibility(View.GONE);
-				mWarning.setVisibility(View.GONE);
+				if(!isUpdate)
+					mWarning.setVisibility(View.GONE);
 				break;
 			}
 			default:
@@ -422,7 +416,11 @@ public class EntryActivity extends Activity {
 				{
 					e.printStackTrace();
 				}
+				
+				//Get rid of message when done editting
+				mWarning.setVisibility(View.GONE);
 			}
+			
 		});
 		mIncomeButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) 
