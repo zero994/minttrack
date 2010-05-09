@@ -43,6 +43,19 @@ public class TipCalculator extends Activity
        findViewById(R.id.execute_button).setOnClickListener(executeListener);
        findViewById(R.id.clear_button).setOnClickListener(clearListener);
     }
+    
+    /**
+     * Checks to see if str is valid input
+     * @param str String entered by the user
+     * @return true if string is OK, or false if not
+     */
+    public boolean isValid(String str){
+    	for(int c = 0; c < str.length(); c++){
+    		if((str.charAt(c) <= 46 || str.charAt(c) >= 58) && (str.charAt(c) != '.'))
+    			return false;
+    	}
+    	return true;
+    }
 	
    /**OnClickListener for Execute button**/
    View.OnClickListener executeListener = new View.OnClickListener()
@@ -59,14 +72,23 @@ public class TipCalculator extends Activity
            if(s_bill.equalsIgnoreCase("")){
         	   errorString.setText("X Please enter a value for the bill.");
 		   }
+           else if (!isValid(s_bill)){
+        	   errorString.setText("X Bill input is not valid.");
+           }
 		   
 		   else if(s_tip.equalsIgnoreCase("")){
 			  errorString.setText("X Please enter a value for the tip.");
 		   }
+		   else if (!isValid(s_tip)){
+        	   errorString.setText("X Tip input is not valid.");
+           }
 		   
 		   else if(s_split.equalsIgnoreCase("")){
 			  errorString.setText("X Please enter a value for split.");
 		   }
+		   else if (!isValid(s_split)){
+        	   errorString.setText("X Split input is not valid.");
+           }
            
 		   else{
 			   errorString.setText("");
