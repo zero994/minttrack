@@ -78,6 +78,7 @@ public class EntryActivity extends Activity {
 			setEntryTab(trans_ID);
 			mt.setTransactionID(-1);
 			mCancelButton.setVisibility(View.VISIBLE);
+			mWarning.setText("You are editing a transaction");
 			mWarning.setVisibility(View.VISIBLE);
 			isUpdate = true; //set to update new
 		}
@@ -353,72 +354,103 @@ public class EntryActivity extends Activity {
 			public void onClick(View v)
 			{
 				ResetTab();
+				//Get rid of message when done editting
+				mWarning.setVisibility(View.GONE);
 			}
 		});
 		mSave.setOnClickListener(new View.OnClickListener(){
 			public void onClick(View v)
 			{
 				try{
-				SimpleCursorAdapter s1 = (SimpleCursorAdapter) mPaymentType_To.getAdapter();
-				SimpleCursorAdapter s2 = (SimpleCursorAdapter) mReason.getAdapter();
-				SimpleCursorAdapter s3 = (SimpleCursorAdapter) mPaymentType_From.getAdapter();
-				
-				Cursor To_acc_cursor = s1.getCursor();
-				Cursor cat_cursor = s2.getCursor();
-				Cursor From_acc_cursor = s3.getCursor();
-				
-				
-				To_acc_cursor.moveToPosition(mPaymentType_To.getSelectedItemPosition());
-				cat_cursor.moveToPosition(mReason.getSelectedItemPosition());
-				From_acc_cursor.moveToPosition(mPaymentType_From.getSelectedItemPosition());
-				
-				int cat_ID = cat_cursor.getInt(cat_cursor.getColumnIndex(_ID));
-				int To_ID = To_acc_cursor.getInt(To_acc_cursor.getColumnIndex(_ID));
-				int From_ID = From_acc_cursor.getInt(From_acc_cursor.getColumnIndex(_ID));
-				String S_amount = String.valueOf(mAmount.getText());
-				String Date = mYear + String.format("%02d", mMonth) + String.format("%02d", mDay);
-				
-				
-				String notes = String.valueOf(mNotes.getText());
-				
-				double amount = 0;					
-				if(S_amount.equals(""))
-					amount = 0;
-				else
-					amount = Math.abs(Double.parseDouble(S_amount));
-			
-				
-				if(isUpdate) //update old
-				{
-					if(!mIncomeButton.isEnabled())
-						budget.updateIncome(trans_ID, To_ID, amount, notes, Date, cat_ID);
-					else if(!mExpenseButton.isEnabled())
-						budget.updateExpense(trans_ID, From_ID, amount, notes, Date, cat_ID);
-					else if(!mTransButton.isEnabled())
-						budget.updateTransfer(trans_ID, To_ID, From_ID, amount, notes, Date, cat_ID);
-					else;
-					ResetTab();
-					isUpdate = false;//set back to create new
-				}
-				else//create new
-				{
-					if(!mIncomeButton.isEnabled())
-						budget.Income(To_ID, amount, notes, Date, cat_ID);
-					else if(!mExpenseButton.isEnabled())
-						budget.Expense(From_ID, amount, notes, Date, cat_ID);
-					else if(!mTransButton.isEnabled())
-						budget.Transfer(To_ID, From_ID, amount, notes, Date, cat_ID);
-					else;
-					ResetTab();
-				}	
-				
-				}catch(Exception e)
-				{
+					SimpleCursorAdapter s1 = (SimpleCursorAdapter) mPaymentType_To.getAdapter();
+					SimpleCursorAdapter s2 = (SimpleCursorAdapter) mReason.getAdapter();
+					SimpleCursorAdapter s3 = (SimpleCursorAdapter) mPaymentType_From.getAdapter();
+					
+					Cursor To_acc_cursor = s1.getCursor();
+					Cursor cat_cursor = s2.getCursor();
+					Cursor From_acc_cursor = s3.getCursor();
+					
+					
+					To_acc_cursor.moveToPosition(mPaymentType_To.getSelectedItemPosition());
+					cat_cursor.moveToPosition(mReason.getSelectedItemPosition());
+					From_acc_cursor.moveToPosition(mPaymentType_From.getSelectedItemPosition());
+					
+					int cat_ID = cat_cursor.getInt(cat_cursor.getColumnIndex(_ID));
+					int To_ID = To_acc_cursor.getInt(To_acc_cursor.getColumnIndex(_ID));
+					int From_ID = From_acc_cursor.getInt(From_acc_cursor.getColumnIndex(_ID));
+					String S_amount = String.valueOf(mAmount.getText());
+					String Date = mYear + String.format("%02d", mMonth) + String.format("%02d", mDay);
+					
+					
+					String notes = String.valueOf(mNotes.getText());
+					
+					
+					//Formatting
+					//No value entered - invalid
+					if(S_amount.equals("")){
+						mWarning.setText("You have not entered an amount.");
+						mWarning.setVisibility(View.VISIBLE);
+					}
+					//Amount string does not contain a decimal point
+					else if(!S_amount.contains(".")){
+						S_amount = S_amount + ".00";
+					}
+					//Amount string only contains a decimal point
+					else if(S_amount.endsWith(".") && S_amount.length()==1){
+						S_amount = "0.00";
+					}
+					//Amount string ends with a decimal point
+					else if(S_amount.endsWith(".")){
+						S_amount = S_amount + ".00";
+					}
+					
+					
+					double amount = 0.00;
+					
+					//Entered 0
+					if(S_amount.equals("0.00")){
+						mWarning.setText("Please enter a non-zero amount.");
+						mWarning.setVisibility(View.VISIBLE);
+					}
+					//Valid value entered - process
+					else if (isValid(S_amount)){
+						amount = Math.abs(Double.parseDouble(S_amount));
+
+						if(isUpdate) //update old
+						{
+							if(!mIncomeButton.isEnabled())
+								budget.updateIncome(trans_ID, To_ID, amount, notes, Date, cat_ID);
+							else if(!mExpenseButton.isEnabled())
+								budget.updateExpense(trans_ID, From_ID, amount, notes, Date, cat_ID);
+							else if(!mTransButton.isEnabled())
+								budget.updateTransfer(trans_ID, To_ID, From_ID, amount, notes, Date, cat_ID);
+							else;
+							ResetTab();
+							isUpdate = false;//set back to create new
+						}
+						else//create new
+						{
+							if(!mIncomeButton.isEnabled())
+								budget.Income(To_ID, amount, notes, Date, cat_ID);
+							else if(!mExpenseButton.isEnabled())
+								budget.Expense(From_ID, amount, notes, Date, cat_ID);
+							else if(!mTransButton.isEnabled())
+								budget.Transfer(To_ID, From_ID, amount, notes, Date, cat_ID);
+							else;
+							ResetTab();
+						}
+						//Get rid of message when done editting
+						mWarning.setVisibility(View.GONE);
+					}
+					//Bad value entered - invalid
+					else{
+						mWarning.setText("Please enter a valid amount");
+						mWarning.setVisibility(View.VISIBLE);
+					}
+					
+				}catch(Exception e){
 					e.printStackTrace();
 				}
-				
-				//Get rid of message when done editting
-				mWarning.setVisibility(View.GONE);
 			}
 			
 		});
@@ -446,4 +478,17 @@ public class EntryActivity extends Activity {
 			}
 		});
 	}
+	
+	/**
+     * Checks to see if str is valid input
+     * @param str String entered by the user
+     * @return true if string is OK, or false if not
+     */
+    public boolean isValid(String str){
+    	for(int c = 0; c < str.length(); c++){
+    		if((str.charAt(c) <= 46 || str.charAt(c) >= 58) && (str.charAt(c) != '.'))
+    			return false;
+    	}
+    	return true;
+    }
 }
