@@ -10,6 +10,25 @@
 					android:orientation="vertical"
 					android:padding="5dip" 
 					android:layout_weight="1">
+<!-- Edit Warning -->
+					<LinearLayout
+						android:layout_width="fill_parent"
+						android:paddingLeft="30dip" 
+						android:paddingRight="30dip" 
+						android:layout_height="fill_parent" 
+						android:orientation="horizontal" 
+						android:gravity = "center_horizontal"
+						android:layout_weight="1">
+						<TextView
+							android:id="@+id/Warning"
+							android:text="You are Editing a Transaction" 
+							android:layout_width="fill_parent"
+							android:layout_height="fill_parent" 
+							android:gravity = "center_horizontal"
+							android:layout_weight="1" 
+							android:textColor = "#990000"
+							android:textStyle = "bold|italic"/>
+					</LinearLayout>
 <!-- INCOME/EXPENSE BUTTONS -->	
 					<LinearLayout 
 						android:layout_width="fill_parent"
