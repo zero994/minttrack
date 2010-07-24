@@ -68,28 +68,28 @@ public class TipCalculator extends Activity
            String s_tip= tip.getText().toString();
            String s_split= split.getText().toString();
            
+           if(s_tip.equalsIgnoreCase("")){
+			   s_tip = "0";
+			   tip.setText(s_tip);
+		   }
+           if(s_split.equalsIgnoreCase("")){
+			   s_split = "1";
+			   split.setText(s_split);
+		   }
            if(s_bill.equalsIgnoreCase("")){
         	   errorString.setText("X Please enter a value for the bill.");
 		   }
            else if (!isValid(s_bill)){
         	   errorString.setText("X Bill input is not valid.");
            }
-		   
-		   else if(s_tip.equalsIgnoreCase("")){
-			  errorString.setText("X Please enter a value for the tip.");
-		   }
 		   else if (!isValid(s_tip)){
         	   errorString.setText("X Tip input is not valid.");
            }
-		   
-		   else if(s_split.equalsIgnoreCase("")){
-			  errorString.setText("X Please enter a value for split.");
-		   }
 		   else if (!isValid(s_split)){
         	   errorString.setText("X Split input is not valid.");
+			   
            }
-           
-		   else{
+           else{
 			   errorString.setText("");
 	           float f_bill= new Float(s_bill).floatValue(); 
 	           float f_tip= new Float(s_tip).floatValue();
