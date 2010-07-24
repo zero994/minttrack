@@ -1,7 +1,7 @@
 /**This class implements the Tip Calculator when called from the Tip Calculator button in the Tools Tab
  * @author Pablo BajoLaso and Jeff Titus
  */
-package com.ponyinc.minttrack;
+package com.ponyinc.minttrack.tools;
 
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.ponyinc.minttrack.R;
 
 public class TipCalculator extends Activity
 {
@@ -29,19 +28,19 @@ public class TipCalculator extends Activity
     public void onCreate(Bundle savedInstanceState) 
     {
        super.onCreate(savedInstanceState);
-       setContentView(R.layout.tipcal);
+       setContentView(com.ponyinc.minttrack.R.layout.tipcal);
         
        // Find the EditTexts and TextViews
-       bill = (EditText)findViewById(R.id.bill_text);
-       tip = (EditText)findViewById(R.id.tip_text);
-       split = (EditText)findViewById(R.id.split_text);
-       totalCheck = (TextView)findViewById(R.id.total_check);
-       checkPerPerson = (TextView)findViewById(R.id.total_per_person);
-       errorString = (TextView)findViewById(R.id.error_message);
+       bill = (EditText)findViewById(com.ponyinc.minttrack.R.id.bill_text);
+       tip = (EditText)findViewById(com.ponyinc.minttrack.R.id.tip_text);
+       split = (EditText)findViewById(com.ponyinc.minttrack.R.id.split_text);
+       totalCheck = (TextView)findViewById(com.ponyinc.minttrack.R.id.total_check);
+       checkPerPerson = (TextView)findViewById(com.ponyinc.minttrack.R.id.total_per_person);
+       errorString = (TextView)findViewById(com.ponyinc.minttrack.R.id.error_message);
        
        // Bind the action for the save button.
-       findViewById(R.id.execute_button).setOnClickListener(executeListener);
-       findViewById(R.id.clear_button).setOnClickListener(clearListener);
+       findViewById(com.ponyinc.minttrack.R.id.execute_button).setOnClickListener(executeListener);
+       findViewById(com.ponyinc.minttrack.R.id.clear_button).setOnClickListener(clearListener);
     }
     
     /**

@@ -1,7 +1,15 @@
-package com.ponyinc.minttrack;
+package com.ponyinc.minttrack.tabs;
 
 import static com.ponyinc.minttrack.Constants.*;
-import com.ponyinc.minttrack.HelpHome;
+
+import com.ponyinc.minttrack.AboutUs;
+import com.ponyinc.minttrack.Budget;
+import com.ponyinc.minttrack.R;
+import com.ponyinc.minttrack.R.id;
+import com.ponyinc.minttrack.R.layout;
+import com.ponyinc.minttrack.R.menu;
+import com.ponyinc.minttrack.help.HelpHome;
+
 import java.text.NumberFormat;
 import java.util.Locale;
 import android.app.Activity;

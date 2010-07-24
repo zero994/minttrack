@@ -1,5 +1,9 @@
 package com.ponyinc.minttrack;
 
+import com.ponyinc.minttrack.types.Accounts;
+import com.ponyinc.minttrack.types.Categories;
+import com.ponyinc.minttrack.types.Transactions;
+
 import android.content.Context;
 import android.database.Cursor;
 import static com.ponyinc.minttrack.Constants.*;
@@ -19,7 +23,7 @@ public class Budget {
 	/** Secondary Constructor
 	*	@param ctx The context in which the object is being createdf
 	*/
-	Budget(Context ctx) {
+	public Budget(Context ctx) {
 		MintLink = new MintData(ctx);
 		// Just closing it till we figure out exactly what we want to do.
 		MintLink.close();
@@ -33,75 +37,75 @@ public class Budget {
 	*	@param value Initial balance of the account
 	*	@param isActive Is account active
 	*/
-	void addAccount(String strName, double value, boolean isActive) {
+	public void addAccount(String strName, double value, boolean isActive) {
 		accounts.addAccount(strName, value, isActive);
 		
 	}
 	/** Method is a delegated version of getAllAccounts(). This method should always be used instead of the Account Version directly.
 	*	@return A cursor containing all accounts.
 	*/
-	Cursor getAllAccounts() {
+	public Cursor getAllAccounts() {
 		return accounts.getAllAccounts();
 	}
 	
-	Cursor getAccount(long acc_ID)
+	public Cursor getAccount(long acc_ID)
 	{
 		return accounts.getAccount(acc_ID);
 	}
 	/** Method is a delegated version of getActiveAccounts(). This method should always be used instead of the Account Version directly.
 	*	@return A cursor containing only all the active accounts
 	*/
-	Cursor getActiveAccounts() {
+	public Cursor getActiveAccounts() {
 		return accounts.getActiveAccounts();
 	}
 	/** Method is a delegated version of DeactivateAccount(). This method should always be used instead of the Account Version directly.
 	*	@param acc_id ID of the account to be deactivated
 	*/
-	void DeactivateAccount(long acc_id) {
+	public void DeactivateAccount(long acc_id) {
 		accounts.DeactivateAccount(acc_id);
 	}
 	/** Method is a delegated version of EditAccountName(). This method should always be used instead of the Account Version directly.
 	*	@param acc_id ID of account being modified
 	*	@param strName New name to be applied to existing account
 	*/
-	void EditAccountName(long acc_id, String strName) {
+	public void EditAccountName(long acc_id, String strName) {
 		accounts.EditAccountName(acc_id, strName);
 	}
 	/** Method is a delegated version of EditAccountTotal(). This method should always be used instead of the Account Version directly.
 	*	@param acc_id ID of account to be modified
 	*	@param total New total to be applied to existing account
 	*/
-	void EditAccountTotal(long acc_id, double total) {
+	public void EditAccountTotal(long acc_id, double total) {
 		accounts.EditAccountTotal(acc_id, total);
 	}
 	/** Method is a delegated version of ReactivateAccount(). This method should always be used instead of the Account Version directly.
 	*	@param acc_id ID of existing account being reactivated
 	*/
-	void ReactivateAccount(long acc_id) {
+	public void ReactivateAccount(long acc_id) {
 		accounts.ReactivateAccount(acc_id);
 	}
 	/** Method is a delegated version of ReactivateCategorys(). This method should always be used instead of the Categorys Version directly.
 	*	@param acc_id ID of existing category being reactivated
 	*/
-	void DeactivateCategory(long acc_id) {
+	public void DeactivateCategory(long acc_id) {
 		categories.DeactivateCategory(acc_id);
 	}
 	/** Method is a delegated version of DeactivateCategorys(). This method should always be used instead of the Categorys Version directly.
 	*	@param acc_id ID of existing category being deactivated
 	*/
-	void ReactivateCategory(long acc_id) {
+	public void ReactivateCategory(long acc_id) {
 		categories.ReactivateCategory(acc_id);
 	}
 	/** Method is a delegated version of getCategorys(). This method should always be used instead of the Categories Version directly.
 	*	@return Cursor containg all existing categories
 	*/
-	Cursor getAllCategorys() {
+	public Cursor getAllCategorys() {
 		return categories.getAllCategorys();
 	}
 	/** Method is a delegated version of getCategorys(). This method should always be used instead of the Categories Version directly.
 	*	@return Cursor containing all active existing categories
 	*/
-	Cursor getActiveCategorys() {
+	public Cursor getActiveCategorys() {
 		return categories.getActiveCategorys();
 	}
 	/**
@@ -109,14 +113,14 @@ public class Budget {
 	 * @param type 0 is for income and 1 is for expense
 	 * @return Cursor of category of type income our expense.
 	 */
-	Cursor getCategorys(int type) {
+	public Cursor getCategorys(int type) {
 		return categories.getCategorys(type);
 	}
 	/** Method is a delegated version of getCategory(). This method should always be used instead of the Categories Version directly.
 	*	@param intID ID of the category that you want returned in a query
 	*	@return Cursor containing the cursor requested
 	*/
-	Cursor getCategory(long intID) {
+	public Cursor getCategory(long intID) {
 		return categories.getCategory(intID);
 	}
 	/** Method is a delegated version of addCategory(). This method should always be used instead of the Categories Version directly.
@@ -125,28 +129,28 @@ public class Budget {
 	*	@param iType Type of category that it is
 	*	@param isActive sets new category to active or inactive
 	*/
-	void addCategory(String strName, double initalValue, int iType, boolean isActive) {
+	public void addCategory(String strName, double initalValue, int iType, boolean isActive) {
 		categories.addCategory(strName, initalValue, iType, isActive);
 	}
 	/** Method is a delegated version of EditCategoryType(). This method should always be used instead of the Categories Version directly.
 	*	@param iCatId ID of category being modified
 	*	@param iType New type for the account
 	*/
-	void EditCategoryType(long iCatId, int iType) {
+	public void EditCategoryType(long iCatId, int iType) {
 		categories.EditCategoryType(iCatId, iType);
 	}
 	/** Method is a delegated version of getCategorys(). This method should always be used instead of the Categories Version directly.
 	*	@param iCatID ID of category being modified
 	*	@param strCatName New name for the category
 	*/
-	void EditCategoryName(long iCatID, String strCatName) {
+	public void EditCategoryName(long iCatID, String strCatName) {
 		categories.EditCategoryName(iCatID, strCatName);
 	}
 	/** Method is a delegated version of getCategorys(). This method should always be used instead of the Categories Version directly.
 	*	@param iCatID ID of category being modified
 	*	@param dblTotal New total for the category
 	*/
-	void EditCategoryTotal(long iCatID, double dblTotal) {
+	public void EditCategoryTotal(long iCatID, double dblTotal) {
 		categories.updateCategory(iCatID, dblTotal);
 	}
 	/** Method is used to create a transfer transaction.  A transfer is any transaction that results in money being moved from one account to another.
@@ -157,7 +161,7 @@ public class Budget {
 	*	@param Date Date the transaction is being created
 	*	@param Category The category or reason that the transfer is occurring
 	*/
-	void Transfer(long ToAccount_ID, long FromAccount_ID, double Amount,
+	public void Transfer(long ToAccount_ID, long FromAccount_ID, double Amount,
 			String Note, String Date, long Category) {
 		transactions.createTransfer(ToAccount_ID, FromAccount_ID, Amount, Note,
 				Date, Category);
@@ -171,7 +175,7 @@ public class Budget {
 		EditAccountTotal(FromAccount_ID, Account_From.getDouble(Account_From.getColumnIndex(ACCOUNT_TOTAL)) - Amount);
 	}
 	
-	void updateTransfer(long trans_ID, long ToAccount_ID, long FromAccount_ID, double newAmount,
+	public void updateTransfer(long trans_ID, long ToAccount_ID, long FromAccount_ID, double newAmount,
 			String Note, String Date, long Category)
 	{
 		Cursor trans = transactions.getTransaction(trans_ID);
@@ -200,7 +204,7 @@ public class Budget {
 	*	@param Date Date the transaction is being created
 	*	@param Category_ID The category or reason that the expense is occurring
 	*/
-	void Expense(long FromAccount_ID, double Amount, String Note, String Date, long Category_ID) {
+	public void Expense(long FromAccount_ID, double Amount, String Note, String Date, long Category_ID) {
 		transactions.createExpense(FromAccount_ID, Amount, Note, Date, Category_ID);
 		Cursor Account_From = accounts.getAccount(FromAccount_ID);
 		Cursor Category = categories.getCategory(Category_ID);
@@ -212,7 +216,7 @@ public class Budget {
 
 	}
 	
-	void updateExpense(long trans_ID, long FromAccount_ID, double newAmount,
+	public void updateExpense(long trans_ID, long FromAccount_ID, double newAmount,
 			String Note, String Date, long Category_ID)
 	{
 		
@@ -242,7 +246,7 @@ public class Budget {
 	*	@param Date Date the transaction is being created
 	*	@param Category_ID The category or reason that the expense is occurring	
 	*/
-	void Income(long ToAccount_ID, double Amount, String Note, String Date, long Category_ID) {
+	public void Income(long ToAccount_ID, double Amount, String Note, String Date, long Category_ID) {
 		
 		transactions.createIncome(ToAccount_ID, Amount, Note, Date, Category_ID);
 		Cursor Account_To = accounts.getAccount(ToAccount_ID);
@@ -256,7 +260,7 @@ public class Budget {
 		
 	}
 	
-	void updateIncome(long trans_ID, long ToAccount_ID, double newAmount, String Note, String Date, long Category_ID) {
+	public void updateIncome(long trans_ID, long ToAccount_ID, double newAmount, String Note, String Date, long Category_ID) {
 		
 		Cursor trans = transactions.getTransaction(trans_ID);
 		trans.moveToFirst();
@@ -281,13 +285,13 @@ public class Budget {
 	/** Method is a delegated version of getTransactions(). This method should always be used instead of the transactions Version directly.
 	*	@return a cursor from the database containing all transactions
 	*/
-	Cursor getTransactions() {
+	public Cursor getTransactions() {
 		return transactions.getTransactions();
 	}
-	Cursor getTransactions(String FromDate, String ToDate) {
+	public Cursor getTransactions(String FromDate, String ToDate) {
 		return transactions.getTransactions(FromDate,ToDate);
 	}
-	Cursor getTransaction(long transID){
+	public Cursor getTransaction(long transID){
 		return transactions.getTransaction(transID);
 	}
 /*	
@@ -298,7 +302,7 @@ public class Budget {
 	/** Undo and deleted transaction from log
 	 * @param trans_ID transaction to be deleted
 	 */
-	void deleteTransaction(long trans_ID)
+	public void deleteTransaction(long trans_ID)
 	{
 		Cursor trans = transactions.getTransaction(trans_ID);
 		trans.moveToFirst();

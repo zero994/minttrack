@@ -17,12 +17,12 @@ import static com.ponyinc.minttrack.Constants.*;
 /** This class is a custom CursorAdapter that handles the joins of the Account/Transaction/Category for proper output on the AuditTab/HomeTab
 *	@author Christopher C. Wilkins
 */
-final class AuditCursorAdapter extends CursorAdapter {
+public final class AuditCursorAdapter extends CursorAdapter {
 	/** Secondary Constructor
 	*	@param	context The context that the adapter will be used
 	*	@param	c		A Cursor containing the prejoined database Cursor
 	*/
-	AuditCursorAdapter(Context context, Cursor c) {
+	public AuditCursorAdapter(Context context, Cursor c) {
         super(context, c);
     }
 

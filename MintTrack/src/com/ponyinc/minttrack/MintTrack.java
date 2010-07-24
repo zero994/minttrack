@@ -1,5 +1,10 @@
 package com.ponyinc.minttrack;
 
+import com.ponyinc.minttrack.tabs.AuditActivity;
+import com.ponyinc.minttrack.tabs.EntryActivity;
+import com.ponyinc.minttrack.tabs.HomeActivity;
+import com.ponyinc.minttrack.tabs.ToolActivity;
+
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;

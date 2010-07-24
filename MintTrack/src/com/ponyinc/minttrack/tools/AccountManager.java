@@ -1,6 +1,9 @@
-package com.ponyinc.minttrack;
+package com.ponyinc.minttrack.tools;
 
 import static com.ponyinc.minttrack.Constants.*;
+
+import com.ponyinc.minttrack.Budget;
+
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -27,12 +30,12 @@ public class AccountManager extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		setContentView(R.layout.acctmgr);
+		setContentView(com.ponyinc.minttrack.R.layout.acctmgr);
 		budget = new Budget(this);
 		
-		findViewById(R.id.new_acct).setOnClickListener(newAccountListener);
-		findViewById(R.id.edit_acct).setOnClickListener(editAccountListener);
-		findViewById(R.id.save_acct).setOnClickListener(saveAccountListener);
+		findViewById(com.ponyinc.minttrack.R.id.new_acct).setOnClickListener(newAccountListener);
+		findViewById(com.ponyinc.minttrack.R.id.edit_acct).setOnClickListener(editAccountListener);
+		findViewById(com.ponyinc.minttrack.R.id.save_acct).setOnClickListener(saveAccountListener);
 		
 		setWidgets();
 	
@@ -41,16 +44,16 @@ public class AccountManager extends Activity {
 	}
 	
 	private void setWidgets(){
-		newAccount = (Button)findViewById(R.id.new_acct);
-		editAccount = (Button)findViewById(R.id.edit_acct);
-		accountSpinner = (Spinner)findViewById(R.id.acct_spinner);
-		tvAccountName = (TextView)findViewById(R.id.tv_acctname);
-		nameText = (EditText)findViewById(R.id.acct_name);
-		tvBalance = (TextView)findViewById(R.id.tv_balance);
-		balText = (EditText)findViewById(R.id.acct_bal);
-		tvActive = (TextView)findViewById(R.id.tv_active);
-		activateCb = (CheckBox)findViewById(R.id.active_acct);
-		saveButton = (Button)findViewById(R.id.save_acct);
+		newAccount = (Button)findViewById(com.ponyinc.minttrack.R.id.new_acct);
+		editAccount = (Button)findViewById(com.ponyinc.minttrack.R.id.edit_acct);
+		accountSpinner = (Spinner)findViewById(com.ponyinc.minttrack.R.id.acct_spinner);
+		tvAccountName = (TextView)findViewById(com.ponyinc.minttrack.R.id.tv_acctname);
+		nameText = (EditText)findViewById(com.ponyinc.minttrack.R.id.acct_name);
+		tvBalance = (TextView)findViewById(com.ponyinc.minttrack.R.id.tv_balance);
+		balText = (EditText)findViewById(com.ponyinc.minttrack.R.id.acct_bal);
+		tvActive = (TextView)findViewById(com.ponyinc.minttrack.R.id.tv_active);
+		activateCb = (CheckBox)findViewById(com.ponyinc.minttrack.R.id.active_acct);
+		saveButton = (Button)findViewById(com.ponyinc.minttrack.R.id.save_acct);
 		setWidgetVisiblity(Default);
 	}
 	

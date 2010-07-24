@@ -1,7 +1,10 @@
-package com.ponyinc.minttrack;
+package com.ponyinc.minttrack.types;
 
 import static android.provider.BaseColumns._ID;
 import static com.ponyinc.minttrack.Constants.*;
+
+import com.ponyinc.minttrack.MintData;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,7 +17,7 @@ public class Accounts {
 	/** Secondary Constructor
 	*	@param mintdata Takes a MintData object that represents the actual database object
 	*/
-	Accounts(MintData mintdata) {
+	public Accounts(MintData mintdata) {
 		MintLink = mintdata;
 
 	}

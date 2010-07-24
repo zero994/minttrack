@@ -1,7 +1,10 @@
-package com.ponyinc.minttrack;
+package com.ponyinc.minttrack.types;
 
 
 import static com.ponyinc.minttrack.Constants.*;
+
+import com.ponyinc.minttrack.MintData;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,7 +18,7 @@ public class Categories {
 	/** Secondary Constructor
 	*	@param mintdata Database object to be used for querys
 	*/
-	Categories(MintData mintdata) {
+	public Categories(MintData mintdata) {
 		MintLink = mintdata;
 	}
 	/** Outputs a cursor containing all categories

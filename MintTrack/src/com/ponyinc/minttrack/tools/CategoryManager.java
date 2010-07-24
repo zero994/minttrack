@@ -1,7 +1,10 @@
-package com.ponyinc.minttrack;
+package com.ponyinc.minttrack.tools;
 
 
 import static com.ponyinc.minttrack.Constants.*;
+
+import com.ponyinc.minttrack.Budget;
+
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -28,18 +31,18 @@ public class CategoryManager extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		setContentView(R.layout.catmgr);
+		setContentView(com.ponyinc.minttrack.R.layout.catmgr);
 		budget = new Budget(this);
 		
-		 findViewById(R.id.new_cat).setOnClickListener(newCategoryListener);
-		 findViewById(R.id.edit_cat).setOnClickListener(editCategoryListener);
-		 findViewById(R.id.save_cat).setOnClickListener(saveCategoryListener);
+		 findViewById(com.ponyinc.minttrack.R.id.new_cat).setOnClickListener(newCategoryListener);
+		 findViewById(com.ponyinc.minttrack.R.id.edit_cat).setOnClickListener(editCategoryListener);
+		 findViewById(com.ponyinc.minttrack.R.id.save_cat).setOnClickListener(saveCategoryListener);
 		
 		setWidgets();
 		
 		//Fill the spinner for category types
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-	            this, R.array.cattype_array, android.R.layout.simple_spinner_item);
+	            this, com.ponyinc.minttrack.R.array.cattype_array, android.R.layout.simple_spinner_item);
 	    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    categoryTypeSpinner.setAdapter(adapter);
 	    
@@ -54,16 +57,16 @@ public class CategoryManager extends Activity {
 	 * Initializes all widgets
 	 */
 	private void setWidgets(){
-		newCategory = (Button)findViewById(R.id.new_cat);
-		editCategory = (Button)findViewById(R.id.edit_cat);
-		categorySpinner = (Spinner)findViewById(R.id.cat_spinner);
-		tvCategoryName = (TextView)findViewById(R.id.tv_catname);
-		nameText = (EditText)findViewById(R.id.cat_name);
-		tvType = (TextView)findViewById(R.id.tv_cattype);
-		categoryTypeSpinner = (Spinner)findViewById(R.id.cat_type);
-		saveCategory = (Button)findViewById(R.id.save_cat);
-		tvActive = (TextView)findViewById(R.id.tv_catactive);
-		activateCb = (CheckBox) findViewById(R.id.active_cat);
+		newCategory = (Button)findViewById(com.ponyinc.minttrack.R.id.new_cat);
+		editCategory = (Button)findViewById(com.ponyinc.minttrack.R.id.edit_cat);
+		categorySpinner = (Spinner)findViewById(com.ponyinc.minttrack.R.id.cat_spinner);
+		tvCategoryName = (TextView)findViewById(com.ponyinc.minttrack.R.id.tv_catname);
+		nameText = (EditText)findViewById(com.ponyinc.minttrack.R.id.cat_name);
+		tvType = (TextView)findViewById(com.ponyinc.minttrack.R.id.tv_cattype);
+		categoryTypeSpinner = (Spinner)findViewById(com.ponyinc.minttrack.R.id.cat_type);
+		saveCategory = (Button)findViewById(com.ponyinc.minttrack.R.id.save_cat);
+		tvActive = (TextView)findViewById(com.ponyinc.minttrack.R.id.tv_catactive);
+		activateCb = (CheckBox) findViewById(com.ponyinc.minttrack.R.id.active_cat);
 		setWidgetVisiblity(Default);
 	}
 	
