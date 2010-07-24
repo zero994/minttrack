@@ -1,6 +1,17 @@
-package com.ponyinc.minttrack;
+package com.ponyinc.minttrack.tabs;
 
 import java.util.Calendar;
+
+import com.ponyinc.minttrack.AboutUs;
+import com.ponyinc.minttrack.AuditCursorAdapter;
+import com.ponyinc.minttrack.Budget;
+import com.ponyinc.minttrack.MintTrack;
+import com.ponyinc.minttrack.R;
+import com.ponyinc.minttrack.R.id;
+import com.ponyinc.minttrack.R.layout;
+import com.ponyinc.minttrack.R.menu;
+import com.ponyinc.minttrack.help.HelpAudit;
+
 import android.app.*;
 import android.content.Intent;
 import android.database.Cursor;
@@ -160,7 +171,7 @@ public class AuditActivity extends ListActivity {
 	}
 	private void executeHelpIntent()
 	{
-		 Intent i = new Intent(this, AuditHelp.class);
+		 Intent i = new Intent(this, HelpAudit.class);
 	     startActivity(i);
 	}
 	private void executeInfoIntent()

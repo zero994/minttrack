@@ -1,6 +1,9 @@
-package com.ponyinc.minttrack;
+package com.ponyinc.minttrack.types;
 
 import static com.ponyinc.minttrack.Constants.*;
+
+import com.ponyinc.minttrack.MintData;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,7 +18,7 @@ public class Transactions {
 	/** Create an object to talk to transaction table
 	 *@param mintdata database to connect to
 	 */
-	Transactions(MintData mintdata) {
+	public Transactions(MintData mintdata) {
 		MintLink = mintdata;
 	}
 	/**Transfer founds from one account to another
@@ -179,7 +182,7 @@ public class Transactions {
 		db.update(TRANSACTION_TBLNAM, values,  _ID + "=" + trans_ID, null);
 	}
 	
-	void removeTransaction(long trans_ID)
+	public void removeTransaction(long trans_ID)
 	{
 		SQLiteDatabase db = MintLink.getWritableDatabase();
 		

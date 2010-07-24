@@ -1,4 +1,8 @@
-package com.ponyinc.minttrack;
+package com.ponyinc.minttrack.help;
+
+import com.ponyinc.minttrack.R;
+import com.ponyinc.minttrack.R.id;
+import com.ponyinc.minttrack.R.layout;
 
 import android.app.Activity;
 import android.os.Bundle;

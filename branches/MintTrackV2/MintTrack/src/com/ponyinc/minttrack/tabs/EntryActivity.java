@@ -1,7 +1,17 @@
-package com.ponyinc.minttrack;
+package com.ponyinc.minttrack.tabs;
 
 import static com.ponyinc.minttrack.Constants.*;
 import java.util.Calendar;
+
+import com.ponyinc.minttrack.AboutUs;
+import com.ponyinc.minttrack.Budget;
+import com.ponyinc.minttrack.MintTrack;
+import com.ponyinc.minttrack.R;
+import com.ponyinc.minttrack.R.id;
+import com.ponyinc.minttrack.R.layout;
+import com.ponyinc.minttrack.R.menu;
+import com.ponyinc.minttrack.help.HelpEntry;
+
 import android.app.*;
 import android.content.Intent;
 import android.database.Cursor;

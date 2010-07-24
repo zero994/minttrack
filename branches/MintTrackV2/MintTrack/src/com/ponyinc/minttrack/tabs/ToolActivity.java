@@ -1,4 +1,15 @@
-package com.ponyinc.minttrack;
+package com.ponyinc.minttrack.tabs;
+
+import com.ponyinc.minttrack.AboutUs;
+import com.ponyinc.minttrack.Budget;
+import com.ponyinc.minttrack.R;
+import com.ponyinc.minttrack.R.id;
+import com.ponyinc.minttrack.R.layout;
+import com.ponyinc.minttrack.R.menu;
+import com.ponyinc.minttrack.help.HelpTools;
+import com.ponyinc.minttrack.tools.AccountManager;
+import com.ponyinc.minttrack.tools.CategoryManager;
+import com.ponyinc.minttrack.tools.TipCalculator;
 
 import android.app.Activity;
 
@@ -43,11 +54,9 @@ public class ToolActivity extends Activity implements OnClickListener
 	View.OnClickListener manAcctListener = new View.OnClickListener() {
 			
 		@Override
-		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			Intent acctIntent = new Intent();
-			acctIntent.setClassName("com.ponyinc.minttrack", "com.ponyinc.minttrack.AccountManager");
-	        startActivity(acctIntent);
+		public void onClick(View v) 
+		{
+			executeAccountManager();
 		}
 	};
 	
@@ -55,11 +64,9 @@ public class ToolActivity extends Activity implements OnClickListener
 	View.OnClickListener manCatListener = new View.OnClickListener() {
 		
 		@Override
-		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			Intent catIntent = new Intent();
-			catIntent.setClassName("com.ponyinc.minttrack", "com.ponyinc.minttrack.CategoryManager");
-	        startActivity(catIntent);
+		public void onClick(View v) 
+		{
+			executeCategoryManager();
 		}
 	};
 	
@@ -69,9 +76,7 @@ public class ToolActivity extends Activity implements OnClickListener
 		@Override
 		 public void onClick(View v) 
 		 {
-			Intent calcIntent = new Intent();
-			calcIntent.setClassName("com.ponyinc.minttrack", "com.ponyinc.minttrack.TipCalculator");
-	        startActivity(calcIntent);
+			executeTipCalculator();
 		 }
 	};
 	 
@@ -108,10 +113,27 @@ public class ToolActivity extends Activity implements OnClickListener
 		 Intent i = new Intent(this, AboutUs.class);
 	     startActivity(i);
 	}
+	/** Executes Tip Calculator Functionality **/
+	private void executeTipCalculator()
+	{
+		Intent calcIntent = new Intent(this, TipCalculator.class);
+		startActivity(calcIntent);
+	}
+	/** Executes Account Manager Functionality **/
+	private void executeAccountManager()
+	{
+		Intent accountIntent = new Intent(this, AccountManager.class);
+		startActivity(accountIntent);
+	}
+	/** Executes Category manager Functionality **/
+	private void executeCategoryManager()
+	{
+		Intent categoryIntent = new Intent(this, CategoryManager.class);
+		startActivity(categoryIntent);
+	}
 
 	@Override
 	public void onClick(View arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 			 

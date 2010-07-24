@@ -3,7 +3,7 @@
       package="com.ponyinc.minttrack"
       android:versionCode="1"
       android:versionName="1.0">
-    <application android:icon="@drawable/icon" android:label="@string/app_name">
+    <application android:label="@string/app_name" android:icon="@drawable/minttrack">
         <activity android:name=".MintTrack"
                   android:label="@string/app_name" android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
@@ -12,19 +12,18 @@
             </intent-filter>
         </activity>
 
-    <activity android:name=".AuditActivity"></activity>
-    <activity android:name=".EntryActivity"></activity>
-    <activity android:name=".HomeActivity"></activity>
-    <activity android:name=".ToolActivity"></activity>
-    <activity android:name=".TipCalculator"></activity>
-    <activity android:name=".HelpHome"></activity>
-    <activity android:name=".HelpEntry"></activity>
-    <activity android:name=".HelpTools"></activity>
-    <activity android:name=".AuditHelp"></activity>
-    <activity android:name=".AboutUs"></activity>
-    <activity android:name=".AccountManager"></activity>
-    <activity android:name=".CategoryManager"></activity>
-</application>
+	    <activity android:name=".tabs.AuditActivity"></activity>
+	    <activity android:name=".tabs.EntryActivity"></activity>
+	    <activity android:name=".tabs.HomeActivity"></activity>
+	    <activity android:name=".tabs.ToolActivity"></activity>
+		<activity android:name=".tools.AccountManager"></activity>
+	    <activity android:name=".tools.CategoryManager"></activity>
+	    <activity android:name=".tools.TipCalculator"></activity>
+	    <activity android:name=".help.HelpHome"></activity>
+	    <activity android:name=".help.HelpEntry"></activity>
+	    <activity android:name=".help.HelpTools"></activity>
+	    <activity android:name=".help.HelpAudit"></activity>
+	    <activity android:name=".AboutUs"></activity>
+	</application>
     <uses-sdk android:minSdkVersion="3" />
-
 </manifest> 

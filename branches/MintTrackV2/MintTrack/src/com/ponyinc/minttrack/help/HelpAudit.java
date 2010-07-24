@@ -1,5 +1,9 @@
 
-package com.ponyinc.minttrack;
+package com.ponyinc.minttrack.help;
+
+import com.ponyinc.minttrack.R;
+import com.ponyinc.minttrack.R.id;
+import com.ponyinc.minttrack.R.layout;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -7,7 +11,7 @@ import android.widget.TextView;
 
 /** Help screen for the audit activity
  */
-public class AuditHelp extends Activity
+public class HelpAudit extends Activity
 {
 	 public void onCreate(Bundle savedInstanceState) 
 	    {
