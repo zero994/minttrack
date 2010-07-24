@@ -4,4 +4,44 @@
   android:orientation="vertical"
   android:layout_width="fill_parent"
   android:layout_height="fill_parent">
+  <TableLayout
+  	android:orientation="vertical"
+  	android:layout_width="fill_parent"
+  	android:layout_height="fill_parent">
+ 	<TableRow
+ 		android:orientation="horizontal"
+ 		android:layout_width="fill_parent"
+  		android:layout_height="fill_parent"
+  		android:gravity="center_horizontal"
+  		android:layout_marginTop="10px"
+  		android:layout_marginBottom="10px">
+  		<TextView
+  			android:text="Your MintTrack Stats"
+  			android:textSize="20dip"/> 			
+  	</TableRow> 
+  	<TableRow
+ 		android:orientation="horizontal"
+ 		android:layout_width="fill_parent"
+  		android:layout_height="fill_parent"
+  		android:gravity="center_vertical"
+  		android:layout_marginBottom="10px">
+  		<TextView
+  			android:text="   Total Transactions:"
+  			android:textSize="20dip"/>
+  		<TextView
+  			android:id="@+id/NUMTRANS"
+  			android:textSize="18dip"
+  			android:paddingLeft="10px"/>
+  			<ImageView
+  				android:id="@+id/STAR"
+  				android:paddingLeft="50px"/>
+  	</TableRow>
+  	<TableRow
+ 		android:orientation="horizontal"
+ 		android:layout_width="fill_parent"
+  		android:layout_height="fill_parent"
+  		android:gravity="center_vertical"
+  		android:layout_marginBottom="10px">
+  		</TableRow>
+  </TableLayout>
  </LinearLayout>
