@@ -9,6 +9,7 @@ import com.ponyinc.minttrack.R.menu;
 import com.ponyinc.minttrack.help.HelpTools;
 import com.ponyinc.minttrack.tools.AccountManager;
 import com.ponyinc.minttrack.tools.CategoryManager;
+import com.ponyinc.minttrack.tools.StatsViewer;
 import com.ponyinc.minttrack.tools.TipCalculator;
 
 import android.app.Activity;
@@ -40,6 +41,9 @@ public class ToolActivity extends Activity implements OnClickListener
 		budget = new Budget(this);
        
         // Set up click listeners for all the buttons
+		View stats_button = findViewById(R.id.stats_button);
+		stats_button.setOnClickListener(statsListener);
+		
         View tip_button = findViewById(R.id.tip_button);
         tip_button.setOnClickListener(tipCalcListener);
         
@@ -49,6 +53,16 @@ public class ToolActivity extends Activity implements OnClickListener
         View category_button = findViewById(R.id.manage_cats);
         category_button.setOnClickListener(manCatListener);
 	}
+	
+	/** Statistics Viewer Button Listener **/
+	View.OnClickListener statsListener = new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) 
+		{
+			executeStatisticsViewer();
+		}
+	};
 	 
 	/**Manage Accounts Button Listener**/
 	View.OnClickListener manAcctListener = new View.OnClickListener() {
@@ -130,6 +144,12 @@ public class ToolActivity extends Activity implements OnClickListener
 	{
 		Intent categoryIntent = new Intent(this, CategoryManager.class);
 		startActivity(categoryIntent);
+	}
+	/** Executes statistics viewer functionality **/
+	private void executeStatisticsViewer()
+	{
+		Intent statsIntent = new Intent(this, StatsViewer.class);
+		startActivity(statsIntent);
 	}
 
 	@Override

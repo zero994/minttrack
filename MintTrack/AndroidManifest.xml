@@ -16,6 +16,7 @@
 	    <activity android:name=".tabs.EntryActivity"></activity>
 	    <activity android:name=".tabs.HomeActivity"></activity>
 	    <activity android:name=".tabs.ToolActivity"></activity>
+	    <activity android:name=".tools.StatsViewer"></activity>
 		<activity android:name=".tools.AccountManager"></activity>
 	    <activity android:name=".tools.CategoryManager"></activity>
 	    <activity android:name=".tools.TipCalculator"></activity>

@@ -7,6 +7,14 @@
    <Button
 	android:layout_width="fill_parent"
 	android:layout_height="85dip"
+	android:id="@+id/stats_button"
+	android:text="Statistics"
+	android:textSize="16dip"
+	android:textStyle="bold"
+	android:paddingTop="10dip"	/>
+   <Button
+	android:layout_width="fill_parent"
+	android:layout_height="85dip"
 	android:id="@+id/manage_accounts"
 	android:text="Manage Accounts" 
 	android:textSize="16dip"
