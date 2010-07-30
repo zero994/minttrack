@@ -17,8 +17,10 @@
   		android:layout_marginBottom="10px">
   		<TextView
   			android:text="Your MintTrack Stats"
+  			android:gravity="center"
   			android:textSize="20dip"/> 			
   	</TableRow> 
+<!-- TRANSACTIONS -->
   	<TableRow
  		android:orientation="horizontal"
  		android:layout_width="fill_parent"
@@ -26,22 +28,84 @@
   		android:gravity="center_vertical"
   		android:layout_marginBottom="10px">
   		<TextView
-  			android:text="   Total Transactions:"
+  			android:text="Total Transactions:"
+  			android:layout_width="wrap_content"
+  			android:layout_height="fill_parent"
   			android:textSize="20dip"/>
   		<TextView
   			android:id="@+id/NUMTRANS"
   			android:textSize="18dip"
   			android:paddingLeft="10px"/>
-  			<ImageView
-  				android:id="@+id/STAR"
-  				android:paddingLeft="50px"/>
+		<ImageView
+			android:id="@+id/BRONZESTAR"
+			android:src="@drawable/bronze_star"
+			android:paddingLeft="20px"/>
+		<ImageView
+			android:id="@+id/SILVERSTAR"
+			android:src="@drawable/silver_star"
+			android:paddingLeft="20px"/>
+		<ImageView
+			android:id="@+id/GOLDSTAR"
+			android:src="@drawable/gold_star"
+			android:paddingLeft="20px"/>
   	</TableRow>
+<!-- ACCOUNTS -->
   	<TableRow
  		android:orientation="horizontal"
  		android:layout_width="fill_parent"
   		android:layout_height="fill_parent"
   		android:gravity="center_vertical"
   		android:layout_marginBottom="10px">
-  		</TableRow>
+  		<TextView
+  			android:text="Number of Accounts:"
+  			android:textSize="20dip"/>
+  		<TextView
+  			android:id="@+id/NUMACCTS"
+  			android:text="50"
+  			android:textSize="18dip"/>
+  	</TableRow>
+  <!-- ACCOUNTS LIST -->
+  	<TableRow
+  		android:orientation="vertical"
+ 		android:layout_width="fill_parent"
+  		android:layout_height="fill_parent"
+  		android:gravity="center"
+  		android:layout_marginBottom="10px">
+  		<ListView
+  			android:id="@android:id/list"
+  			android:layout_width="300dip"
+  			android:layout_height="125dip"
+  			/>
+  	</TableRow>
+<!-- CATEGORIES -->
+  	<TableRow
+ 		android:orientation="horizontal"
+ 		android:layout_width="fill_parent"
+  		android:layout_height="fill_parent"
+  		android:gravity="center_vertical"
+  		android:layout_marginBottom="10px"
+  		>
+  		<TextView
+  			android:text="Number of Categories:"
+  			android:layout_width="fill_parent"
+ 			android:layout_height="fill_parent"
+  			android:textSize="20dip"/>
+  		<TextView
+  			android:id="@+id/NUMCATS"
+  			android:textSize="18dip"
+  			android:paddingLeft="10px"/>
+  	</TableRow>
+  <!-- CATEGORIES LIST -->
+  	<TableRow
+  		android:orientation="vertical"
+ 		android:layout_width="fill_parent"
+  		android:layout_height="fill_parent"
+  		android:gravity="center"
+  		android:layout_marginBottom="10px">
+  		<ListView
+  			android:id="@android:id/list"
+  			android:layout_width="fill_parent"
+  			android:layout_height="125dip"/>
+  	</TableRow>
   </TableLayout>
  </LinearLayout>
