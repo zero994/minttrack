@@ -2,7 +2,9 @@ package com.ponyinc.minttrack.tools;
 
 
 
+import com.ponyinc.minttrack.AccountStatsCursorAdapter;
 import com.ponyinc.minttrack.Budget;
+import com.ponyinc.minttrack.CategoryStatsCursorAdapter;
 import com.ponyinc.minttrack.R;
 
 import android.app.ListActivity;
@@ -17,8 +19,6 @@ public class StatsViewer extends ListActivity {
 	private int numberOfCategories;
 	private int numberOfAccounts;
 	private TextView tvNOT, tvNOC, tvNOA;
-//	private ArrayList<Accounts> accountArray = new ArrayList<Accounts>();
-//	private ArrayList<Categories> categoryArray = new ArrayList<Categories>();
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -31,9 +31,10 @@ public class StatsViewer extends ListActivity {
 		getStarRating();
 		getNumberOfCategories();
 		getCategoryList();
+		getListView().setEmptyView(findViewById(R.id.emptyAccounts));
 		getNumberOfAccounts();
 		getAccountList();
-		getListView().setEmptyView(findViewById(R.id.empty));
+		getListView().setEmptyView(findViewById(R.id.emptyCategories));
 	}
 
 	/**
@@ -50,17 +51,17 @@ public class StatsViewer extends ListActivity {
 	 */
 	private void getStarRating() {
 		//Based off of number of transactions
-		if(numberOfTransactions >= 100){
+		if(numberOfTransactions >= 0){
 			findViewById(R.id.BRONZESTAR).setVisibility(View.VISIBLE);
 			findViewById(R.id.SILVERSTAR).setVisibility(View.INVISIBLE);
 			findViewById(R.id.GOLDSTAR).setVisibility(View.INVISIBLE);
 		}
-		else if(numberOfTransactions >= 250){
+		else if(numberOfTransactions >= 5){
 			findViewById(R.id.BRONZESTAR).setVisibility(View.INVISIBLE);
 			findViewById(R.id.SILVERSTAR).setVisibility(View.VISIBLE);
 			findViewById(R.id.GOLDSTAR).setVisibility(View.INVISIBLE);
 		}
-		else if(numberOfTransactions >= 500){
+		else if(numberOfTransactions >= 10){
 			findViewById(R.id.BRONZESTAR).setVisibility(View.INVISIBLE);
 			findViewById(R.id.SILVERSTAR).setVisibility(View.INVISIBLE);
 			findViewById(R.id.GOLDSTAR).setVisibility(View.VISIBLE);
@@ -87,9 +88,7 @@ public class StatsViewer extends ListActivity {
 	private void getCategoryList() {
 		Cursor categoryCursor = budget.getAllCategorys();
 		categoryCursor.moveToFirst();
-		while(!categoryCursor.isAfterLast()){
-			//TODO populate list
-		}
+		setListAdapter(new CategoryStatsCursorAdapter(this, categoryCursor));
 	}
 
 	/**
@@ -107,9 +106,6 @@ public class StatsViewer extends ListActivity {
 	private void getAccountList() {
 		Cursor accountCursor = budget.getAllAccounts();
 		accountCursor.moveToFirst();
-		while(!accountCursor.isAfterLast()){
-			//TODO populate list
-		}
-		
+		setListAdapter(new AccountStatsCursorAdapter(this, accountCursor));
 	}
 }
