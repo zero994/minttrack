@@ -1,12 +1,10 @@
 package com.ponyinc.minttrack.help;
 
-import com.ponyinc.minttrack.R;
-import com.ponyinc.minttrack.R.id;
-import com.ponyinc.minttrack.R.layout;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
+
+import com.ponyinc.minttrack.R;
 
 /** Help screen for the Home activity
  */
