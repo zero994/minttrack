@@ -1,28 +1,22 @@
 package com.ponyinc.minttrack.tabs;
 
-import com.ponyinc.minttrack.AboutUs;
-import com.ponyinc.minttrack.Budget;
-import com.ponyinc.minttrack.R;
-import com.ponyinc.minttrack.R.id;
-import com.ponyinc.minttrack.R.layout;
-import com.ponyinc.minttrack.R.menu;
-import com.ponyinc.minttrack.help.HelpTools;
-import com.ponyinc.minttrack.tools.AccountManager;
-import com.ponyinc.minttrack.tools.CategoryManager;
-import com.ponyinc.minttrack.tools.StatsViewer;
-import com.ponyinc.minttrack.tools.TipCalculator;
-
 import android.app.Activity;
-
-import android.os.Bundle;
-
 import android.content.Intent;
-
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+
+import com.ponyinc.minttrack.AboutUs;
+import com.ponyinc.minttrack.Budget;
+import com.ponyinc.minttrack.R;
+import com.ponyinc.minttrack.help.HelpTools;
+import com.ponyinc.minttrack.tools.AccountManager;
+import com.ponyinc.minttrack.tools.CategoryManager;
+import com.ponyinc.minttrack.tools.StatsViewer;
+import com.ponyinc.minttrack.tools.TipCalculator;
 
 /**This class implements a set of tools for the user including Account manager, Category manager, 
  * 		and Tip calculator

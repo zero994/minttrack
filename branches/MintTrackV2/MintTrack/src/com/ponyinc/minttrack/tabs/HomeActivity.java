@@ -1,17 +1,17 @@
 package com.ponyinc.minttrack.tabs;
 
-import static com.ponyinc.minttrack.Constants.*;
-
-import com.ponyinc.minttrack.AboutUs;
-import com.ponyinc.minttrack.Budget;
-import com.ponyinc.minttrack.R;
-import com.ponyinc.minttrack.R.id;
-import com.ponyinc.minttrack.R.layout;
-import com.ponyinc.minttrack.R.menu;
-import com.ponyinc.minttrack.help.HelpHome;
+import static com.ponyinc.minttrack.Constants.REASON_TYPE_EXPENSE;
+import static com.ponyinc.minttrack.Constants.REASON_TYPE_INCOME;
+import static com.ponyinc.minttrack.Constants.TRANSACTION_AMOUNT;
+import static com.ponyinc.minttrack.Constants.TRANSACTION_DATE;
+import static com.ponyinc.minttrack.Constants.TRANSACTION_TYPE;
+import static com.ponyinc.minttrack.Constants.TRANS_TYPE_EXPENSE;
+import static com.ponyinc.minttrack.Constants.TRANS_TYPE_INCOME;
+import static com.ponyinc.minttrack.Constants.TRANS_TYPE_TRANSFER;
 
 import java.text.NumberFormat;
 import java.util.Locale;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -20,6 +20,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
+
+import com.ponyinc.minttrack.AboutUs;
+import com.ponyinc.minttrack.Budget;
+import com.ponyinc.minttrack.R;
+import com.ponyinc.minttrack.help.HelpHome;
 /** This class implements a summary screen to the MintTrack application.
  *  This summary screen displays an income, expense, and grand total of transactions as well as
  *  a short list of the last four transactions entered.
@@ -45,10 +50,13 @@ public class HomeActivity extends Activity {
 		if (AccountCursor.getCount() == 0){
 			budget.addAccount("Savings", 0.00, true);
 			budget.addAccount("Checking", 0.00, true);
+			budget.addAccount("Pocket Money", 0.00, true);
 		}
 		if (CategoryCursor.getCount() == 0){
-			budget.addCategory("Bills", 0.00, REASON_TYPE_INCOME, true);
+			budget.addCategory("Job 1", 0.00, REASON_TYPE_INCOME, true);
 			budget.addCategory("Food", 0.00, REASON_TYPE_EXPENSE, true);
+			budget.addCategory("Bills", 0.00, REASON_TYPE_EXPENSE, true);
+			budget.addCategory("Gas", 0.00, REASON_TYPE_EXPENSE, true);
 		}
 		
 		CategoryCursor.close();

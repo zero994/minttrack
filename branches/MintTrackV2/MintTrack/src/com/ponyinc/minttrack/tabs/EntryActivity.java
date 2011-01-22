@@ -1,23 +1,44 @@
 package com.ponyinc.minttrack.tabs;
 
-import static com.ponyinc.minttrack.Constants.*;
+import static android.provider.BaseColumns._ID;
+import static com.ponyinc.minttrack.Constants.ACCOUNT_NAME;
+import static com.ponyinc.minttrack.Constants.CATEGORY_NAME;
+import static com.ponyinc.minttrack.Constants.REASON_TYPE_EXPENSE;
+import static com.ponyinc.minttrack.Constants.REASON_TYPE_INCOME;
+import static com.ponyinc.minttrack.Constants.TRANSACTION_AMOUNT;
+import static com.ponyinc.minttrack.Constants.TRANSACTION_CATEGORY;
+import static com.ponyinc.minttrack.Constants.TRANSACTION_DATE;
+import static com.ponyinc.minttrack.Constants.TRANSACTION_FROMACCOUNT;
+import static com.ponyinc.minttrack.Constants.TRANSACTION_NOTE;
+import static com.ponyinc.minttrack.Constants.TRANSACTION_TOACCOUNT;
+import static com.ponyinc.minttrack.Constants.TRANSACTION_TYPE;
+import static com.ponyinc.minttrack.Constants.TRANS_TYPE_EXPENSE;
+import static com.ponyinc.minttrack.Constants.TRANS_TYPE_INCOME;
+import static com.ponyinc.minttrack.Constants.TRANS_TYPE_TRANSFER;
+
 import java.util.Calendar;
+
+import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.content.Intent;
+import android.database.Cursor;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.ponyinc.minttrack.AboutUs;
 import com.ponyinc.minttrack.Budget;
 import com.ponyinc.minttrack.MintTrack;
 import com.ponyinc.minttrack.R;
-import com.ponyinc.minttrack.R.id;
-import com.ponyinc.minttrack.R.layout;
-import com.ponyinc.minttrack.R.menu;
 import com.ponyinc.minttrack.help.HelpEntry;
-
-import android.app.*;
-import android.content.Intent;
-import android.database.Cursor;
-import android.os.Bundle;
-import android.view.*;
-import android.widget.*;
 /**
  * This class represents the entry tab and all of it's pieces and interactions
  * @author Stephan Krach & Christopher Wilkins
