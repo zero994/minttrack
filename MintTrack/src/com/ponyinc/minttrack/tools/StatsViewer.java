@@ -1,17 +1,15 @@
 package com.ponyinc.minttrack.tools;
 
-
-
-import com.ponyinc.minttrack.AccountStatsCursorAdapter;
-import com.ponyinc.minttrack.Budget;
-import com.ponyinc.minttrack.CategoryStatsCursorAdapter;
-import com.ponyinc.minttrack.R;
-
 import android.app.ListActivity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
+import com.ponyinc.minttrack.AccountStatsCursorAdapter;
+import com.ponyinc.minttrack.Budget;
+import com.ponyinc.minttrack.CategoryStatsCursorAdapter;
+import com.ponyinc.minttrack.R;
 
 public class StatsViewer extends ListActivity {
 	private Budget budget;
@@ -31,10 +29,10 @@ public class StatsViewer extends ListActivity {
 		getStarRating();
 		getNumberOfCategories();
 		getCategoryList();
-		getListView().setEmptyView(findViewById(R.id.emptyAccounts));
+		//getListView().setEmptyView(findViewById(R.id.empty));
 		getNumberOfAccounts();
 		getAccountList();
-		getListView().setEmptyView(findViewById(R.id.emptyCategories));
+		getListView().setEmptyView(findViewById(R.id.empty));
 	}
 
 	/**

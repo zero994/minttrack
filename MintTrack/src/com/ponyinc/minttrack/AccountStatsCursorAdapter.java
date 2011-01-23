@@ -1,5 +1,7 @@
 package com.ponyinc.minttrack;
 
+import java.text.DecimalFormat;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -12,6 +14,7 @@ import static com.ponyinc.minttrack.Constants.*;
 
 public final class AccountStatsCursorAdapter extends CursorAdapter {
 
+	DecimalFormat df = new DecimalFormat("0.00");
 	public AccountStatsCursorAdapter(Context context, Cursor c) {
 		super(context, c);
 	}
@@ -23,18 +26,20 @@ public final class AccountStatsCursorAdapter extends CursorAdapter {
 		TextView accountActivity = (TextView) view.findViewById(R.id.accountActivity);
 		
 		String strAccountName = cursor.getString(cursor.getColumnIndex(ACCOUNT_NAME));
-		double dblAccountAmount = cursor.getDouble(cursor.getColumnIndex(ACCOUNT_TOTAL));
-		int intAccountActivity = cursor.getInt(cursor.getColumnIndex(ACCOUNT_ACTIVE));
+		accountName.setText(strAccountName);
+		String strAccountAmount = df.format(cursor.getDouble(cursor.getColumnIndex(ACCOUNT_TOTAL)));
+		accountAmount.setText(strAccountAmount);
+		String strAccountActivity = cursor.getString(cursor.getColumnIndex(ACCOUNT_ACTIVE));
 
-		switch(intAccountActivity){
-		case 0:
-			accountActivity.setTextColor(Color.RED);
-			accountActivity.setText("Inactive");
-			break;
-		case 1:
+		if(strAccountActivity.equalsIgnoreCase("active"))
+		{
 			accountActivity.setTextColor(Color.GREEN);
 			accountActivity.setText("Active");
-			break;
+		}
+		else
+		{
+			accountActivity.setTextColor(Color.RED);
+			accountActivity.setText("Inactive");
 		}
 	}
 

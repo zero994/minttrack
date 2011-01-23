@@ -1,5 +1,12 @@
 package com.ponyinc.minttrack;
 
+import static com.ponyinc.minttrack.Constants.CATEGORY_ACTIVE;
+import static com.ponyinc.minttrack.Constants.CATEGORY_NAME;
+import static com.ponyinc.minttrack.Constants.CATEGORY_TOTAL;
+import static com.ponyinc.minttrack.Constants.CATEGORY_TYPE;
+
+import java.text.DecimalFormat;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -8,10 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
-import static com.ponyinc.minttrack.Constants.*;
 
 public final class CategoryStatsCursorAdapter extends CursorAdapter {
 
+	DecimalFormat df = new DecimalFormat("0.00");
 	public CategoryStatsCursorAdapter(Context context, Cursor c) {
 		super(context, c);
 	}
@@ -24,9 +31,11 @@ public final class CategoryStatsCursorAdapter extends CursorAdapter {
 		TextView categoryActivity = (TextView) view.findViewById(R.id.categoryActivity);
 		
 		String strCategoryName = cursor.getString(cursor.getColumnIndex(CATEGORY_NAME));
-		double dblCategoryAmount = cursor.getDouble(cursor.getColumnIndex(CATEGORY_TOTAL));
+		categoryName.setText(strCategoryName);
+		String strCategoryAmount = df.format(cursor.getDouble(cursor.getColumnIndex(CATEGORY_TOTAL)));
+		categoryAmount.setText(strCategoryAmount);
 		int intCategoryType = cursor.getInt(cursor.getColumnIndex(CATEGORY_TYPE));
-		int intCategoryActivity = cursor.getInt(cursor.getColumnIndex(CATEGORY_ACTIVE));
+		String strCategoryActive = cursor.getString(cursor.getColumnIndex(CATEGORY_ACTIVE));
 	
 		switch(intCategoryType){
 		case 0:
@@ -37,15 +46,15 @@ public final class CategoryStatsCursorAdapter extends CursorAdapter {
 			break;
 		}
 
-		switch(intCategoryActivity){
-		case 0:
-			categoryActivity.setTextColor(Color.RED);
-			categoryActivity.setText("Inactive");
-			break;
-		case 1:
+		if(strCategoryActive.equalsIgnoreCase("active"))
+		{
 			categoryActivity.setTextColor(Color.GREEN);
 			categoryActivity.setText("Active");
-			break;
+		}
+		else
+		{
+			categoryActivity.setTextColor(Color.RED);
+			categoryActivity.setText("Inactive");
 		}
 	}
 
