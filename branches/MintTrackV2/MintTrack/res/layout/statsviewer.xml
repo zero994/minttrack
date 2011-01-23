@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
 <LinearLayout
-  android:orientation="vertical"
-  android:layout_width="fill_parent"
-  android:layout_height="fill_parent">
+	xmlns:android="http://schemas.android.com/apk/res/android"
+  	android:orientation="vertical"
+ 	android:layout_width="fill_parent"
+  	android:layout_height="fill_parent">
 	<TextView
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
@@ -16,6 +13,14 @@
 		android:textSize="20dip"
 		android:gravity="center"
 		android:textStyle="bold"/>
+	<ScrollView
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:scrollbars="none">
+	<LinearLayout
+	  android:orientation="vertical"
+	  android:layout_width="fill_parent"
+	  android:layout_height="fill_parent">
 <!-- TRANSACTIONS -->
 	<LinearLayout
 		android:orientation="horizontal"
@@ -89,7 +94,7 @@
   			android:layout_height="125dip"
   			android:layout_weight="1"/>
   		<TextView 
-			android:id="@+id/emptyAccounts"
+			android:id="@id/empty"
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"
 			android:paddingTop="10dip"
@@ -120,7 +125,7 @@
   	<LinearLayout
   		android:orientation="vertical"
  		android:layout_width="fill_parent"
-  		android:layout_height="wrap_content"
+  		android:layout_height="fill_parent"
   		android:paddingBottom="5px"
   		android:paddingTop="5px">
   		<ListView
@@ -129,11 +134,12 @@
   			android:layout_height="125dip"
   			android:layout_weight="1"/>
   		<TextView 
-			android:id="@+id/emptyCategories"
+			android:id="@id/empty"
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"
 			android:paddingTop="10dip"
 			android:text="There are currently no Categories to display..." />
   	</LinearLayout>
- </LinearLayout>
- </ScrollView>
+	</LinearLayout>
+	</ScrollView>
+</LinearLayout>
