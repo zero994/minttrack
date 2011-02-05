@@ -21,7 +21,7 @@ public class Accounts {
 		MintLink = mintdata;
 
 	}
-	/** Method is used to add an account to the acount table.
+	/** Method is used to add an account to the account table.
 	*	@param strName The name of the account
 	*	@param initalValue The initial account balance of the account
 	*	@param isActive Is account active

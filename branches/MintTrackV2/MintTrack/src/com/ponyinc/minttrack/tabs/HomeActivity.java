@@ -246,13 +246,14 @@ public class HomeActivity extends Activity {
 	 * @return String that shows the date of the transaction in mm/dd/yyyy format
 	 */
 	private String getFormattedDate(String str){
-		String newMonth = "";
-		int monthChange = Integer.parseInt(str.substring(4,6)) + 1;
+		/*String newMonth = "";
+		int monthChange = Integer.parseInt(str.substring(4,6))+1;
 		if(monthChange < 10)
 			newMonth = "0" + String.valueOf(monthChange);
 		else
 			newMonth = String.valueOf(monthChange);
 		
-		return newMonth+"/"+str.substring(6)+"/"+str.substring(0,4);
+		return newMonth+"/"+str.substring(6)+"/"+str.substring(0,4);*/
+		return str.substring(4,6)+"/"+str.substring(6)+"/"+str.substring(0,4);
 	}
 }

@@ -24,15 +24,20 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ponyinc.minttrack.AboutUs;
 import com.ponyinc.minttrack.Budget;
@@ -45,11 +50,17 @@ import com.ponyinc.minttrack.help.HelpEntry;
  */
 public class EntryActivity extends Activity {
 //	private TextView mDateDisplay;
-	private Button mPickDate, mSave, mIncomeButton, mExpenseButton, mTransButton, mCancelButton;
-	private TextView mAmount, mNotes, mtxtPay_To, mtxtPay_From, mtxt_Reason, mWarning;
-	private Spinner mReason, mPaymentType_To, mPaymentType_From;
+	private Button mPickDate;
+	private Button mSave, mIncomeButton, mExpenseButton, mTransButton, mCancelButton;
+	private TextView mtxtPay_To, mtxtPay_From, mtxt_Reason, mWarning;
+	private EditText mAmount;
+	private EditText mNotes;
+	private Spinner mCategory;
+	private Spinner mPaymentType_To;
+	private Spinner mPaymentType_From;
 	private int mYear, mMonth, mDay;
-	 
+	private String [] oldEntryInfo = new String[6];
+	
 	private boolean isUpdate = false;
 	private long trans_ID;
 	
@@ -60,6 +71,12 @@ public class EntryActivity extends Activity {
 	static final int INCOME_MODE = 0;
 	static final int EXPENSE_MODE = 1;
 	static final int TRANSFER_MODE = 2;
+	
+	//Toast variables
+	private LayoutInflater lInflator;
+	private View layout;
+	private TextView warningText;
+	private Toast toast;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -72,7 +89,7 @@ public class EntryActivity extends Activity {
 		
 		setListeners();
 		
-		fillCatDropDown(mReason, REASON_TYPE_INCOME);
+		fillCatDropDown(mCategory, REASON_TYPE_INCOME);
 		fillAccountDropDown(mPaymentType_To);
 		fillAccountDropDown(mPaymentType_From);
 		// get the current date
@@ -82,7 +99,7 @@ public class EntryActivity extends Activity {
 		mDay = c.get(Calendar.DAY_OF_MONTH);
 		
 		// display the current date (this method is below)
-		updateDisplay();
+		updateDate();
 	}
 	
 	//Create menu
@@ -97,7 +114,7 @@ public class EntryActivity extends Activity {
 	
 		ResetTab();
 		
-		fillCatDropDown(mReason, REASON_TYPE_INCOME);
+		fillCatDropDown(mCategory, REASON_TYPE_INCOME);
 		fillAccountDropDown(mPaymentType_To);
 		fillAccountDropDown(mPaymentType_From);
 		
@@ -105,21 +122,22 @@ public class EntryActivity extends Activity {
 		
 		MintTrack mt = (MintTrack) this.getParent();
 		if(mt.getTransactionID() >= 0){
+			isUpdate = true; //set to update new
 			trans_ID = mt.getTransactionID();
 			setEntryTab(trans_ID);
 			mt.setTransactionID(-1);
 			mCancelButton.setVisibility(View.VISIBLE);
 			mWarning.setText("You are editing a transaction");
 			mWarning.setVisibility(View.VISIBLE);
-			isUpdate = true; //set to update new
+			
 		}
 	}
 
 	/** updates the date in the TextView*/
-	private void updateDisplay() {
+	private void updateDate() {
 		mPickDate.setText(new StringBuilder()
 				// Month is 0 based so add 1
-				.append(mMonth + 1).append("-").append(mDay).append("-")
+				.append((isUpdate ? mMonth : mMonth + 1)).append("-").append(mDay).append("-")
 				.append(mYear).append(" "));
 	}
 
@@ -131,7 +149,7 @@ public class EntryActivity extends Activity {
 			mYear = year;
 			mMonth = monthOfYear;
 			mDay = dayOfMonth;
-			updateDisplay();
+			updateDate();
 		}
 	};
 
@@ -177,11 +195,11 @@ public class EntryActivity extends Activity {
 		mSave = (Button) findViewById(R.id.saveButton);
 		mPickDate = (Button) findViewById(R.id.pickDate);
 		mCancelButton = (Button) findViewById(R.id.cancelButton);
-		mReason = (Spinner) findViewById(R.id.reason1);
+		mCategory = (Spinner) findViewById(R.id.reason1);
 		mPaymentType_To = (Spinner) findViewById(R.id.paytype_To);
 		mPaymentType_From = (Spinner) findViewById(R.id.paytype_From);
-		mAmount = (TextView) findViewById(R.id.entry1);
-		mNotes = (TextView) findViewById(R.id.notes);
+		mAmount = (EditText) findViewById(R.id.entry1);
+		mNotes = (EditText) findViewById(R.id.notes);
 		mIncomeButton = (Button) findViewById(R.id.incomeButton);
 		mExpenseButton = (Button) findViewById(R.id.expenseButton);
 		mTransButton = (Button) findViewById(R.id.transferButton);
@@ -193,6 +211,15 @@ public class EntryActivity extends Activity {
 		mIncomeButton.setEnabled(false);
 		mPaymentType_From.setVisibility(View.GONE);
 		mtxtPay_From.setVisibility(View.GONE);
+		//Toast
+		lInflator = getLayoutInflater();
+		layout = lInflator.inflate(R.layout.customtoast,
+				(ViewGroup) findViewById(R.id.custom_toast_layout));
+		warningText = (TextView) layout.findViewById(R.id.warning_text);
+		toast = new Toast(getApplicationContext());
+		toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+		toast.setDuration(Toast.LENGTH_LONG);
+		toast.setView(layout);
 	}
 	/** Handles item selections
 	 * @param item 
@@ -230,20 +257,23 @@ public class EntryActivity extends Activity {
 	{
 		mNotes.setText("");
 		mAmount.setText("");
-		mReason.setSelection(0);
+		mCategory.setSelection(0);
 		mPaymentType_From.setSelection(0);
 		mPaymentType_To.setSelection(0);
 		final Calendar c = Calendar.getInstance();
 		mYear = c.get(Calendar.YEAR);
 		mMonth = c.get(Calendar.MONTH);
 		mDay = c.get(Calendar.DAY_OF_MONTH);
+		mIncomeButton.setVisibility(View.VISIBLE);
+		mExpenseButton.setVisibility(View.VISIBLE);
+		mTransButton.setVisibility(View.VISIBLE);
 		mIncomeButton.setEnabled(false);
 		mExpenseButton.setEnabled(true);
 		mTransButton.setEnabled(true);
 		mCancelButton.setVisibility(View.GONE);
 		isUpdate = false;
 		trans_ID = -1;
-		updateDisplay();
+		updateDate();
 	}
 	
 	/**
@@ -266,7 +296,7 @@ public class EntryActivity extends Activity {
 		
 		SimpleCursorAdapter from = (SimpleCursorAdapter) mPaymentType_From.getAdapter();
 		SimpleCursorAdapter to = (SimpleCursorAdapter) mPaymentType_To.getAdapter();
-		SimpleCursorAdapter reason = (SimpleCursorAdapter) mReason.getAdapter();
+		SimpleCursorAdapter reason = (SimpleCursorAdapter) mCategory.getAdapter();
 		
 		Cursor To_acc_cursor = to.getCursor();
 		To_acc_cursor.moveToFirst();
@@ -275,44 +305,18 @@ public class EntryActivity extends Activity {
 		Cursor From_acc_cursor = from.getCursor();
 		From_acc_cursor.moveToFirst();
 		
-		int to_pos = 0;
-		int from_pos = 0;
-		int cat_pos = 0;
-		
-		
-		for(int count = 0; To_acc_cursor.getPosition() < To_acc_cursor.getCount(); To_acc_cursor.moveToNext(), count++ )
-		{
-			if(To_acc_cursor.getInt(To_acc_cursor.getColumnIndex(_ID)) == to_id)
-			{
-				to_pos = To_acc_cursor.getPosition();
-				break;
-			}	
-		}
-		for(int count = 0; From_acc_cursor.getPosition() < From_acc_cursor.getCount(); From_acc_cursor.moveToNext(), count++  )
-		{
-			if(From_acc_cursor.getInt(From_acc_cursor.getColumnIndex(_ID)) == from_id)
-			{
-				from_pos = From_acc_cursor.getPosition();
-				break;
-			}
-		}
-		for(int count = 0;cat_cursor.getPosition() < cat_cursor.getCount(); cat_cursor.moveToNext(), count++  )
-		{
-			if(cat_cursor.getInt(cat_cursor.getColumnIndex(_ID)) == cat_id)
-			{
-				cat_pos = cat_cursor.getPosition();
-				break;
-			}
-		}
+		/*int to_pos = setCursorPosition(To_acc_cursor, to_id);
+		int from_pos = setCursorPosition(From_acc_cursor, from_id);
+		int cat_pos = setCursorPosition(cat_cursor, cat_id);*/
 		
 		mAmount.setText(amount);
 		mNotes.setText(note);
 		mMonth = Integer.parseInt(date.substring(4, 6));
 		mDay = Integer.parseInt(date.substring(6));
 		mYear = Integer.parseInt(date.substring(0, 4));
-		mReason.setSelection(cat_pos);
-		mPaymentType_From.setSelection(from_pos);
-		mPaymentType_To.setSelection(to_pos);
+		mCategory.setSelection(setCursorPosition(cat_cursor, cat_id));
+		mPaymentType_From.setSelection(setCursorPosition(From_acc_cursor, from_id));
+		mPaymentType_To.setSelection(setCursorPosition(To_acc_cursor, to_id));
 		if(trans_type == TRANS_TYPE_INCOME)
 			setWidgetMode(INCOME_MODE);
 		else if(trans_type == TRANS_TYPE_EXPENSE)
@@ -320,72 +324,115 @@ public class EntryActivity extends Activity {
 		else if(trans_type == TRANS_TYPE_TRANSFER)
 			setWidgetMode(TRANSFER_MODE);
 		
-		updateDisplay();
+		updateDate();
 	}
 	
-	void setWidgetMode(int mode)
+	/**
+	 * Sets the cursor to the position of the element and returns the position index
+	 * @param c cursor object
+	 * @param id id to search for
+	 * @return position index of the found element
+	 */
+	public int setCursorPosition(Cursor c, int id)
+	{
+		for(; c.getPosition() < c.getCount(); c.moveToNext())
+		{
+			if(c.getInt(c.getColumnIndex(_ID)) == id)
+			{
+				return c.getPosition();
+			}	
+		}
+		return 0;
+	}
+	
+	/**
+	 * Sets the widgets for a specific entry mode
+	 * @param mode 0 = Income; 1 = Expense; 2 = Transfer
+	 */
+	public void setWidgetMode(int mode)
 	{
 		switch(mode)
 		{
 			case(INCOME_MODE):
 			{
 				mIncomeButton.setEnabled(false);
+				
+				if(isUpdate){
+					mExpenseButton.setVisibility(View.INVISIBLE);
+					mTransButton.setVisibility(View.INVISIBLE);
+				}
 				mExpenseButton.setEnabled(true);
 				mTransButton.setEnabled(true);
 				mPaymentType_From.setVisibility(View.GONE);
 				mtxtPay_From.setVisibility(View.GONE);
 				mPaymentType_To.setVisibility(View.VISIBLE);
 				mtxtPay_To.setVisibility(View.VISIBLE);
-				mReason.setVisibility(View.VISIBLE);
+				mCategory.setVisibility(View.VISIBLE);
 				mtxt_Reason.setVisibility(View.VISIBLE);
-				fillCatDropDown(mReason, REASON_TYPE_INCOME);
+				fillCatDropDown(mCategory, REASON_TYPE_INCOME);
 				if(!isUpdate)
 					mWarning.setVisibility(View.GONE);
+				
+				oldEntryInfo = getEntryInfo();
 				break;
 			}
 			
 			case(EXPENSE_MODE):
 			{
-				mIncomeButton.setEnabled(true);
 				mExpenseButton.setEnabled(false);
+				
+				if(isUpdate){
+					mIncomeButton.setVisibility(View.INVISIBLE);
+					mTransButton.setVisibility(View.INVISIBLE);
+				}
+				mIncomeButton.setEnabled(true);
 				mTransButton.setEnabled(true);
 				mPaymentType_From.setVisibility(View.VISIBLE);
 				mtxtPay_From.setVisibility(View.VISIBLE);
 				mPaymentType_To.setVisibility(View.GONE);
 				mtxtPay_To.setVisibility(View.GONE);
-				mReason.setVisibility(View.VISIBLE);
+				mCategory.setVisibility(View.VISIBLE);
 				mtxt_Reason.setVisibility(View.VISIBLE);
-				fillCatDropDown(mReason, REASON_TYPE_EXPENSE);
+				fillCatDropDown(mCategory, REASON_TYPE_EXPENSE);
 				if(!isUpdate)
 					mWarning.setVisibility(View.GONE);
+				
+				oldEntryInfo = getEntryInfo();
 				break;
 			}
 			
 			case(TRANSFER_MODE):
 			{
-				mIncomeButton.setEnabled(true);
-				mExpenseButton.setEnabled(true);
 				mTransButton.setEnabled(false);
+				
+				if(isUpdate){
+					mExpenseButton.setVisibility(View.INVISIBLE);
+					mIncomeButton.setVisibility(View.INVISIBLE);
+				}
+				mIncomeButton.setEnabled(true);
+				mExpenseButton.setEnabled(true);				
 				mPaymentType_From.setVisibility(View.VISIBLE);
 				mtxtPay_From.setVisibility(View.VISIBLE);
 				mPaymentType_To.setVisibility(View.VISIBLE);
 				mtxtPay_To.setVisibility(View.VISIBLE);
-				mReason.setVisibility(View.GONE);
+				mCategory.setVisibility(View.GONE);
 				mtxt_Reason.setVisibility(View.GONE);
 				if(!isUpdate)
 					mWarning.setVisibility(View.GONE);
+				
+				oldEntryInfo = getEntryInfo();
 				break;
 			}
 			default:
 		}
 	}
-	void setListeners()
+	public void setListeners()
 	{
 		mCancelButton.setOnClickListener(new View.OnClickListener(){
 			public void onClick(View v)
 			{
 				ResetTab();
-				//Get rid of message when done editting
+				//Get rid of message when done editing
 				mWarning.setVisibility(View.GONE);
 			}
 		});
@@ -394,7 +441,7 @@ public class EntryActivity extends Activity {
 			{
 				try{
 					SimpleCursorAdapter s1 = (SimpleCursorAdapter) mPaymentType_To.getAdapter();
-					SimpleCursorAdapter s2 = (SimpleCursorAdapter) mReason.getAdapter();
+					SimpleCursorAdapter s2 = (SimpleCursorAdapter) mCategory.getAdapter();
 					SimpleCursorAdapter s3 = (SimpleCursorAdapter) mPaymentType_From.getAdapter();
 					
 					Cursor To_acc_cursor = s1.getCursor();
@@ -403,24 +450,24 @@ public class EntryActivity extends Activity {
 					
 					
 					To_acc_cursor.moveToPosition(mPaymentType_To.getSelectedItemPosition());
-					cat_cursor.moveToPosition(mReason.getSelectedItemPosition());
+					cat_cursor.moveToPosition(mCategory.getSelectedItemPosition());
 					From_acc_cursor.moveToPosition(mPaymentType_From.getSelectedItemPosition());
 					
-					int cat_ID = cat_cursor.getInt(cat_cursor.getColumnIndex(_ID));
-					int To_ID = To_acc_cursor.getInt(To_acc_cursor.getColumnIndex(_ID));
-					int From_ID = From_acc_cursor.getInt(From_acc_cursor.getColumnIndex(_ID));
+//					int cat_ID = cat_cursor.getInt(cat_cursor.getColumnIndex(_ID));
+//					int To_ID = To_acc_cursor.getInt(To_acc_cursor.getColumnIndex(_ID));
+//					int From_ID = From_acc_cursor.getInt(From_acc_cursor.getColumnIndex(_ID));
 					String S_amount = String.valueOf(mAmount.getText());
-					String Date = mYear + String.format("%02d", mMonth) + String.format("%02d", mDay);
+//					String Date = mYear + String.format("%02d", mMonth) + String.format("%02d", mDay);
 					
 					
-					String notes = String.valueOf(mNotes.getText());
+//					String notes = String.valueOf(mNotes.getText());
 					
 					
 					//Formatting
 					//No value entered - invalid
 					if(S_amount.equals("")){
-						mWarning.setText("You have not entered an amount.");
-						mWarning.setVisibility(View.VISIBLE);
+						warningText.setText("You have not entered an amount.");
+						toast.show();
 					}
 					//Amount string does not contain a decimal point
 					else if(!S_amount.contains(".")){
@@ -436,51 +483,77 @@ public class EntryActivity extends Activity {
 					}
 					
 					
-					double amount = 0.00;
+					//double amount = 0.00;
 					
 					//Entered 0
 					if(S_amount.equals("0.00")){
-						mWarning.setText("Please enter a non-zero amount.");
-						mWarning.setVisibility(View.VISIBLE);
+						warningText.setText("Please enter a non-zero amount.");
+						toast.show();
 					}
 					//Valid value entered - process
-					else if (isValid(S_amount)){
-						amount = Math.abs(Double.parseDouble(S_amount));
+					else if (isValid(S_amount))
+					{
+						//amount = Math.abs(Double.parseDouble(S_amount));
 
 						if(isUpdate) //update old
 						{
 							if(!mIncomeButton.isEnabled())
-								budget.updateIncome(trans_ID, To_ID, amount, notes, Date, cat_ID);
+								budget.updateIncome(trans_ID, oldEntryInfo, getEntryInfo());
 							else if(!mExpenseButton.isEnabled())
-								budget.updateExpense(trans_ID, From_ID, amount, notes, Date, cat_ID);
+							{
+								if(!budget.updateExpense(trans_ID, oldEntryInfo, getEntryInfo()))
+								{
+									warningText.setText("Funds not sufficient to perform this expense transaction");
+									toast.show();
+								}
+							}
 							else if(!mTransButton.isEnabled())
-								budget.updateTransfer(trans_ID, To_ID, From_ID, amount, notes, Date, cat_ID);
-							else;
+							{
+								if(!budget.updateTransfer(trans_ID, oldEntryInfo, getEntryInfo()))
+								{
+									warningText.setText("Funds not sufficient to perform this transfer transaction");
+									toast.show();
+								}
+							}
+							
 							ResetTab();
-							isUpdate = false;//set back to create new
 						}
 						else//create new
 						{
 							if(!mIncomeButton.isEnabled())
-								budget.Income(To_ID, amount, notes, Date, cat_ID);
+								budget.Income(getEntryInfo());
 							else if(!mExpenseButton.isEnabled())
-								budget.Expense(From_ID, amount, notes, Date, cat_ID);
+							{
+								if(!budget.Expense(getEntryInfo()))
+								{
+									warningText.setText("Funds not sufficient to perform this expense transaction.");
+									toast.show();
+								}
+							}
 							else if(!mTransButton.isEnabled())
-								budget.Transfer(To_ID, From_ID, amount, notes, Date, cat_ID);
-							else;
+							{
+								if(!budget.Transfer(getEntryInfo()))
+								{
+									warningText.setText("Funds not sufficient to perform this transfer transaction.");
+									toast.show();
+								}
+							}
+							
 							ResetTab();
 						}
-						//Get rid of message when done editting
+						//Get rid of message when done editing
 						mWarning.setVisibility(View.GONE);
 					}
 					//Bad value entered - invalid
 					else{
-						mWarning.setText("Please enter a valid amount");
-						mWarning.setVisibility(View.VISIBLE);
+						warningText.setText("Please enter a valid amount");
+						toast.show();
 					}
 					
 				}catch(Exception e){
 					e.printStackTrace();
+					warningText.setText("Something went wrong. Check the log for details.");
+					toast.show();
 				}
 			}
 			
@@ -516,10 +589,52 @@ public class EntryActivity extends Activity {
      * @return true if string is OK, or false if not
      */
     public boolean isValid(String str){
+    	if(str == null || str.equalsIgnoreCase(""))
+    		return false;
+    	if(str.contains(".") && str.indexOf('.') < str.lastIndexOf('.'))
+			return false;
     	for(int c = 0; c < str.length(); c++){
     		if((str.charAt(c) <= 46 || str.charAt(c) >= 58) && (str.charAt(c) != '.'))
     			return false;
     	}
     	return true;
     }
+    
+    /**
+	 * Gather all info currently displayed in Entry activity
+	 * @return array with entry activity info
+	 */
+	public String[] getEntryInfo()
+	{
+		String entryInfo[] = new String[6];
+		
+		/*return new Transaction(
+				(String.valueOf(mYear) + 
+					(isUpdate ? (mMonth < 10 ? "0"+String.valueOf(mMonth):String.valueOf(mMonth)) : (mMonth+1 < 10 ? "0"+String.valueOf(mMonth+1):String.valueOf(mMonth+1))) + 
+					(mDay < 10 ? "0"+String.valueOf(mDay) : String.valueOf(mDay))),
+				mPaymentType_To.getSelectedItemId(),
+				mPaymentType_From.getSelectedItemId(),
+				Double.parseDouble(mAmount.getText().toString()),
+				mCategory.getSelectedItemId(),
+				mNotes.getText().toString(),
+				
+		)*/
+		
+		//Amount
+		entryInfo[0] = (mAmount.getText().toString() != null ? mAmount.getText().toString() : "");
+		//Date
+		entryInfo[1] = (String.valueOf(mYear) + 
+				(isUpdate ? (mMonth < 10 ? "0"+String.valueOf(mMonth):String.valueOf(mMonth)) : (mMonth+1 < 10 ? "0"+String.valueOf(mMonth+1):String.valueOf(mMonth+1))) + 
+				(mDay < 10 ? "0"+String.valueOf(mDay) : String.valueOf(mDay)));
+		//From
+		entryInfo[2] = (String.valueOf(mPaymentType_From.getSelectedItemId()) != null ? String.valueOf(mPaymentType_From.getSelectedItemId()) : "");
+		//To
+		entryInfo[3] = (String.valueOf(mPaymentType_To.getSelectedItemId()) != null ? String.valueOf(mPaymentType_To.getSelectedItemId()) : "");
+		//Category
+		entryInfo[4] = (String.valueOf(mCategory.getSelectedItemId()) != null ? String.valueOf(mCategory.getSelectedItemId()) : "");	
+		//Note
+		entryInfo[5] = (mNotes.getText().toString() != null ? mNotes.getText().toString() : "");	
+		return entryInfo;
+	}
+	
 }

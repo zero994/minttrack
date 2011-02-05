@@ -3,11 +3,15 @@ package com.ponyinc.minttrack.tools;
 import static com.ponyinc.minttrack.Constants.*;
 
 import com.ponyinc.minttrack.Budget;
+import com.ponyinc.minttrack.R;
 
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
 
@@ -25,6 +29,12 @@ public class AccountManager extends Activity {
 	private static final int Update = 2;
 	/**mode for creating new account*/
 	private static final int New = 3;
+	
+	//Toast variables
+	private LayoutInflater lInflator;
+	private View layout;
+	private TextView warningText;
+	private Toast toast;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +64,15 @@ public class AccountManager extends Activity {
 		tvActive = (TextView)findViewById(com.ponyinc.minttrack.R.id.tv_active);
 		activateCb = (CheckBox)findViewById(com.ponyinc.minttrack.R.id.active_acct);
 		saveButton = (Button)findViewById(com.ponyinc.minttrack.R.id.save_acct);
+		//Toast
+		lInflator = getLayoutInflater();
+		layout = lInflator.inflate(R.layout.customtoast,
+				(ViewGroup) findViewById(R.id.custom_toast_layout));
+		warningText = (TextView) layout.findViewById(R.id.warning_text);
+		toast = new Toast(getApplicationContext());
+		toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+		toast.setDuration(Toast.LENGTH_LONG);
+		toast.setView(layout);
 		setWidgetVisiblity(Default);
 	}
 	
@@ -84,16 +103,18 @@ public class AccountManager extends Activity {
 		public void onClick(View v) 
 		{	
 			String name = String.valueOf(nameText.getText());
-			String bal = String.valueOf(balText.getText());
+			String balance = String.valueOf(balText.getText());
 			
-			if((name.equals("") == false) && (bal.equals("") == false))
+			if(!name.equals(""))
 			{
+				if(balance == null || balance.equals(""))
+					balance = "0.00";
 				if(!newAccount.isEnabled())
 				{
 					if(activateCb.isChecked() == true)
-						budget.addAccount(String.valueOf(nameText.getText()), Double.parseDouble(String.valueOf(balText.getText())), true);
+						budget.addAccount(name, Double.parseDouble(balance), true);
 					else
-						budget.addAccount(String.valueOf(nameText.getText()), Double.parseDouble(String.valueOf(balText.getText())), false);
+						budget.addAccount(name, Double.parseDouble(balance), false);
 				}
 				else if(!editAccount.isEnabled())
 				{
@@ -102,8 +123,8 @@ public class AccountManager extends Activity {
 					
 					spinCoursor.moveToPosition(accountSpinner.getSelectedItemPosition());
 				
-					budget.EditAccountName(spinCoursor.getInt(spinCoursor.getColumnIndex(_ID)), String.valueOf(nameText.getText()));
-					budget.EditAccountTotal(spinCoursor.getInt(spinCoursor.getColumnIndex(_ID)), Double.parseDouble(String.valueOf(balText.getText())));
+					budget.EditAccountName(spinCoursor.getInt(spinCoursor.getColumnIndex(_ID)), name);
+					budget.EditAccountTotal(spinCoursor.getInt(spinCoursor.getColumnIndex(_ID)), Double.parseDouble(balance));
 					
 					if(activateCb.isChecked() == true)
 						budget.ReactivateAccount(spinCoursor.getInt(spinCoursor.getColumnIndex(_ID)));
@@ -115,8 +136,12 @@ public class AccountManager extends Activity {
 				
 				setWidgetVisiblity(Default);
 			}
-			else;
-			//TODO add error message
+			//No name set
+			else{
+				warningText.setText("Please enter a name.");
+				toast.show();
+			}
+				
 		}
 	};
 
