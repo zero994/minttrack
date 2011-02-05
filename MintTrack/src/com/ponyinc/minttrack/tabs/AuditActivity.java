@@ -224,8 +224,8 @@ public class AuditActivity extends ListActivity {
 	void Query()
 	{
 		Cursor curser;
-		String toDate = toYear + String.format("%02d", toMonth) + String.format("%02d", toDay);
-		String fromDate = fromYear + String.format("%02d", fromMonth) + String.format("%02d", fromDay);
+		String toDate = toYear + String.format("%02d", toMonth+1) + String.format("%02d", toDay);
+		String fromDate = fromYear + String.format("%02d", fromMonth+1) + String.format("%02d", fromDay);
 		long td = Integer.parseInt(toDate);
 		long fd = Integer.parseInt(fromDate);
 		

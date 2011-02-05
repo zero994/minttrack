@@ -17,6 +17,7 @@ public class StatsViewer extends ListActivity {
 	private int numberOfCategories;
 	private int numberOfAccounts;
 	private TextView tvNOT, tvNOC, tvNOA;
+	private Cursor transactionCursor, categoryCursor, accountCursor;
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -25,6 +26,10 @@ public class StatsViewer extends ListActivity {
 		tvNOT = (TextView) findViewById(R.id.NUMTRANS);
 		tvNOC = (TextView) findViewById(R.id.NUMCATS);
 		tvNOA = (TextView) findViewById(R.id.NUMACCTS);
+		transactionCursor = budget.getTransactions();
+		categoryCursor = budget.getAllCategorys();
+		accountCursor = budget.getAllAccounts();
+		
 		getNumberOfTransactions();
 		getStarRating();
 		getNumberOfCategories();
@@ -33,13 +38,23 @@ public class StatsViewer extends ListActivity {
 		getNumberOfAccounts();
 		getAccountList();
 		getListView().setEmptyView(findViewById(R.id.empty));
+		
+	}
+	
+	public void onDestroy()
+	{
+		super.onDestroy();
+		transactionCursor.close();
+		categoryCursor.close();
+		accountCursor.close();
+		budget = null;
 	}
 
 	/**
 	 * Retrieves number of transaction entries in database
 	 */
 	private void getNumberOfTransactions() {
-		Cursor transactionCursor = budget.getTransactions();
+		//transactionCursor = budget.getTransactions();
 		numberOfTransactions = transactionCursor.getCount();
 		tvNOT.setText(String.valueOf(numberOfTransactions));
 	}
@@ -75,7 +90,7 @@ public class StatsViewer extends ListActivity {
 	 * Retrieves number of categories in the database
 	 */
 	private void getNumberOfCategories() {
-		Cursor categoryCursor = budget.getAllCategorys();
+		//categoryCursor = budget.getAllCategorys();
 		numberOfCategories = categoryCursor.getCount();
 		tvNOC.setText(String.valueOf(numberOfCategories));
 	}
@@ -84,7 +99,7 @@ public class StatsViewer extends ListActivity {
 	 * Retrieves a list of all categories in the database
 	 */
 	private void getCategoryList() {
-		Cursor categoryCursor = budget.getAllCategorys();
+		//categoryCursor = budget.getAllCategorys();
 		categoryCursor.moveToFirst();
 		setListAdapter(new CategoryStatsCursorAdapter(this, categoryCursor));
 	}
@@ -93,7 +108,7 @@ public class StatsViewer extends ListActivity {
 	 * Retrieves the number of accounts in the database
 	 */
 	private void getNumberOfAccounts() {
-		Cursor accountCursor = budget.getAllAccounts();
+		//accountCursor = budget.getAllAccounts();
 		numberOfAccounts = accountCursor.getCount();
 		tvNOA.setText(String.valueOf(numberOfAccounts));
 	}
@@ -102,7 +117,7 @@ public class StatsViewer extends ListActivity {
 	 * Retrieves a list of all accounts in the database
 	 */
 	private void getAccountList() {
-		Cursor accountCursor = budget.getAllAccounts();
+		//accountCursor = budget.getAllAccounts();
 		accountCursor.moveToFirst();
 		setListAdapter(new AccountStatsCursorAdapter(this, accountCursor));
 	}

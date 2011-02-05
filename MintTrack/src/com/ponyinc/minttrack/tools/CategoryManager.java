@@ -4,11 +4,15 @@ package com.ponyinc.minttrack.tools;
 import static com.ponyinc.minttrack.Constants.*;
 
 import com.ponyinc.minttrack.Budget;
+import com.ponyinc.minttrack.R;
 
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
 
@@ -26,6 +30,12 @@ public class CategoryManager extends Activity {
 	private static final int Update = 2;
 	/**mode for creating new account*/
 	private static final int New = 3;
+	
+	//Toast variables
+	private LayoutInflater lInflator;
+	private View layout;
+	private TextView warningText;
+	private Toast toast;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -67,6 +77,14 @@ public class CategoryManager extends Activity {
 		saveCategory = (Button)findViewById(com.ponyinc.minttrack.R.id.save_cat);
 		tvActive = (TextView)findViewById(com.ponyinc.minttrack.R.id.tv_catactive);
 		activateCb = (CheckBox) findViewById(com.ponyinc.minttrack.R.id.active_cat);
+		//Toast
+		lInflator = getLayoutInflater();
+		layout = lInflator.inflate(R.layout.customtoast, (ViewGroup) findViewById(R.id.custom_toast_layout));
+		warningText = (TextView) layout.findViewById(R.id.warning_text);
+		toast = new Toast(getApplicationContext());
+		toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+		toast.setDuration(Toast.LENGTH_LONG);
+		toast.setView(layout);
 		setWidgetVisiblity(Default);
 	}
 	
@@ -97,7 +115,7 @@ public class CategoryManager extends Activity {
 		public void onClick(View v) 
 		{
 			String name = String.valueOf(nameText.getText());
-			if(name.equals("") == false)
+			if(!name.equals(""))
 			{
 				//If a new category is being created
 				if(!newCategory.isEnabled()){
@@ -132,9 +150,11 @@ public class CategoryManager extends Activity {
 				fillCatDropDown(categorySpinner, REASON_TYPE_INCOME);
 				setWidgetVisiblity(Default);
 			}
-			else ;
-			//TODO add error message
-			
+			//No name set
+			else{
+				warningText.setText("Please enter a name.");
+				toast.show();
+			}
 		}
 	};
 	/**

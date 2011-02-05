@@ -45,4 +45,12 @@ public interface Constants extends BaseColumns {
 	public static final int TRANS_TYPE_INCOME = 0;
 	public static final int TRANS_TYPE_EXPENSE = 1;
 	public static final int TRANS_TYPE_TRANSFER = 2;
+	
+	//Entry Info Constants
+	public static final int AMOUNT = 0;
+	public static final int DATE = 1;
+	public static final int FROM = 2;
+	public static final int TO = 3;
+	public static final int CATEGORY = 4;
+	public static final int NOTE = 5;
 }

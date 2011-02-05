@@ -54,7 +54,7 @@ public final class AuditCursorAdapter extends CursorAdapter {
     	//transaction date
     	try {
 			transactionDate = df.parse(millis);
-			transactionDate.setMonth(transactionDate.getMonth()+1);// Month is 0 based so add 1
+			transactionDate.setMonth(transactionDate.getMonth());
 			dateView.setText(DateFormat.getDateInstance(DateFormat.LONG).format(transactionDate));
 		} catch (ParseException e) {
 			e.printStackTrace();
