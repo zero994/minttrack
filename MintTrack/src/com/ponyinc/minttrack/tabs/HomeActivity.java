@@ -44,8 +44,8 @@ public class HomeActivity extends Activity {
 		
 		budget = new Budget(this);
 		
-		Cursor AccountCursor =  budget.getActiveAccounts();
-		Cursor CategoryCursor = budget.getActiveCategorys();
+		Cursor AccountCursor =  budget.getAllAccounts();
+		Cursor CategoryCursor = budget.getAllCategories();
 		
 		if (AccountCursor.getCount() == 0){
 			budget.addAccount("Savings", 0.00, true);

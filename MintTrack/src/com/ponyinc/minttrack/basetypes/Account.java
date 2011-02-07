@@ -1,9 +1,9 @@
 package com.ponyinc.minttrack.basetypes;
 
 public class Account {
-	private String aName;
-	private double aTotal;
-	private boolean aActive;
+	private String accountName;
+	private double accountTotal;
+	private boolean accountIsActive;
 	//Default constructor
 	public Account()
 	{
@@ -19,21 +19,21 @@ public class Account {
 		setActive(active);
 	}
 	public void setName(String aName) {
-		this.aName = aName;
+		this.accountName = aName;
 	}
 	public String getName() {
-		return aName;
+		return accountName;
 	}
 	public void setTotal(double aTotal) {
-		this.aTotal = aTotal;
+		this.accountTotal = aTotal;
 	}
 	public double getTotal() {
-		return aTotal;
+		return accountTotal;
 	}
 	public void setActive(boolean aActive) {
-		this.aActive = aActive;
+		this.accountIsActive = aActive;
 	}
 	public boolean isActive() {
-		return aActive;
+		return accountIsActive;
 	}
 }

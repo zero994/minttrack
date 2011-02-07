@@ -202,7 +202,7 @@ public class CategoryManager extends Activity {
 	 *  @param s Spinner to be used to fill drop down
 	 *  @param type fill for income(0) or expense(1)*/
 	public void fillCatDropDown(Spinner s, int type) {
-		Cursor cursor = budget.getAllCategorys();
+		Cursor cursor = budget.getAllCategories();
 		SimpleCursorAdapter s1 = new SimpleCursorAdapter(this,
 				android.R.layout.simple_spinner_item, cursor, new String[] {
 						CATEGORY_NAME, _ID }, new int[] { android.R.id.text1,
