@@ -323,8 +323,8 @@ public class EntryActivity extends Activity {
 			setWidgetMode(EXPENSE_MODE);
 		else if(trans_type == TRANS_TYPE_TRANSFER)
 			setWidgetMode(TRANSFER_MODE);
-		
 		updateDate();
+		oldEntryInfo = getEntryInfo();
 	}
 	
 	/**
@@ -372,8 +372,6 @@ public class EntryActivity extends Activity {
 				fillCatDropDown(mCategory, REASON_TYPE_INCOME);
 				if(!isUpdate)
 					mWarning.setVisibility(View.GONE);
-				
-				oldEntryInfo = getEntryInfo();
 				break;
 			}
 			
@@ -396,8 +394,6 @@ public class EntryActivity extends Activity {
 				fillCatDropDown(mCategory, REASON_TYPE_EXPENSE);
 				if(!isUpdate)
 					mWarning.setVisibility(View.GONE);
-				
-				oldEntryInfo = getEntryInfo();
 				break;
 			}
 			
@@ -419,8 +415,6 @@ public class EntryActivity extends Activity {
 				mtxt_Reason.setVisibility(View.GONE);
 				if(!isUpdate)
 					mWarning.setVisibility(View.GONE);
-				
-				oldEntryInfo = getEntryInfo();
 				break;
 			}
 			default:

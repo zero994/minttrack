@@ -181,11 +181,11 @@ public class Budget implements Constants{
 	
 	public boolean updateTransfer(long trans_ID, String[] oldInfo, String[] newInfo)
 	{
-		Cursor trans = transactions.getTransaction(trans_ID);
+//		Cursor trans = transactions.getTransaction(trans_ID);
 		Cursor acctTo = accounts.getAccount(Long.parseLong(oldInfo[TO]));
 		Cursor acctFrom = accounts.getAccount(Long.parseLong(oldInfo[FROM]));
 		
-		trans.moveToFirst();
+//		trans.moveToFirst();
 		acctTo.moveToFirst();
 		acctFrom.moveToFirst();
 		
@@ -243,11 +243,11 @@ public class Budget implements Constants{
 	public boolean updateExpense(long trans_ID, String[] oldInfo, String newInfo[])
 	{
 		
-		Cursor trans = transactions.getTransaction(trans_ID);
+//		Cursor trans = transactions.getTransaction(trans_ID);
 		Cursor acct = accounts.getAccount(Long.parseLong(oldInfo[FROM]));
 		Cursor cat = categories.getCategory(Long.parseLong(oldInfo[CATEGORY]));
 		
-		trans.moveToFirst();
+//		trans.moveToFirst();
 		acct.moveToFirst();
 		cat.moveToFirst();
 		
@@ -300,28 +300,38 @@ public class Budget implements Constants{
 	
 	public void updateIncome(long trans_ID, String[] oldInfo, String[] newInfo) {
 		
-		Cursor trans = transactions.getTransaction(trans_ID);
-		Cursor newToAccount = accounts.getAccount(Long.parseLong(newInfo[TO]));
-		Cursor newCategory = categories.getCategory(Long.parseLong(newInfo[CATEGORY]));
-		Cursor oldAccount = accounts.getAccount(Long.parseLong(oldInfo[TO]));
+//		Cursor trans = transactions.getTransaction(trans_ID);
+		Cursor oldToAccount = accounts.getAccount(Long.parseLong(oldInfo[TO]));
 		Cursor oldCategory = categories.getCategory(Long.parseLong(oldInfo[CATEGORY]));
 		
-		trans.moveToFirst();
-		newToAccount.moveToFirst();
-		newCategory.moveToFirst();
-		oldAccount.moveToFirst();
+//		trans.moveToFirst();
+		oldToAccount.moveToFirst();
 		oldCategory.moveToFirst();
 		
 		transactions.updateIncome(trans_ID, newInfo);
-
-		/*********** THIS IS NOT OCCURING *****************/
-		EditAccountTotal(Long.parseLong(oldInfo[TO]), oldAccount.getDouble(oldAccount.getColumnIndex(ACCOUNT_TOTAL)) - Double.parseDouble(oldInfo[AMOUNT]));
-		EditCategoryTotal(Long.parseLong(oldInfo[CATEGORY]), oldCategory.getDouble(oldCategory.getColumnIndex(CATEGORY_TOTAL)) - Double.parseDouble(oldInfo[AMOUNT]));		
-		/**************************************************/
-		EditAccountTotal(Long.parseLong(newInfo[TO]), newToAccount.getDouble(newToAccount.getColumnIndex(ACCOUNT_TOTAL)) + Double.parseDouble(newInfo[AMOUNT]));
-		EditCategoryTotal(Long.parseLong(newInfo[CATEGORY]), newCategory.getDouble(newCategory.getColumnIndex(CATEGORY_TOTAL)) + Double.parseDouble(newInfo[AMOUNT]));	
-	
 		
+		double acctTotalMinusOldAmount = oldToAccount.getDouble(oldToAccount.getColumnIndex(ACCOUNT_TOTAL)) - Double.parseDouble(oldInfo[AMOUNT]);
+		double catTotalMinusOldAmount = oldCategory.getDouble(oldCategory.getColumnIndex(CATEGORY_TOTAL)) - Double.parseDouble(oldInfo[AMOUNT]);
+		
+		oldCategory.close();
+		oldToAccount.close();
+		
+		EditAccountTotal(Long.parseLong(oldInfo[TO]), acctTotalMinusOldAmount);
+		EditCategoryTotal(Long.parseLong(oldInfo[CATEGORY]), catTotalMinusOldAmount);
+		
+		Cursor newToAccount = accounts.getAccount(Long.parseLong(newInfo[TO]));
+		Cursor newCategory = categories.getCategory(Long.parseLong(newInfo[CATEGORY]));
+		newToAccount.moveToFirst();
+		newCategory.moveToFirst();
+		
+		double acctTotalPlusNewAmount = newToAccount.getDouble(newToAccount.getColumnIndex(ACCOUNT_TOTAL)) + Double.parseDouble(newInfo[AMOUNT]);
+		double catTotalPlusNewAmount = newCategory.getDouble(newCategory.getColumnIndex(CATEGORY_TOTAL)) + Double.parseDouble(newInfo[AMOUNT]);
+		
+		newToAccount.close();
+		newCategory.close();
+		
+		EditAccountTotal(Long.parseLong(newInfo[TO]), acctTotalPlusNewAmount);
+		EditCategoryTotal(Long.parseLong(newInfo[CATEGORY]), catTotalPlusNewAmount);
 	}
 	/** Method is a delegated version of getTransactions(). This method should always be used instead of the transactions Version directly.
 	*	@return a cursor from the database containing all transactions
