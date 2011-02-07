@@ -27,7 +27,7 @@ public class StatsViewer extends ListActivity {
 		tvNOC = (TextView) findViewById(R.id.NUMCATS);
 		tvNOA = (TextView) findViewById(R.id.NUMACCTS);
 		transactionCursor = budget.getTransactions();
-		categoryCursor = budget.getAllCategorys();
+		categoryCursor = budget.getAllCategories();
 		accountCursor = budget.getAllAccounts();
 		
 		getNumberOfTransactions();

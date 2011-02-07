@@ -19,14 +19,13 @@ public class Accounts {
 	*/
 	public Accounts(MintData mintdata) {
 		MintLink = mintdata;
-
 	}
 	/** Method is used to add an account to the account table.
 	*	@param strName The name of the account
 	*	@param initalValue The initial account balance of the account
 	*	@param isActive Is account active
 	*/
-	public void addAccount(String strName, double initalValue, boolean isActive) {
+	public void addAccount(final String strName, final double initalValue, final boolean isActive) {
 		// Insert a new record into the Events data source.
 		// You would do something similar for delete and update
 		SQLiteDatabase db = MintLink.getWritableDatabase();
@@ -42,7 +41,7 @@ public class Accounts {
 	/** Method used to query the accounts table based on an accounts ID
 	*	@para _id Account ID that you wish to query
 	*/
-	public Cursor getAccount(long _id) {
+	public Cursor getAccount(final long _id) {
 		final String[] FROM = { _ID, ACCOUNT_NAME, ACCOUNT_TOTAL,
 				ACCOUNT_ACTIVE, };
 		final String ORDER_BY = _ID + " DESC";
@@ -84,7 +83,7 @@ public class Accounts {
 	/** Method is used to deactivate an account
 	*	@param acc_id ID of the account which you wish to disable
 	*/
-	public void DeactivateAccount(long acc_id)
+	public void DeactivateAccount(final long acc_id)
 	// set account to inactive
 	{
 		SQLiteDatabase db = MintLink.getWritableDatabase();
@@ -96,7 +95,7 @@ public class Accounts {
 	*	@param acc_id ID of the account you want to modify
 	*	@param strName Name that will replace the account
 	*/
-	public void EditAccountName(long acc_id, String strName) {
+	public void EditAccountName(final long acc_id, final String strName) {
 		SQLiteDatabase db = MintLink.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(ACCOUNT_NAME, strName);
@@ -106,7 +105,7 @@ public class Accounts {
 	*	@param acc_id ID of the account you want to modify
 	*	@param total New amount to be set as the balance of the account
 	*/
-	public void EditAccountTotal(long acc_id, double total) {
+	public void EditAccountTotal(final long acc_id, final double total) {
 		SQLiteDatabase db = MintLink.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(ACCOUNT_TOTAL, total);
@@ -115,7 +114,7 @@ public class Accounts {
 	/** Method is used to reactive an inactive account that already exists
 	*	@param acc_id ID of account which you want to activate
 	*/
-	public void ReactivateAccount(long acc_id)
+	public void ReactivateAccount(final long acc_id)
 	// set account to inactive
 	{
 		SQLiteDatabase db = MintLink.getWritableDatabase();

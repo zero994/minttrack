@@ -24,7 +24,7 @@ public class Categories {
 	/** Outputs a cursor containing all categories
 	*	@return A cursor containing all categories
 	*/
-	public Cursor getAllCategorys() {
+	public Cursor getAllCategories() {
 		final String[] FROM = { _ID, CATEGORY_NAME, CATEGORY_TOTAL,
 				CATEGORY_TYPE, CATEGORY_ACTIVE,};
 		final String ORDER_BY = CATEGORY_NAME + " DESC";
@@ -36,7 +36,7 @@ public class Categories {
 	/** Outputs a cursor containing all categories
 	*	@return A cursor containing all categories
 	*/
-	public Cursor getActiveCategorys() {
+	public Cursor getActiveCategories() {
 		final String[] FROM = { _ID, CATEGORY_NAME, CATEGORY_TOTAL,
 				CATEGORY_TYPE, CATEGORY_ACTIVE,};
 		final String ORDER_BY = CATEGORY_NAME + " DESC";
@@ -50,7 +50,7 @@ public class Categories {
 	 * @param type 0 for income 1 for expense
 	 * @return Cursor of category of type income or expense
 	 */
-	public Cursor getCategorys(int type) 
+	public Cursor getCategories(final int type) 
 	{
 		final String[] FROM = { _ID, CATEGORY_NAME, CATEGORY_TOTAL,
 				CATEGORY_TYPE, CATEGORY_ACTIVE,};
@@ -63,24 +63,12 @@ public class Categories {
 		
 		return cursor;
 	}
-	/** Outputs a cursor containing all categories, allows DB passed in
-	*	@param MintLink 
-	*	@return A cursor containing all categories
-	*/
-	public Cursor getCategorys(MintData MintLink) {
-		final String[] FROM = { _ID, CATEGORY_NAME, CATEGORY_TOTAL,
-				CATEGORY_TYPE, CATEGORY_ACTIVE};
-		final String ORDER_BY = CATEGORY_NAME + " DESC";
-		SQLiteDatabase db = MintLink.getReadableDatabase();
-		Cursor cursor = db.query(CATEGORY_TBLNAM, FROM, null, null, null, null,
-				ORDER_BY);
-		return cursor;
-	}
+
 	/** Outputs a cursor with a single category from the database from the ID
 	*	@param intID ID of the category you want
 	*	@return A cursor contain the category based on the ID handed to the method
 	*/
-	public Cursor getCategory(long intID) {
+	public Cursor getCategory(final long intID) {
 		final String[] FROM = { _ID, CATEGORY_NAME, CATEGORY_TOTAL,
 				CATEGORY_TYPE, CATEGORY_ACTIVE,};
 		final String ORDER_BY = CATEGORY_NAME + " DESC";
@@ -96,7 +84,7 @@ public class Categories {
 	*	@param initalValue Inital balance the category will be initalized to
 	*	@param iType Type of category that it is
 	*/
-	public void addCategory(String strName, double initalValue, int iType, boolean isActive) {
+	public void addCategory(final String strName, final double initalValue, final int iType, final boolean isActive) {
 		// Insert a new record into the Events data source.
 		// You would do something similar for delete and update
 		SQLiteDatabase db = MintLink.getWritableDatabase();
@@ -114,7 +102,7 @@ public class Categories {
 	/** Method is used to deactivate an category
 	*	@param acc_id ID of the category which you wish to disable
 	*/
-	public void DeactivateCategory(long acc_id)
+	public void deactivateCategory(final long acc_id)
 	// set category to inactive
 	{
 		SQLiteDatabase db = MintLink.getWritableDatabase();
@@ -125,7 +113,7 @@ public class Categories {
 	/** Method is used to reactive an inactive category that already exists
 	*	@param acc_id ID of category which you want to activate
 	*/
-	public void ReactivateCategory(long cat_id)
+	public void reactivateCategory(final long cat_id)
 	// set category to active
 	{
 		SQLiteDatabase db = MintLink.getWritableDatabase();
@@ -137,7 +125,7 @@ public class Categories {
 	*	@param iCatId The ID of the category being modified
 	*	@param iType New type for the category
 	*/
-	public void EditCategoryType(long iCatId, int iType) {
+	public void editCategoryType(final long iCatId, final int iType) {
 		// Insert a new record into the Events data source.
 		// You would do something similar for delete and update
 		SQLiteDatabase db = MintLink.getWritableDatabase();
@@ -149,7 +137,7 @@ public class Categories {
 	*	@param iCatID iCatId The ID of the category being modified
 	*	@param strCatName New name to be applied to the category
 	*/
-	public void EditCategoryName(long iCatID, String strCatName) {
+	public void editCategoryName(final long iCatID, final String strCatName) {
 		// Insert a new record into the Events data source.
 		// You would do something similar for delete and update
 		SQLiteDatabase db = MintLink.getWritableDatabase();
@@ -161,7 +149,7 @@ public class Categories {
 	*	@param iCatID ID of the category being modified
 	*	@param dblTotal New balance amount for the category
 	*/
-	public void updateCategory(long iCatID, double dblTotal) {
+	public void updateCategory(final long iCatID, final double dblTotal) {
 		// Insert a new record into the Events data source.
 		// You would do something similar for delete and update
 		SQLiteDatabase db = MintLink.getWritableDatabase();

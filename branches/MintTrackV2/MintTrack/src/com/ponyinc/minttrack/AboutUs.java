@@ -5,8 +5,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-/**This class implements the about us screen displayed after clicking the Information button in the options menu
- * @author Pablo BajoLaso
+/**
+ * This class implements the about us screen displayed after clicking the Information button in the options menu
  */
 public class AboutUs extends Activity
 {

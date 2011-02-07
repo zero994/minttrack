@@ -88,25 +88,25 @@ public class Budget implements Constants{
 	*	@param acc_id ID of existing category being reactivated
 	*/
 	public void DeactivateCategory(long acc_id) {
-		categories.DeactivateCategory(acc_id);
+		categories.deactivateCategory(acc_id);
 	}
 	/** Method is a delegated version of DeactivateCategorys(). This method should always be used instead of the Categorys Version directly.
 	*	@param acc_id ID of existing category being deactivated
 	*/
 	public void ReactivateCategory(long acc_id) {
-		categories.ReactivateCategory(acc_id);
+		categories.reactivateCategory(acc_id);
 	}
 	/** Method is a delegated version of getCategorys(). This method should always be used instead of the Categories Version directly.
 	*	@return Cursor containg all existing categories
 	*/
-	public Cursor getAllCategorys() {
-		return categories.getAllCategorys();
+	public Cursor getAllCategories() {
+		return categories.getAllCategories();
 	}
 	/** Method is a delegated version of getCategorys(). This method should always be used instead of the Categories Version directly.
 	*	@return Cursor containing all active existing categories
 	*/
 	public Cursor getActiveCategorys() {
-		return categories.getActiveCategorys();
+		return categories.getActiveCategories();
 	}
 	/**
 	 * 
@@ -114,7 +114,7 @@ public class Budget implements Constants{
 	 * @return Cursor of category of type income our expense.
 	 */
 	public Cursor getCategorys(int type) {
-		return categories.getCategorys(type);
+		return categories.getCategories(type);
 	}
 	/** Method is a delegated version of getCategory(). This method should always be used instead of the Categories Version directly.
 	*	@param intID ID of the category that you want returned in a query
@@ -137,14 +137,14 @@ public class Budget implements Constants{
 	*	@param iType New type for the account
 	*/
 	public void EditCategoryType(long iCatId, int iType) {
-		categories.EditCategoryType(iCatId, iType);
+		categories.editCategoryType(iCatId, iType);
 	}
 	/** Method is a delegated version of getCategorys(). This method should always be used instead of the Categories Version directly.
 	*	@param iCatID ID of category being modified
 	*	@param strCatName New name for the category
 	*/
 	public void EditCategoryName(long iCatID, String strCatName) {
-		categories.EditCategoryName(iCatID, strCatName);
+		categories.editCategoryName(iCatID, strCatName);
 	}
 	/** Method is a delegated version of getCategorys(). This method should always be used instead of the Categories Version directly.
 	*	@param iCatID ID of category being modified
