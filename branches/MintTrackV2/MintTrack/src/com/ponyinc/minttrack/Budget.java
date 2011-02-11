@@ -242,39 +242,76 @@ public class Budget implements Constants{
 	
 	public boolean updateExpense(long trans_ID, String[] oldInfo, String newInfo[])
 	{
-		
-//		Cursor trans = transactions.getTransaction(trans_ID);
 		Cursor acct = accounts.getAccount(Long.parseLong(oldInfo[FROM]));
 		Cursor cat = categories.getCategory(Long.parseLong(oldInfo[CATEGORY]));
 		
-//		trans.moveToFirst();
 		acct.moveToFirst();
 		cat.moveToFirst();
-		
-		/*double oldAmount = trans.getDouble(trans.getColumnIndex(TRANSACTION_AMOUNT));
-		long oldFromAccountId = acct.getLong(acct.getColumnIndex(_ID));
-		long oldCategoryId = cat.getLong(cat.getColumnIndex(_ID));*/
-		
-		/*Cursor Account_From = accounts.getAccount(FromAccount_ID);
-		Cursor Category = categories.getCategory(Category_ID);
 
-		Account_From.moveToNext();
-		Category.moveToNext();*/
-		
 		double moneyInAccount = acct.getDouble(acct.getColumnIndex(ACCOUNT_TOTAL));
 		double moneyInCategory = cat.getDouble(cat.getColumnIndex(CATEGORY_TOTAL));
 		
-		if((Double.parseDouble(newInfo[AMOUNT]) <= Double.parseDouble(oldInfo[AMOUNT])) 
-				|| (moneyInAccount - (Double.parseDouble(newInfo[AMOUNT]) - Double.parseDouble(oldInfo[AMOUNT])) >= 0))
+		acct.close();
+		cat.close();
+		
+		// If updating same account
+		if(newInfo[FROM].compareTo(oldInfo[FROM]) == 0)
 		{
-			transactions.updateExpense(trans_ID, newInfo);
+			if((Double.parseDouble(newInfo[AMOUNT]) <= Double.parseDouble(oldInfo[AMOUNT])) 
+					|| ((moneyInAccount+Double.parseDouble(oldInfo[AMOUNT])) - (Double.parseDouble(newInfo[AMOUNT]))) >= 0)
+			{
+				// Updated transaction
+				transactions.updateExpense(trans_ID, newInfo);
+				
+				moneyInAccount += Double.parseDouble(oldInfo[AMOUNT]);
+				moneyInCategory -= Double.parseDouble(oldInfo[AMOUNT]);
+				
+				// Updating old account and category
+				EditAccountTotal(Long.parseLong(oldInfo[FROM]), moneyInAccount);
+				EditCategoryTotal(Long.parseLong(oldInfo[CATEGORY]), moneyInCategory);
+				
+				// Updating new account and category
+				EditAccountTotal(Long.parseLong(newInfo[FROM]), moneyInAccount - Double.parseDouble(newInfo[AMOUNT]));
+				EditCategoryTotal(Long.parseLong(newInfo[CATEGORY]), moneyInCategory + Double.parseDouble(newInfo[AMOUNT]));
+				
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			Cursor toAcct = accounts.getAccount(Long.parseLong(newInfo[FROM]));
+			Cursor toCat = categories.getCategory(Long.parseLong(newInfo[CATEGORY]));
 			
-			EditAccountTotal(Long.parseLong(oldInfo[FROM]), moneyInAccount + Double.parseDouble(oldInfo[AMOUNT]));
-			EditCategoryTotal(Long.parseLong(oldInfo[CATEGORY]), moneyInCategory - Double.parseDouble(oldInfo[AMOUNT]));
+			toAcct.moveToFirst();
+			toCat.moveToFirst();
+
+			double amountInNewAccount = acct.getDouble(toAcct.getColumnIndex(ACCOUNT_TOTAL));
+			double amountInNewCategory = cat.getDouble(toCat.getColumnIndex(CATEGORY_TOTAL));
 			
-			EditAccountTotal(Long.parseLong(newInfo[FROM]), moneyInAccount - Double.parseDouble(newInfo[AMOUNT]));
-			EditCategoryTotal(Long.parseLong(newInfo[CATEGORY]), moneyInCategory + Double.parseDouble(newInfo[AMOUNT]));
-			return true;
+			toAcct.close();
+			toCat.close();
+			
+			if((amountInNewAccount-Double.parseDouble(newInfo[AMOUNT]))>=0)
+			{
+				// Updated transaction
+				transactions.updateExpense(trans_ID, newInfo);
+				
+				// Updating old account and category
+				EditAccountTotal(Long.parseLong(oldInfo[FROM]), moneyInAccount + Double.parseDouble(oldInfo[AMOUNT]));
+				EditCategoryTotal(Long.parseLong(oldInfo[CATEGORY]), moneyInCategory - Double.parseDouble(oldInfo[AMOUNT]));
+				
+				// Updating new account and category
+				EditAccountTotal(Long.parseLong(newInfo[FROM]), amountInNewAccount - Double.parseDouble(newInfo[AMOUNT]));
+				EditCategoryTotal(Long.parseLong(newInfo[CATEGORY]), amountInNewCategory + Double.parseDouble(newInfo[AMOUNT]));
+			}
+			else
+			{
+				return false;
+			}
 		}
 		return false;
 	}
