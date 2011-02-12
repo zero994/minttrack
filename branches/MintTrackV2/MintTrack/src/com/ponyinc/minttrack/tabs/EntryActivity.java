@@ -45,6 +45,8 @@ import com.ponyinc.minttrack.Budget;
 import com.ponyinc.minttrack.MintTrack;
 import com.ponyinc.minttrack.R;
 import com.ponyinc.minttrack.help.HelpEntry;
+import com.ponyinc.minttrack.tools.AccountManager;
+import com.ponyinc.minttrack.tools.CategoryManager;
 /**
  * This class represents the entry tab and all of it's pieces and interactions
  * @author Stephan Krach & Christopher Wilkins
@@ -598,23 +600,54 @@ public class EntryActivity extends Activity {
 		ivAddTo.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				//TODO Add switch to account manager set to add new account with income property
+				switchActivity(1);
 			}
 		});
 		ivAddFrom.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				//TODO Add switch to account manager set to add new account with expense property
+				switchActivity(1);
 			}
 		});
 		ivAddCategory.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				//TODO Add switch to category manager set to add new category
+				switchActivity(2);
 			}
 		});
 	}
 	
+	protected void switchActivity(int i) 
+	{
+		switch(i)
+		{
+		//Adding an account
+		case 1:
+			Intent accountIntent = new Intent(this, AccountManager.class);
+			accountIntent.putExtra("newFromEntryTab", true);
+			startActivity(accountIntent);
+			break;
+		case 2:
+			//Adding an income category
+			if(!mIncomeButton.isEnabled()){
+				Intent incomeCategoryIntent = new Intent(this, CategoryManager.class);
+				incomeCategoryIntent.putExtra("categoryType", "income");
+				incomeCategoryIntent.putExtra("newFromEntryTab", true);
+				startActivity(incomeCategoryIntent);
+			}
+			//Adding an expense category
+			else
+			{
+				Intent expenseCategoryIntent = new Intent(this, CategoryManager.class);
+				expenseCategoryIntent.putExtra("categoryType", "expense");
+				expenseCategoryIntent.putExtra("newFromEntryTab", true);
+				startActivity(expenseCategoryIntent);
+			}
+			//Missing case for transfer button disabled - will default to expense category
+			break;
+		}
+	}
+
 	/**
      * Checks to see if str is valid input
      * @param str String entered by the user

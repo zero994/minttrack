@@ -1,11 +1,11 @@
 package com.ponyinc.minttrack.tools;
 
 
-import static com.ponyinc.minttrack.Constants.*;
-
-import com.ponyinc.minttrack.Budget;
-import com.ponyinc.minttrack.R;
-
+import static android.provider.BaseColumns._ID;
+import static com.ponyinc.minttrack.Constants.CATEGORY_ACTIVE;
+import static com.ponyinc.minttrack.Constants.CATEGORY_NAME;
+import static com.ponyinc.minttrack.Constants.CATEGORY_TYPE;
+import static com.ponyinc.minttrack.Constants.REASON_TYPE_INCOME;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -13,8 +13,19 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.ponyinc.minttrack.Budget;
+import com.ponyinc.minttrack.R;
 
 public class CategoryManager extends Activity {
 	private Budget budget;
@@ -36,33 +47,61 @@ public class CategoryManager extends Activity {
 	private View layout;
 	private TextView warningText;
 	private Toast toast;
+	private String type;
+	private boolean newFromEntryTab = false;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
 		setContentView(com.ponyinc.minttrack.R.layout.catmgr);
 		budget = new Budget(this);
-		
-		 findViewById(com.ponyinc.minttrack.R.id.new_cat).setOnClickListener(newCategoryListener);
-		 findViewById(com.ponyinc.minttrack.R.id.edit_cat).setOnClickListener(editCategoryListener);
-		 findViewById(com.ponyinc.minttrack.R.id.save_cat).setOnClickListener(saveCategoryListener);
-		
+
 		setWidgets();
+		Bundle extras = getIntent().getExtras();
+		if(extras != null)
+		{
+			newFromEntryTab = extras.getBoolean("newFromEntryTab");
+			if(newFromEntryTab)
+			{ 
+				setWidgetVisiblity(New);
+			
+				type = extras.getString("categoryType");
+				//New income category
+				if(type.equalsIgnoreCase("income"))
+				{
+					categoryTypeSpinner.setSelection(0);
+				}
+				//New expense category
+				else
+				{
+					categoryTypeSpinner.setSelection(1);
+				}
+			}
+		}
+		else
+		{	
+			findViewById(com.ponyinc.minttrack.R.id.new_cat).setOnClickListener(newCategoryListener);
+			findViewById(com.ponyinc.minttrack.R.id.edit_cat).setOnClickListener(editCategoryListener);
 		
-		//Fill the spinner for category types
+			fillCatDropDown(categorySpinner,REASON_TYPE_INCOME);
+		    categorySpinner.setOnItemSelectedListener(spinnerListener);
+		}
+		
+		findViewById(com.ponyinc.minttrack.R.id.save_cat).setOnClickListener(saveCategoryListener);	
+		fillCatTypeSpinner();
+	}
+
+	/**
+	 * Fill the spinner for category types
+	 */
+	private void fillCatTypeSpinner() {
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
 	            this, com.ponyinc.minttrack.R.array.cattype_array, android.R.layout.simple_spinner_item);
 	    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    categoryTypeSpinner.setAdapter(adapter);
-	    
-	    fillCatDropDown(categorySpinner,REASON_TYPE_INCOME);
-	    categorySpinner.setOnItemSelectedListener(spinnerListener);
-
-	    
 	}
 
-	
+
 	/**
 	 * Initializes all widgets
 	 */
@@ -120,14 +159,9 @@ public class CategoryManager extends Activity {
 				//If a new category is being created
 				if(!newCategory.isEnabled()){
 					int type = categoryTypeSpinner.getSelectedItemPosition();
-					if(activateCb.isChecked())
-					{
-						budget.addCategory(String.valueOf(nameText.getText()), 0.0, type, true);
-					}
-					else
-					{
-						budget.addCategory(String.valueOf(nameText.getText()), 0.0, type, false);
-					}
+						budget.addCategory(String.valueOf(nameText.getText()), 0.0, type, activateCb.isChecked());
+						//Go back to entry screen if this was an addition from the entry tab
+						if(newFromEntryTab) {finish();}				
 				}
 				//On update of pre-existing category
 				else
@@ -269,6 +303,9 @@ public class CategoryManager extends Activity {
 				saveCategory.setVisibility(View.VISIBLE);
 				tvActive.setVisibility(View.VISIBLE);
 				activateCb.setVisibility(View.VISIBLE);
+				
+				if(newFromEntryTab)
+					editCategory.setVisibility(View.GONE);
 				break;
 			}
 			default:
