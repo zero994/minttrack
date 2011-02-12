@@ -1,5 +1,7 @@
 package com.ponyinc.minttrack.basetypes;
 
+import com.ponyinc.minttrack.MintData;
+
 public abstract class Transaction {
 	private String tDate;
 	private long tToAccount;
@@ -7,10 +9,12 @@ public abstract class Transaction {
 	private double tAmount;
 	private long tCategory;
 	private String tNote;
+	private long tId;
 	
 	//Default constructor
 	public Transaction()
 	{
+		setId(-1);
 		setDate("");
 		setToAccount(-1);
 		setFromAccount(-1);
@@ -19,9 +23,10 @@ public abstract class Transaction {
 		setNote("");
 	}
 	//Secondary constructor
-	public Transaction(String date, long to, long from, 
+	public Transaction(long id, String date, long to, long from, 
 			double amount, long category, String note, int type)
 	{
+		setId(id);
 		setDate(date);
 		setToAccount(to);
 		setFromAccount(from);
@@ -65,4 +70,13 @@ public abstract class Transaction {
 	public String getNote() {
 		return tNote;
 	}
+	public long getId() {
+		return tId;
+	}
+	public void setId(long tId) {
+		this.tId = tId;
+	}
+	
+	public abstract void update(MintData md, Transaction t);
+	public abstract void create(MintData md, Transaction t);
 }
