@@ -1,10 +1,9 @@
 package com.ponyinc.minttrack.tools;
 
-import static com.ponyinc.minttrack.Constants.*;
-
-import com.ponyinc.minttrack.Budget;
-import com.ponyinc.minttrack.R;
-
+import static android.provider.BaseColumns._ID;
+import static com.ponyinc.minttrack.Constants.ACCOUNT_ACTIVE;
+import static com.ponyinc.minttrack.Constants.ACCOUNT_NAME;
+import static com.ponyinc.minttrack.Constants.ACCOUNT_TOTAL;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -12,8 +11,18 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.ponyinc.minttrack.Budget;
+import com.ponyinc.minttrack.R;
 
 public class AccountManager extends Activity {
 	private Budget budget;
@@ -35,22 +44,35 @@ public class AccountManager extends Activity {
 	private View layout;
 	private TextView warningText;
 	private Toast toast;
+	private boolean newFromEntryTab = false;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
 		setContentView(com.ponyinc.minttrack.R.layout.acctmgr);
 		budget = new Budget(this);
 		
-		findViewById(com.ponyinc.minttrack.R.id.new_acct).setOnClickListener(newAccountListener);
-		findViewById(com.ponyinc.minttrack.R.id.edit_acct).setOnClickListener(editAccountListener);
-		findViewById(com.ponyinc.minttrack.R.id.save_acct).setOnClickListener(saveAccountListener);
-		
 		setWidgets();
-	
-		fillAccountDropDown(accountSpinner);
-		accountSpinner.setOnItemSelectedListener(spinnerListener);
+		Bundle extras = getIntent().getExtras();
+		if(extras != null)
+		{
+			newFromEntryTab = extras.getBoolean("newFromEntryTab");
+			if(newFromEntryTab)
+			{
+				setWidgetVisiblity(New);
+			}
+		}
+		else
+		{
+			findViewById(com.ponyinc.minttrack.R.id.new_acct).setOnClickListener(newAccountListener);
+			findViewById(com.ponyinc.minttrack.R.id.edit_acct).setOnClickListener(editAccountListener);
+			
+			fillAccountDropDown(accountSpinner);
+			accountSpinner.setOnItemSelectedListener(spinnerListener);
+		}
+		
+		findViewById(com.ponyinc.minttrack.R.id.save_acct).setOnClickListener(saveAccountListener);
+
 	}
 	
 	private void setWidgets(){
@@ -111,10 +133,8 @@ public class AccountManager extends Activity {
 					balance = "0.00";
 				if(!newAccount.isEnabled())
 				{
-					if(activateCb.isChecked() == true)
-						budget.addAccount(name, Double.parseDouble(balance), true);
-					else
-						budget.addAccount(name, Double.parseDouble(balance), false);
+					budget.addAccount(name, Double.parseDouble(balance), activateCb.isChecked());
+					if(newFromEntryTab) {finish();}
 				}
 				else if(!editAccount.isEnabled())
 				{
@@ -249,6 +269,9 @@ public class AccountManager extends Activity {
 				saveButton.setVisibility(View.VISIBLE);
 				tvActive.setVisibility(View.VISIBLE);
 				activateCb.setVisibility(View.VISIBLE);
+				
+				if(newFromEntryTab)
+					editAccount.setVisibility(View.GONE);
 				break;
 			}
 			default:
