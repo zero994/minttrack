@@ -34,6 +34,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -58,6 +59,7 @@ public class EntryActivity extends Activity {
 	private Spinner mCategory;
 	private Spinner mPaymentType_To;
 	private Spinner mPaymentType_From;
+	private ImageView ivAddTo, ivAddFrom, ivAddCategory;
 	private int mYear, mMonth, mDay;
 	private String [] oldEntryInfo = new String[6];
 	
@@ -204,8 +206,11 @@ public class EntryActivity extends Activity {
 		mExpenseButton = (Button) findViewById(R.id.expenseButton);
 		mTransButton = (Button) findViewById(R.id.transferButton);
 		mtxtPay_To = (TextView) findViewById(R.id.txt_type_to);
+		ivAddTo = (ImageView) findViewById(R.id.add_to_account_button);
 		mtxtPay_From = (TextView) findViewById(R.id.txt_type_from);
+		ivAddFrom = (ImageView) findViewById(R.id.add_from_account_button);
 		mtxt_Reason = (TextView) findViewById(R.id.txt_reason);
+		ivAddCategory = (ImageView) findViewById(R.id.add_category_button);
 		mWarning = (TextView) findViewById(R.id.Warning);
 		mWarning.setVisibility(View.VISIBLE);
 		mIncomeButton.setEnabled(false);
@@ -369,6 +374,11 @@ public class EntryActivity extends Activity {
 				mtxtPay_To.setVisibility(View.VISIBLE);
 				mCategory.setVisibility(View.VISIBLE);
 				mtxt_Reason.setVisibility(View.VISIBLE);
+				
+				ivAddTo.setVisibility(View.VISIBLE);
+				ivAddFrom.setVisibility(View.GONE);
+				ivAddCategory.setVisibility(View.VISIBLE);
+				
 				fillCatDropDown(mCategory, REASON_TYPE_INCOME);
 				if(!isUpdate)
 					mWarning.setVisibility(View.GONE);
@@ -391,6 +401,11 @@ public class EntryActivity extends Activity {
 				mtxtPay_To.setVisibility(View.GONE);
 				mCategory.setVisibility(View.VISIBLE);
 				mtxt_Reason.setVisibility(View.VISIBLE);
+				
+				ivAddTo.setVisibility(View.GONE);
+				ivAddFrom.setVisibility(View.VISIBLE);
+				ivAddCategory.setVisibility(View.VISIBLE);
+				
 				fillCatDropDown(mCategory, REASON_TYPE_EXPENSE);
 				if(!isUpdate)
 					mWarning.setVisibility(View.GONE);
@@ -413,6 +428,11 @@ public class EntryActivity extends Activity {
 				mtxtPay_To.setVisibility(View.VISIBLE);
 				mCategory.setVisibility(View.GONE);
 				mtxt_Reason.setVisibility(View.GONE);
+				
+				ivAddTo.setVisibility(View.VISIBLE);
+				ivAddFrom.setVisibility(View.VISIBLE);
+				ivAddCategory.setVisibility(View.GONE);
+				
 				if(!isUpdate)
 					mWarning.setVisibility(View.GONE);
 				break;
@@ -573,6 +593,24 @@ public class EntryActivity extends Activity {
 		mPickDate.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				showDialog(DATE_DIALOG_ID);
+			}
+		});
+		ivAddTo.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				//TODO Add switch to account manager set to add new account with income property
+			}
+		});
+		ivAddFrom.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				//TODO Add switch to account manager set to add new account with expense property
+			}
+		});
+		ivAddCategory.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				//TODO Add switch to category manager set to add new category
 			}
 		});
 	}
