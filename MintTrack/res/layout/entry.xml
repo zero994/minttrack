@@ -32,9 +32,8 @@
 <!-- INCOME/EXPENSE BUTTONS -->	
 					<LinearLayout 
 						android:layout_width="fill_parent"
-						android:paddingLeft="30dip" 
-						android:paddingRight="30dip" 
 						android:layout_height="fill_parent" 
+						android:layout_gravity="center_horizontal"
 						android:orientation="horizontal" 
 						android:layout_weight="1">
 						<Button 
@@ -96,20 +95,40 @@
 							android:layout_weight="1" />
 					</LinearLayout>
 <!-- PAYMENT TYPE_FROM SPINNER-->
+					<RelativeLayout
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content">
 					<TextView 
 						android:id="@+id/txt_type_from" 
 						android:text="Payment From Account:"
 						android:layout_width="fill_parent" 
 						android:layout_height="wrap_content"
-						android:layout_weight="1" />
+						android:layout_weight="1"
+						/>
 					<Spinner 
 						android:id="@+id/paytype_From" 
-						android:layout_width="fill_parent"
+						android:layout_width="250dip"
 						android:layout_height="wrap_content" 
 						android:drawSelectorOnTop="true"
 						android:prompt="@string/paytype_prompt" 
-						android:layout_weight="1" />
+						android:layout_weight="1" 
+						android:layout_below="@id/txt_type_from"
+						android:gravity="left"/>
+					<ImageView
+						android:id="@+id/add_from_account_button"
+						android:src="@drawable/add"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_toRightOf="@id/paytype_From"
+						android:layout_below="@id/txt_type_from"
+						android:layout_marginTop="4dp"
+						android:layout_marginLeft="6dp"
+						android:clickable="true"/>
+					</RelativeLayout>
 <!-- PAYMENT TYPE_TO SPINNER-->
+					<RelativeLayout
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content">
 					<TextView 
 						android:id="@+id/txt_type_to" 
 						android:text="Income To Account:"
@@ -118,12 +137,27 @@
 						android:layout_weight="1" />
 					<Spinner 
 						android:id="@+id/paytype_To" 
-						android:layout_width="fill_parent"
+						android:layout_width="250dip"
 						android:layout_height="wrap_content" 
 						android:drawSelectorOnTop="true"
 						android:prompt="@string/paytype_prompt" 
-						android:layout_weight="1" />
-<!-- REASON SPINNER-->
+						android:layout_weight="1" 
+						android:layout_below="@id/txt_type_to"/>
+					<ImageView
+						android:id="@+id/add_to_account_button"
+						android:src="@drawable/add"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_toRightOf="@id/paytype_To"
+						android:layout_below="@id/txt_type_to"
+						android:layout_marginTop="4dp"
+						android:layout_marginLeft="6dp"
+						android:clickable="true"/>
+					</RelativeLayout>
+<!-- CATEGORY SPINNER-->
+					<RelativeLayout
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content">
 					<TextView 
 						android:id="@+id/txt_reason" 
 						android:text="Category:" 
@@ -132,11 +166,23 @@
 						android:layout_weight="1" />
 					<Spinner 
 						android:id="@+id/reason1" 
-						android:layout_width="fill_parent"
+						android:layout_width="250dip"
 						android:layout_height="wrap_content" 
 						android:drawSelectorOnTop="true"
 						android:prompt="@string/reason_prompt" 
-						android:layout_weight="1" />
+						android:layout_weight="1" 
+						android:layout_below="@id/txt_reason"/>
+					<ImageView
+						android:id="@+id/add_category_button"
+						android:src="@drawable/add"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_toRightOf="@id/reason1"
+						android:layout_below="@id/txt_reason"
+						android:layout_marginTop="4dp"
+						android:layout_marginLeft="6dp"
+						android:clickable="true"/>
+					</RelativeLayout>
 <!-- NOTE TEXTFIELD-->
 					<TextView 
 						android:text="Note:"
