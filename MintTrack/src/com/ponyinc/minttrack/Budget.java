@@ -307,13 +307,14 @@ public class Budget implements Constants{
 				// Updating new account and category
 				EditAccountTotal(Long.parseLong(newInfo[FROM]), amountInNewAccount - Double.parseDouble(newInfo[AMOUNT]));
 				EditCategoryTotal(Long.parseLong(newInfo[CATEGORY]), amountInNewCategory + Double.parseDouble(newInfo[AMOUNT]));
+				
+				return true;
 			}
 			else
 			{
 				return false;
 			}
 		}
-		return false;
 	}
 	/** Method is used to create an Income transaction.  An income transaction is one that added money to an account and to a category from thin air.
 	*	@param ToAccount_ID Account the money is being added to
@@ -337,11 +338,9 @@ public class Budget implements Constants{
 	
 	public void updateIncome(long trans_ID, String[] oldInfo, String[] newInfo) {
 		
-//		Cursor trans = transactions.getTransaction(trans_ID);
 		Cursor oldToAccount = accounts.getAccount(Long.parseLong(oldInfo[TO]));
 		Cursor oldCategory = categories.getCategory(Long.parseLong(oldInfo[CATEGORY]));
 		
-//		trans.moveToFirst();
 		oldToAccount.moveToFirst();
 		oldCategory.moveToFirst();
 		
