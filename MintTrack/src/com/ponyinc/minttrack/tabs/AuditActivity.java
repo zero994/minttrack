@@ -134,7 +134,7 @@ public class AuditActivity extends ListActivity {
 			btnDelete.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
 					budget.deleteTransaction(clickItemID);
-					Query();
+					executeQuery();
 ;				}
 			});
 		}
@@ -153,7 +153,7 @@ public class AuditActivity extends ListActivity {
 			btnDelete.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
 					budget.deleteTransaction(clickItemID);
-					Query();
+					executeQuery();
 				}
 			});
 		}
@@ -184,7 +184,7 @@ public class AuditActivity extends ListActivity {
 	/**
 	 * Method is used to switch tabs nicely
 	 */
-	public void switchTabSpecial(long l){
+	private void switchTabSpecial(long l){
 		MintTrack ParentActivity = (MintTrack) this.getParent();
 		ParentActivity.setTransactionID(l);
 		ParentActivity.switchTabSpecial(1);
@@ -214,12 +214,12 @@ public class AuditActivity extends ListActivity {
 		});
 		btnQuery.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				Query();
+				executeQuery();
 			}
 		});
 	}
 	
-	private void Query()
+	private void executeQuery()
 	{
 		String toDate = toYear + String.format("%02d", toMonth+1) + String.format("%02d", toDay);
 		String fromDate = fromYear + String.format("%02d", fromMonth+1) + String.format("%02d", fromDay);
