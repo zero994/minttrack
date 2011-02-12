@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -36,7 +35,6 @@ public class AuditActivity extends ListActivity {
 	private int fromYear;
 	private int fromMonth;
 	private int fromDay;
-	private long clickItemID;
 	static final int TODATE_DIALOG_ID = 0;
 	static final int FROMDATE_DIALOG_ID = 1;
 	
@@ -73,8 +71,8 @@ public class AuditActivity extends ListActivity {
 	/** the callback received when the user "sets" the date in the dialog*/
 	private DatePickerDialog.OnDateSetListener FromDateSetListener = new DatePickerDialog.OnDateSetListener() {
 
-		public void onDateSet(DatePicker view, int year, int monthOfYear,
-				int dayOfMonth) {
+		public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) 
+		{
 			fromYear = year;
 			fromMonth = monthOfYear;
 			fromDay = dayOfMonth;
@@ -83,15 +81,17 @@ public class AuditActivity extends ListActivity {
 	};
 	@Override
 	protected Dialog onCreateDialog(int id) {
-		switch (id) {
+		switch (id) 
+		{
 		case TODATE_DIALOG_ID:
 			return new DatePickerDialog(this, ToDateSetListener, toYear, toMonth,
 					toDay);
 		case FROMDATE_DIALOG_ID:
 			return new DatePickerDialog(this, FromDateSetListener, toYear, toMonth,
 					toDay);
+		default:
+			return null;
 		}
-		return null;
 	}
 	private void updateDisplay() {
 		btnToDate.setText(new StringBuilder()
@@ -108,8 +108,7 @@ public class AuditActivity extends ListActivity {
 	* 	@param Menu The many object that you want to populate 
 	*/
 	public boolean onCreateOptionsMenu(Menu menu) {
-	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.menu, menu);
+	    getMenuInflater().inflate(R.menu.menu, menu);
 	    return true;
 	}
 	/** Method used to populate the ListActivity from a database Cursor
@@ -121,7 +120,7 @@ public class AuditActivity extends ListActivity {
 	
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-		clickItemID = id;
+		final long clickItemID = id;
 		if(btnEdit == null || btnDelete == null){
 		btnEdit = (Button) v.findViewById(R.id.editTransactionBtn);
 		btnDelete = (Button) v.findViewById(R.id.deleteTransactionBtn);
@@ -162,33 +161,31 @@ public class AuditActivity extends ListActivity {
 	
 	/* Handles item selections */
 	public boolean onOptionsItemSelected(MenuItem item) {
-	    switch (item.getItemId())
+	    
+		switch (item.getItemId())
 	    {
 	    	case (R.id.help):
-	    		executeHelpIntent();
+	    		executeIntent(HelpAudit.class);
 	    		return true;
 	    	case (R.id.info):
-	    		executeInfoIntent();
+	    		executeIntent(AboutUs.class);
 	    		return true;
 	    }
+		
 	    return false;
 	}
-	private void executeHelpIntent()
+	
+	private void executeIntent(Class<?> cls)
 	{
-		 Intent i = new Intent(this, HelpAudit.class);
+		 Intent i = new Intent(this, cls);
 	     startActivity(i);
 	}
-	private void executeInfoIntent()
-	{
-		 Intent i = new Intent(this, AboutUs.class);
-	     startActivity(i);
-	}
+
 	/**
 	 * Method is used to switch tabs nicely
 	 */
 	public void switchTabSpecial(long l){
-		MintTrack ParentActivity;
-		ParentActivity = (MintTrack) this.getParent();
+		MintTrack ParentActivity = (MintTrack) this.getParent();
 		ParentActivity.setTransactionID(l);
 		ParentActivity.switchTabSpecial(1);
 	}
@@ -221,20 +218,21 @@ public class AuditActivity extends ListActivity {
 			}
 		});
 	}
-	void Query()
+	
+	private void Query()
 	{
-		Cursor curser;
 		String toDate = toYear + String.format("%02d", toMonth+1) + String.format("%02d", toDay);
 		String fromDate = fromYear + String.format("%02d", fromMonth+1) + String.format("%02d", fromDay);
 		long td = Integer.parseInt(toDate);
 		long fd = Integer.parseInt(fromDate);
 		
-		//check to make sure from date is less than too date
-		//make sure no date is greater than the current date
+		/*
+		 * Check to make sure from date is less than too date make sure no date
+		 * is greater than the current date
+		 */
 		if(td >= fd)
 		{
-			curser = budget.getTransactions(fromDate,toDate);
-			showEvents(curser);
+			showEvents(budget.getTransactions(fromDate,toDate));
 		}
 	}
 }
