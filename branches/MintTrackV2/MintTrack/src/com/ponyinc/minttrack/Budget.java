@@ -179,9 +179,89 @@ public class Budget implements Constants{
 		return false;
 	}
 	
+	/**
+	 * Update a transfer transaction
+	 * @param trans_ID Transaction ID
+	 * @param oldInfo Info from the old transaction
+	 * @param newInfo Info from the new transaction
+	 * @return Whether or not the update was successful
+	 */
 	public boolean updateTransfer(long trans_ID, String[] oldInfo, String[] newInfo)
 	{
-//		Cursor trans = transactions.getTransaction(trans_ID);
+		Cursor acctFrom = accounts.getAccount(Long.parseLong(oldInfo[FROM]));
+		Cursor acctTo = accounts.getAccount(Long.parseLong(oldInfo[TO]));
+		
+		acctFrom.moveToFirst();
+		acctTo.moveToFirst();
+
+		double moneyInFromAccount = acctFrom.getDouble(acctFrom.getColumnIndex(ACCOUNT_TOTAL));
+		double moneyInToAccount = acctTo.getDouble(acctTo.getColumnIndex(ACCOUNT_TOTAL));
+		
+		acctFrom.close();
+		acctTo.close();
+		
+		// If updating same account
+		if(newInfo[FROM].compareTo(oldInfo[FROM]) == 0)
+		{
+			if((Double.parseDouble(newInfo[AMOUNT]) <= Double.parseDouble(oldInfo[AMOUNT])) 
+					|| ((moneyInFromAccount+Double.parseDouble(oldInfo[AMOUNT])) - (Double.parseDouble(newInfo[AMOUNT]))) >= 0)
+			{
+				// Updated transaction
+				transactions.updateTransfer(trans_ID, newInfo);
+				
+				moneyInFromAccount += Double.parseDouble(oldInfo[AMOUNT]);
+				moneyInToAccount -= Double.parseDouble(oldInfo[AMOUNT]);
+				
+				// Updating old account and category
+				EditAccountTotal(Long.parseLong(oldInfo[FROM]), moneyInFromAccount);
+				EditAccountTotal(Long.parseLong(oldInfo[TO]), moneyInToAccount);
+				
+				// Updating new account and category
+				EditAccountTotal(Long.parseLong(newInfo[FROM]), moneyInFromAccount - Double.parseDouble(newInfo[AMOUNT]));
+				EditAccountTotal(Long.parseLong(newInfo[TO]), moneyInToAccount + Double.parseDouble(newInfo[AMOUNT]));
+				
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			Cursor toFromAcct = accounts.getAccount(Long.parseLong(newInfo[FROM]));
+			Cursor toToAcct = accounts.getAccount(Long.parseLong(newInfo[TO]));
+			
+			toFromAcct.moveToFirst();
+			toToAcct.moveToFirst();
+
+			double amountInNewFromAccount = acctFrom.getDouble(toFromAcct.getColumnIndex(ACCOUNT_TOTAL));
+			double amountInNewToAccount = acctTo.getDouble(toToAcct.getColumnIndex(ACCOUNT_TOTAL));
+			
+			toFromAcct.close();
+			toToAcct.close();
+			
+			if((amountInNewFromAccount-Double.parseDouble(newInfo[AMOUNT]))>=0)
+			{
+				// Updated transaction
+				transactions.updateTransfer(trans_ID, newInfo);
+				
+				// Updating old account and category
+				EditAccountTotal(Long.parseLong(oldInfo[FROM]), moneyInFromAccount + Double.parseDouble(oldInfo[AMOUNT]));
+				EditAccountTotal(Long.parseLong(oldInfo[TO]), moneyInToAccount - Double.parseDouble(oldInfo[AMOUNT]));
+				
+				// Updating new account and category
+				EditAccountTotal(Long.parseLong(newInfo[FROM]), amountInNewFromAccount - Double.parseDouble(newInfo[AMOUNT]));
+				EditAccountTotal(Long.parseLong(newInfo[TO]), amountInNewToAccount + Double.parseDouble(newInfo[AMOUNT]));
+				
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+/*//		Cursor trans = transactions.getTransaction(trans_ID);
 		Cursor acctTo = accounts.getAccount(Long.parseLong(oldInfo[TO]));
 		Cursor acctFrom = accounts.getAccount(Long.parseLong(oldInfo[FROM]));
 		
@@ -189,7 +269,7 @@ public class Budget implements Constants{
 		acctTo.moveToFirst();
 		acctFrom.moveToFirst();
 		
-		/*double oldAmount = trans.getDouble(trans.getColumnIndex(TRANSACTION_AMOUNT));
+		double oldAmount = trans.getDouble(trans.getColumnIndex(TRANSACTION_AMOUNT));
 		long oldFromAccountId = acctFrom.getLong(acctFrom.getColumnIndex(_ID));
 		long oldToAccountId = acctTo.getLong(acctTo.getColumnIndex(_ID));
 		
@@ -197,7 +277,7 @@ public class Budget implements Constants{
 		Cursor Account_From = accounts.getAccount(FromAccount_ID);
 		
 		Account_To.moveToNext();
-		Account_From.moveToNext();*/
+		Account_From.moveToNext();
 		
 		double moneyInFromAccount = acctFrom.getDouble(acctFrom.getColumnIndex(ACCOUNT_TOTAL));
 		double moneyInToAccount = acctTo.getDouble(acctTo.getColumnIndex(ACCOUNT_TOTAL));
@@ -215,7 +295,7 @@ public class Budget implements Constants{
 			
 			return true;
 		}
-		return false;
+		return false;*/
 	}
 	/** Method is used to create an expense transaction.  An expense transaction is one that removes money to an account and places that money into an categorys value.
 	*	@param FromAccount_ID Account the money is being deducted from
@@ -240,6 +320,13 @@ public class Budget implements Constants{
 		return false;
 	}
 	
+	/**
+	 * Update an expense transaction
+	 * @param trans_ID Transaction ID
+	 * @param oldInfo Information from the old transaction
+	 * @param newInfo Information from the new transaction
+	 * @return Whether or not update was successful
+	 */
 	public boolean updateExpense(long trans_ID, String[] oldInfo, String newInfo[])
 	{
 		Cursor acct = accounts.getAccount(Long.parseLong(oldInfo[FROM]));
@@ -316,7 +403,7 @@ public class Budget implements Constants{
 			}
 		}
 	}
-	/** Method is used to create an Income transaction.  An income transaction is one that added money to an account and to a category from thin air.
+	/** Method is used to create an Income transaction.  An income transaction is one that added money to an account and to a category.
 	*	@param ToAccount_ID Account the money is being added to
 	*	@param Amount The value of the currency being moved into the ToAccount
 	*	@param Note A string that contains information about the reason for the transaction
@@ -336,6 +423,12 @@ public class Budget implements Constants{
 		
 	}
 	
+	/**
+	 * Update an income transaction (No return needed)
+	 * @param trans_ID Transaction ID
+	 * @param oldInfo Information from the old transaction
+	 * @param newInfo Information from the new transaction
+	 */
 	public void updateIncome(long trans_ID, String[] oldInfo, String[] newInfo) {
 		
 		Cursor oldToAccount = accounts.getAccount(Long.parseLong(oldInfo[TO]));
@@ -369,6 +462,7 @@ public class Budget implements Constants{
 		EditAccountTotal(Long.parseLong(newInfo[TO]), acctTotalPlusNewAmount);
 		EditCategoryTotal(Long.parseLong(newInfo[CATEGORY]), catTotalPlusNewAmount);
 	}
+	
 	/** Method is a delegated version of getTransactions(). This method should always be used instead of the transactions Version directly.
 	*	@return a cursor from the database containing all transactions
 	*/
@@ -381,11 +475,7 @@ public class Budget implements Constants{
 	public Cursor getTransaction(long transID){
 		return transactions.getTransaction(transID);
 	}
-/*	
- 	void deleteTransaction(double transID){
-		transactions.deleteTransaction(transID);
-	}
-*/
+	
 	/** Undo and deleted transaction from log
 	 * @param trans_ID transaction to be deleted
 	 */
@@ -417,8 +507,9 @@ public class Budget implements Constants{
 		
 		transactions.removeTransaction(trans_ID);
 	}
-	/** Method is a delegated version of ClearTransTable(). This method should always be used instead of the transactions Version directly.
-	*/
+	/** 
+	 * Method is a delegated version of ClearTransTable(). This method should always be used instead of the transactions Version directly.
+	 */
 	void ClearTransTable()
 	{
 		transactions.ClearTable();

@@ -184,12 +184,16 @@ public class HomeActivity extends Activity {
 		switch (transRefNum) {
 		case TRANS_TYPE_INCOME:
 			retValue = "Income";
+			break;
 		case TRANS_TYPE_EXPENSE:
 			retValue = "Expense";
+			break;
 		case TRANS_TYPE_TRANSFER:
 			retValue = "Transfer";
+			break;
 		default:
 			retValue = "Unknown";
+			break;
 		}
 
 		return retValue;
