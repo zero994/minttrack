@@ -52,7 +52,6 @@ import com.ponyinc.minttrack.tools.CategoryManager;
  * @author Stephan Krach & Christopher Wilkins
  */
 public class EntryActivity extends Activity {
-//	private TextView mDateDisplay;
 	private Button mPickDate;
 	private Button mSave, mIncomeButton, mExpenseButton, mTransButton, mCancelButton;
 	private TextView mtxtPay_To, mtxtPay_From, mtxt_Reason, mWarning;
@@ -66,15 +65,16 @@ public class EntryActivity extends Activity {
 	private String [] oldEntryInfo = new String[6];
 	
 	private boolean isUpdate = false;
+	private boolean isFromManagerState = false;
 	private long trans_ID;
 	
-	Budget budget;
+	private Budget budget;
 
-	static final int DATE_DIALOG_ID = 0;
+	private static final int DATE_DIALOG_ID = 0;
 	
-	static final int INCOME_MODE = 0;
-	static final int EXPENSE_MODE = 1;
-	static final int TRANSFER_MODE = 2;
+	private static final int INCOME_MODE = 0;
+	private static final int EXPENSE_MODE = 1;
+	private static final int TRANSFER_MODE = 2;
 	
 	//Toast variables
 	private LayoutInflater lInflator;
@@ -116,7 +116,11 @@ public class EntryActivity extends Activity {
 	{
 		super.onResume();
 	
-		ResetTab();
+		//Only reset if user is not coming from the category or account managers
+		if(!isFromManagerState)
+			ResetTab();
+		else
+			isFromManagerState = false;
 		
 		fillCatDropDown(mCategory, REASON_TYPE_INCOME);
 		fillAccountDropDown(mPaymentType_To);
@@ -133,7 +137,6 @@ public class EntryActivity extends Activity {
 			mCancelButton.setVisibility(View.VISIBLE);
 			mWarning.setText("You are editing a transaction");
 			mWarning.setVisibility(View.VISIBLE);
-			
 		}
 	}
 
@@ -289,7 +292,6 @@ public class EntryActivity extends Activity {
 	 */
 	private void setEntryTab(long trans_ID)
 	{
-	//	SetWidgets();
 		Cursor cursor_trans = budget.getTransaction(trans_ID);
 		cursor_trans.moveToFirst();
 		
@@ -311,10 +313,6 @@ public class EntryActivity extends Activity {
 		cat_cursor.moveToFirst();
 		Cursor From_acc_cursor = from.getCursor();
 		From_acc_cursor.moveToFirst();
-		
-		/*int to_pos = setCursorPosition(To_acc_cursor, to_id);
-		int from_pos = setCursorPosition(From_acc_cursor, from_id);
-		int cat_pos = setCursorPosition(cat_cursor, cat_id);*/
 		
 		mAmount.setText(amount);
 		mNotes.setText(note);
@@ -464,20 +462,11 @@ public class EntryActivity extends Activity {
 					Cursor cat_cursor = s2.getCursor();
 					Cursor From_acc_cursor = s3.getCursor();
 					
-					
 					To_acc_cursor.moveToPosition(mPaymentType_To.getSelectedItemPosition());
 					cat_cursor.moveToPosition(mCategory.getSelectedItemPosition());
 					From_acc_cursor.moveToPosition(mPaymentType_From.getSelectedItemPosition());
-					
-//					int cat_ID = cat_cursor.getInt(cat_cursor.getColumnIndex(_ID));
-//					int To_ID = To_acc_cursor.getInt(To_acc_cursor.getColumnIndex(_ID));
-//					int From_ID = From_acc_cursor.getInt(From_acc_cursor.getColumnIndex(_ID));
+
 					String S_amount = String.valueOf(mAmount.getText());
-//					String Date = mYear + String.format("%02d", mMonth) + String.format("%02d", mDay);
-					
-					
-//					String notes = String.valueOf(mNotes.getText());
-					
 					
 					//Formatting
 					//No value entered - invalid
@@ -498,9 +487,6 @@ public class EntryActivity extends Activity {
 						S_amount = S_amount + ".00";
 					}
 					
-					
-					//double amount = 0.00;
-					
 					//Entered 0
 					if(S_amount.equals("0.00")){
 						warningText.setText("Please enter a non-zero amount.");
@@ -509,8 +495,6 @@ public class EntryActivity extends Activity {
 					//Valid value entered - process
 					else if (isValid(S_amount))
 					{
-						//amount = Math.abs(Double.parseDouble(S_amount));
-
 						if(isUpdate) //update old
 						{
 							if(!mIncomeButton.isEnabled())
@@ -600,18 +584,21 @@ public class EntryActivity extends Activity {
 		ivAddTo.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(View v) {
+				isFromManagerState = true;
 				switchActivity(1);
 			}
 		});
 		ivAddFrom.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(View v) {
+				isFromManagerState = true;
 				switchActivity(1);
 			}
 		});
 		ivAddCategory.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(View v) {
+				isFromManagerState = true;
 				switchActivity(2);
 			}
 		});
@@ -628,22 +615,22 @@ public class EntryActivity extends Activity {
 			startActivity(accountIntent);
 			break;
 		case 2:
-			//Adding an income category
-			if(!mIncomeButton.isEnabled()){
-				Intent incomeCategoryIntent = new Intent(this, CategoryManager.class);
-				incomeCategoryIntent.putExtra("categoryType", "income");
-				incomeCategoryIntent.putExtra("newFromEntryTab", true);
-				startActivity(incomeCategoryIntent);
-			}
 			//Adding an expense category
-			else
+			if(!mExpenseButton.isEnabled())
 			{
 				Intent expenseCategoryIntent = new Intent(this, CategoryManager.class);
 				expenseCategoryIntent.putExtra("categoryType", "expense");
 				expenseCategoryIntent.putExtra("newFromEntryTab", true);
 				startActivity(expenseCategoryIntent);
 			}
-			//Missing case for transfer button disabled - will default to expense category
+			//Adding income category - defaults to income category when in transfer mode
+			else
+			{
+				Intent incomeCategoryIntent = new Intent(this, CategoryManager.class);
+				incomeCategoryIntent.putExtra("categoryType", "income");
+				incomeCategoryIntent.putExtra("newFromEntryTab", true);
+				startActivity(incomeCategoryIntent);
+			}
 			break;
 		}
 	}
@@ -674,15 +661,14 @@ public class EntryActivity extends Activity {
 		String entryInfo[] = new String[6];
 		
 		/*return new Transaction(
-				(String.valueOf(mYear) + 
-					(isUpdate ? (mMonth < 10 ? "0"+String.valueOf(mMonth):String.valueOf(mMonth)) : (mMonth+1 < 10 ? "0"+String.valueOf(mMonth+1):String.valueOf(mMonth+1))) + 
-					(mDay < 10 ? "0"+String.valueOf(mDay) : String.valueOf(mDay))),
-				mPaymentType_To.getSelectedItemId(),
-				mPaymentType_From.getSelectedItemId(),
-				Double.parseDouble(mAmount.getText().toString()),
-				mCategory.getSelectedItemId(),
-				mNotes.getText().toString(),
-				
+			(String.valueOf(mYear) + 
+				(isUpdate ? (mMonth < 10 ? "0"+String.valueOf(mMonth):String.valueOf(mMonth)) : (mMonth+1 < 10 ? "0"+String.valueOf(mMonth+1):String.valueOf(mMonth+1))) + 
+				(mDay < 10 ? "0"+String.valueOf(mDay) : String.valueOf(mDay))),
+			mPaymentType_To.getSelectedItemId(),
+			mPaymentType_From.getSelectedItemId(),
+			Double.parseDouble(mAmount.getText().toString()),
+			mCategory.getSelectedItemId(),
+			mNotes.getText().toString()
 		)*/
 		
 		//Amount
