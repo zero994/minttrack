@@ -130,7 +130,6 @@ public class CategoryManager extends Activity {
 	/**OnClickListener for New Category button**/
 	View.OnClickListener newCategoryListener = new View.OnClickListener()
 	{	   
-		@Override
 		public void onClick(View v) 
 		{
 			setWidgetVisiblity(New);
@@ -140,7 +139,6 @@ public class CategoryManager extends Activity {
 	/**OnClickListener for Edit Category button**/
 	View.OnClickListener editCategoryListener = new View.OnClickListener()
 	{	   
-		@Override
 		public void onClick(View v) 
 		{	
 			setWidgetVisiblity(Update);
@@ -150,7 +148,6 @@ public class CategoryManager extends Activity {
 	/**OnClickListener for Save Category button**/
 	View.OnClickListener saveCategoryListener = new View.OnClickListener()
 	{	   
-		@Override
 		public void onClick(View v) 
 		{
 			String name = String.valueOf(nameText.getText());
@@ -196,7 +193,6 @@ public class CategoryManager extends Activity {
 	 */
 	AdapterView.OnItemSelectedListener spinnerListener = new OnItemSelectedListener(){
 
-		@Override
 		public void onItemSelected(AdapterView<?> arg0, View arg1,
 				int arg2, long arg3) {
 			
@@ -226,7 +222,6 @@ public class CategoryManager extends Activity {
 			
 		}
 
-		@Override
 		public void onNothingSelected(AdapterView<?> arg0) {
 			// nothing needed here
 			

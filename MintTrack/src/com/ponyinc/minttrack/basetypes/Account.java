@@ -1,39 +1,48 @@
 package com.ponyinc.minttrack.basetypes;
 
 public class Account {
-	private String accountName;
-	private double accountTotal;
-	private boolean accountIsActive;
+	private long aId;
+	private String aName;
+	private double aTotal;
+	private String aActive;
 	//Default constructor
 	public Account()
 	{
+		setId(-1);
 		setName("");
 		setTotal(0.0);
-		setActive(false);
+		setActive("false");
 	}
 	//Secondary constructor
-	public Account(String name, double total, boolean active)
+	public Account(long id, double total, String name, String active)
 	{
+		setId(id);
 		setName(name);
 		setTotal(total);
 		setActive(active);
 	}
+	public void setId(long aId) {
+		this.aId = aId;
+	}
+	public long getId() {
+		return aId;
+	}
 	public void setName(String aName) {
-		this.accountName = aName;
+		this.aName = aName;
 	}
 	public String getName() {
-		return accountName;
+		return aName;
 	}
 	public void setTotal(double aTotal) {
-		this.accountTotal = aTotal;
+		this.aTotal = aTotal;
 	}
 	public double getTotal() {
-		return accountTotal;
+		return aTotal;
 	}
-	public void setActive(boolean aActive) {
-		this.accountIsActive = aActive;
+	public void setActive(String aActive) {
+		this.aActive = aActive;
 	}
-	public boolean isActive() {
-		return accountIsActive;
+	public String isActive() {
+		return aActive;
 	}
 }

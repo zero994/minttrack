@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import com.ponyinc.minttrack.AboutUs;
 import com.ponyinc.minttrack.Budget;
 import com.ponyinc.minttrack.R;
+import com.ponyinc.minttrack.backuprestore.BackupManager;
 import com.ponyinc.minttrack.help.HelpTools;
 import com.ponyinc.minttrack.tools.AccountManager;
 import com.ponyinc.minttrack.tools.CategoryManager;
@@ -51,7 +52,6 @@ public class ToolActivity extends Activity implements OnClickListener
 	/** Statistics Viewer Button Listener **/
 	View.OnClickListener statsListener = new View.OnClickListener() {
 		
-		@Override
 		public void onClick(View v) 
 		{
 			executeStatisticsViewer();
@@ -61,7 +61,6 @@ public class ToolActivity extends Activity implements OnClickListener
 	/**Manage Accounts Button Listener**/
 	View.OnClickListener manAcctListener = new View.OnClickListener() {
 			
-		@Override
 		public void onClick(View v) 
 		{
 			executeAccountManager();
@@ -71,7 +70,6 @@ public class ToolActivity extends Activity implements OnClickListener
 	/**Manage Categories Button Listener**/
 	View.OnClickListener manCatListener = new View.OnClickListener() {
 		
-		@Override
 		public void onClick(View v) 
 		{
 			executeCategoryManager();
@@ -81,8 +79,7 @@ public class ToolActivity extends Activity implements OnClickListener
 	/**Tip Calculator Button Listener**/
 	View.OnClickListener tipCalcListener = new View.OnClickListener() {
 		
-		@Override
-		 public void onClick(View v) 
+		public void onClick(View v) 
 		 {
 			executeTipCalculator();
 		 }
@@ -99,6 +96,10 @@ public class ToolActivity extends Activity implements OnClickListener
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId())
 	    {
+		    case(R.id.backup):
+		    	BackupManager bm = new BackupManager();
+	    		bm.exportToXml();
+				return true;
 	    	case (R.id.help):
 	    		executeHelpIntent();
 	    		return true;
@@ -146,7 +147,6 @@ public class ToolActivity extends Activity implements OnClickListener
 		startActivity(statsIntent);
 	}
 
-	@Override
 	public void onClick(View arg0) {
 		
 	}

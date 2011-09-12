@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.ponyinc.minttrack.AboutUs;
 import com.ponyinc.minttrack.Budget;
 import com.ponyinc.minttrack.R;
+import com.ponyinc.minttrack.backuprestore.BackupManager;
 import com.ponyinc.minttrack.help.HelpHome;
 
 /**
@@ -71,6 +72,10 @@ public class HomeActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		case(R.id.backup):
+			BackupManager bm = new BackupManager();
+    		bm.exportToXml();
+			return true;
 		case (R.id.help):
 			executeHelpIntent();
 			return true;

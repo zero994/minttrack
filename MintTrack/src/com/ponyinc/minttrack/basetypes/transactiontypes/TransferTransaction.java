@@ -9,7 +9,6 @@ import com.ponyinc.minttrack.basetypes.Transaction;
 
 public class TransferTransaction extends Transaction implements Constants{
 
-	@Override
 	public void update(MintData md, Transaction t) {
 		SQLiteDatabase db = md.getWritableDatabase();
 		ContentValues values = new ContentValues();
@@ -24,7 +23,6 @@ public class TransferTransaction extends Transaction implements Constants{
 		db.close();
 	}
 
-	@Override
 	public void create(MintData md, Transaction t) {
 		SQLiteDatabase db = md.getWritableDatabase();
 		ContentValues values = new ContentValues();

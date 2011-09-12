@@ -1,13 +1,17 @@
 package com.ponyinc.minttrack.types;
 
 
-import static com.ponyinc.minttrack.Constants.*;
-
-import com.ponyinc.minttrack.MintData;
-
+import static android.provider.BaseColumns._ID;
+import static com.ponyinc.minttrack.Constants.CATEGORY_ACTIVE;
+import static com.ponyinc.minttrack.Constants.CATEGORY_NAME;
+import static com.ponyinc.minttrack.Constants.CATEGORY_TBLNAM;
+import static com.ponyinc.minttrack.Constants.CATEGORY_TOTAL;
+import static com.ponyinc.minttrack.Constants.CATEGORY_TYPE;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.ponyinc.minttrack.MintData;
 /** 
 *	Class represents the Categories object 
 *   and contains methods for interacting with them

@@ -101,7 +101,6 @@ public class AccountManager extends Activity {
 	/**OnClickListener for New Account button**/
 	View.OnClickListener newAccountListener = new View.OnClickListener()
 	{	   
-		@Override
 		public void onClick(View v) 
 		{
 			setWidgetVisiblity(New);
@@ -111,7 +110,6 @@ public class AccountManager extends Activity {
 	/**OnClickListener for Edit Account button**/
 	View.OnClickListener editAccountListener = new View.OnClickListener()
 	{	   
-		@Override
 		public void onClick(View v) 
 		{
 			setWidgetVisiblity(Update);
@@ -121,7 +119,6 @@ public class AccountManager extends Activity {
 	/**OnClickListener for Save Account button**/
 	View.OnClickListener saveAccountListener = new View.OnClickListener()
 	{	   
-		@Override
 		public void onClick(View v) 
 		{	
 			String name = String.valueOf(nameText.getText());
@@ -167,7 +164,6 @@ public class AccountManager extends Activity {
 
 	AdapterView.OnItemSelectedListener spinnerListener = new OnItemSelectedListener(){
 
-		@Override
 		public void onItemSelected(AdapterView<?> arg0, View arg1,
 				int arg2, long arg3) {
 			
@@ -191,7 +187,6 @@ public class AccountManager extends Activity {
 				activateCb.setChecked(false);
 		}
 
-		@Override
 		public void onNothingSelected(AdapterView<?> arg0) {
 			// nothing needed here
 			
