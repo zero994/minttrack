@@ -1,19 +1,23 @@
 package com.ponyinc.minttrack;
 
+import static com.ponyinc.minttrack.Constants.TRANSACTION_AMOUNT;
+import static com.ponyinc.minttrack.Constants.TRANSACTION_DATE;
+import static com.ponyinc.minttrack.Constants.TRANSACTION_NOTE;
+import static com.ponyinc.minttrack.Constants.TRANSACTION_TYPE;
+
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
-import android.database.Cursor;
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.LayoutInflater;
-import static com.ponyinc.minttrack.Constants.*;
 /** This class is a custom CursorAdapter that handles the joins of the Account/Transaction/Category for proper output on the AuditTab/HomeTab
 *	@author Christopher C. Wilkins
 */

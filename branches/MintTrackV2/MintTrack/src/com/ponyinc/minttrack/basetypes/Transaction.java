@@ -1,8 +1,8 @@
 package com.ponyinc.minttrack.basetypes;
 
-import com.ponyinc.minttrack.MintData;
+import com.ponyinc.minttrack.Constants;
 
-public abstract class Transaction {
+public class Transaction {
 	private String tDate;
 	private long tToAccount;
 	private long tFromAccount;
@@ -10,6 +10,7 @@ public abstract class Transaction {
 	private long tCategory;
 	private String tNote;
 	private long tId;
+	private String tType;
 	
 	//Default constructor
 	public Transaction()
@@ -21,6 +22,7 @@ public abstract class Transaction {
 		setAmount(0.0);
 		setCategory(-1);
 		setNote("");
+		setType(-1);
 	}
 	//Secondary constructor
 	public Transaction(long id, String date, long to, long from, 
@@ -33,6 +35,7 @@ public abstract class Transaction {
 		setAmount(amount);
 		setCategory(category);
 		setNote(note);
+		setType(type);
 	}
 	public void setDate(String tDate) {
 		this.tDate = tDate;
@@ -76,7 +79,23 @@ public abstract class Transaction {
 	public void setId(long tId) {
 		this.tId = tId;
 	}
-	
-	public abstract void update(MintData md, Transaction t);
-	public abstract void create(MintData md, Transaction t);
+	public String getType(){
+		return tType;
+	}
+	public void setType(int tType){
+		switch(tType){
+		case Constants.TRANS_TYPE_INCOME:
+			this.tType = "Income";
+			break;
+		case Constants.TRANS_TYPE_EXPENSE:
+			this.tType = "Expense";
+			break;
+		case Constants.TRANS_TYPE_TRANSFER:
+			this.tType = "Transfer";
+			break;
+		default:
+			this.tType = "Unknown";
+			break;
+		}
+	}
 }

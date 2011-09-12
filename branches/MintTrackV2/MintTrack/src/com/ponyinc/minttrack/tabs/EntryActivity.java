@@ -44,6 +44,7 @@ import com.ponyinc.minttrack.AboutUs;
 import com.ponyinc.minttrack.Budget;
 import com.ponyinc.minttrack.MintTrack;
 import com.ponyinc.minttrack.R;
+import com.ponyinc.minttrack.backuprestore.BackupManager;
 import com.ponyinc.minttrack.help.HelpEntry;
 import com.ponyinc.minttrack.tools.AccountManager;
 import com.ponyinc.minttrack.tools.CategoryManager;
@@ -237,6 +238,10 @@ public class EntryActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId())
 	    {
+		    case(R.id.backup):
+		    	BackupManager bm = new BackupManager();
+	    		bm.exportToXml();
+				return true;
 	    	case (R.id.help):
 	    		executeHelpIntent();
 	    		return true;
@@ -582,21 +587,18 @@ public class EntryActivity extends Activity {
 			}
 		});
 		ivAddTo.setOnClickListener(new View.OnClickListener(){
-			@Override
 			public void onClick(View v) {
 				isFromManagerState = true;
 				switchActivity(1);
 			}
 		});
 		ivAddFrom.setOnClickListener(new View.OnClickListener(){
-			@Override
 			public void onClick(View v) {
 				isFromManagerState = true;
 				switchActivity(1);
 			}
 		});
 		ivAddCategory.setOnClickListener(new View.OnClickListener(){
-			@Override
 			public void onClick(View v) {
 				isFromManagerState = true;
 				switchActivity(2);

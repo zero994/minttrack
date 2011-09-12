@@ -20,6 +20,7 @@ import com.ponyinc.minttrack.AuditCursorAdapter;
 import com.ponyinc.minttrack.Budget;
 import com.ponyinc.minttrack.MintTrack;
 import com.ponyinc.minttrack.R;
+import com.ponyinc.minttrack.backuprestore.BackupManager;
 import com.ponyinc.minttrack.help.HelpAudit;
 
 /** This class is used to represent the listactivity for reviewing transactions
@@ -164,6 +165,10 @@ public class AuditActivity extends ListActivity {
 	    
 		switch (item.getItemId())
 	    {
+			case(R.id.backup):
+				BackupManager bm = new BackupManager();
+		    	bm.exportToXml();
+				return true;
 	    	case (R.id.help):
 	    		executeIntent(HelpAudit.class);
 	    		return true;

@@ -1,5 +1,9 @@
 package com.ponyinc.minttrack;
 
+import static com.ponyinc.minttrack.Constants.ACCOUNT_ACTIVE;
+import static com.ponyinc.minttrack.Constants.ACCOUNT_NAME;
+import static com.ponyinc.minttrack.Constants.ACCOUNT_TOTAL;
+
 import java.text.DecimalFormat;
 
 import android.content.Context;
@@ -10,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
-import static com.ponyinc.minttrack.Constants.*;
 
 public final class AccountStatsCursorAdapter extends CursorAdapter {
 

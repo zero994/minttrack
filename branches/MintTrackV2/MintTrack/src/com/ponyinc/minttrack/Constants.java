@@ -5,6 +5,7 @@ import android.provider.BaseColumns;
  * @author Christopher C. Wilkins
  */
 public interface Constants extends BaseColumns {
+	public static final String PATH_TO_DB = "/data/data/com.ponyinc.minttrack/databases/mint.db";
 	public static final String ACCOUNT_TBLNAM = "account";
 	public static final String CATEGORY_TBLNAM = "category";
 	public static final String TRANSACTION_TBLNAM = "tran_table";

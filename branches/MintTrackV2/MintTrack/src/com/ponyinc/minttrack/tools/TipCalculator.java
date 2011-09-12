@@ -7,10 +7,8 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 import android.app.Activity;
-
-import android.view.View;
-
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -74,8 +72,7 @@ public class TipCalculator extends Activity
    /**OnClickListener for Execute button**/
    View.OnClickListener executeListener = new View.OnClickListener()
    {       
-           @Override
-       public void onClick(View v) 
+           public void onClick(View v) 
        {                   
            NumberFormat n = NumberFormat.getCurrencyInstance(Locale.US);
            
@@ -123,8 +120,7 @@ public class TipCalculator extends Activity
    /**OnClickListener for Clear button**/
    View.OnClickListener clearListener = new View.OnClickListener()
    {       
-           @Override
-       public void onClick(View v) 
+           public void onClick(View v) 
        {                   
 			errorString.setText("");
 			bill.setText("");

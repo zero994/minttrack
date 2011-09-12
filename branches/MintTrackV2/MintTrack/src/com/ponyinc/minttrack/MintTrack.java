@@ -1,15 +1,16 @@
 package com.ponyinc.minttrack;
 
-import com.ponyinc.minttrack.tabs.AuditActivity;
-import com.ponyinc.minttrack.tabs.EntryActivity;
-import com.ponyinc.minttrack.tabs.HomeActivity;
-import com.ponyinc.minttrack.tabs.ToolActivity;
 
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.widget.TabHost;
+
+import com.ponyinc.minttrack.tabs.AuditActivity;
+import com.ponyinc.minttrack.tabs.EntryActivity;
+import com.ponyinc.minttrack.tabs.HomeActivity;
+import com.ponyinc.minttrack.tabs.ToolActivity;
 
 /** This is the main class for the MintTrack application
  *  @author Christopher C. Wilkins

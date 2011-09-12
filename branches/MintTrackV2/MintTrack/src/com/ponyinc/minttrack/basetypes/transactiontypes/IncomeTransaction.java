@@ -9,13 +9,11 @@ import com.ponyinc.minttrack.basetypes.Transaction;
 
 public class IncomeTransaction extends Transaction implements Constants{
 
-	@Override
 	public void update(MintData md, Transaction t) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void create(MintData md, Transaction t) {
 		SQLiteDatabase db = md.getWritableDatabase();
 		ContentValues values = new ContentValues();
