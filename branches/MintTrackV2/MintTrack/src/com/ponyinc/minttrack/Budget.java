@@ -2,6 +2,7 @@ package com.ponyinc.minttrack;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
 import com.ponyinc.minttrack.types.Accounts;
 import com.ponyinc.minttrack.types.Categories;
@@ -513,5 +514,59 @@ public class Budget implements Constants{
 	void ClearTransTable()
 	{
 		transactions.ClearTable();
+	}
+	
+	/**
+	 * Access accounts DB object to close when needed
+	 * @return
+	 */
+	public SQLiteDatabase getAccountDB()
+	{
+		return accounts.getDB();
+	}
+	
+	/**
+	 * Access transactions DB object to close when needed
+	 * @return
+	 */
+	public SQLiteDatabase getTransactionDB()
+	{
+		return transactions.getDB();
+	}
+	
+	/**
+	 * Access transactions DB object to close when needed
+	 * @return
+	 */
+	public SQLiteDatabase getCategoryDB()
+	{
+		return categories.getDB();
+	}
+	
+	/**
+	 * Access account cursor object to close when needed
+	 * @return
+	 */
+	public Cursor getAccountCursor()
+	{
+		return accounts.getCursor();
+	}
+	
+	/**
+	 * Access category cursor object to close when needed
+	 * @return
+	 */
+	public Cursor getCategoryCursor()
+	{
+		return categories.getCursor();
+	}
+	
+	/**
+	 * Access transaction cursor object to close when needed
+	 * @return
+	 */
+	public Cursor getTransactionCursor()
+	{
+		return transactions.getCursor();
 	}
 }

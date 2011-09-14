@@ -19,6 +19,9 @@ import com.ponyinc.minttrack.MintData;
 */
 public class Categories {
 	private MintData MintLink;
+	private static SQLiteDatabase db;
+	private static Cursor cursor;
+	
 	/** Secondary Constructor
 	*	@param mintdata Database object to be used for querys
 	*/
@@ -32,8 +35,8 @@ public class Categories {
 		final String[] FROM = { _ID, CATEGORY_NAME, CATEGORY_TOTAL,
 				CATEGORY_TYPE, CATEGORY_ACTIVE,};
 		final String ORDER_BY = CATEGORY_NAME + " DESC";
-		SQLiteDatabase db = MintLink.getReadableDatabase();
-		Cursor cursor = db.query(CATEGORY_TBLNAM, FROM, null, null, null, null,
+		db = MintLink.getReadableDatabase();
+		cursor = db.query(CATEGORY_TBLNAM, FROM, null, null, null, null,
 				ORDER_BY);
 		return cursor;
 	}
@@ -44,8 +47,8 @@ public class Categories {
 		final String[] FROM = { _ID, CATEGORY_NAME, CATEGORY_TOTAL,
 				CATEGORY_TYPE, CATEGORY_ACTIVE,};
 		final String ORDER_BY = CATEGORY_NAME + " DESC";
-		SQLiteDatabase db = MintLink.getReadableDatabase();
-		Cursor cursor = db.query(CATEGORY_TBLNAM, FROM, "CATEGORY_ACTIVE = 'active'", null, null, null,
+		db = MintLink.getReadableDatabase();
+		cursor = db.query(CATEGORY_TBLNAM, FROM, "CATEGORY_ACTIVE = 'active'", null, null, null,
 				ORDER_BY);
 		return cursor;
 	}
@@ -59,8 +62,7 @@ public class Categories {
 		final String[] FROM = { _ID, CATEGORY_NAME, CATEGORY_TOTAL,
 				CATEGORY_TYPE, CATEGORY_ACTIVE,};
 		final String ORDER_BY = CATEGORY_NAME + " DESC";
-		SQLiteDatabase db = MintLink.getReadableDatabase();
-		Cursor cursor;
+		db = MintLink.getReadableDatabase();
 		
 		cursor = db.query(CATEGORY_TBLNAM, FROM, "CATEGORY_TYPE=" + type, null, null, null,
 				ORDER_BY);
@@ -78,8 +80,8 @@ public class Categories {
 		final String ORDER_BY = CATEGORY_NAME + " DESC";
 		final String SELECTION = "_ID=" + intID;
 
-		SQLiteDatabase db = MintLink.getReadableDatabase();
-		Cursor cursor = db.query(CATEGORY_TBLNAM, FROM, SELECTION, null, null,
+		db = MintLink.getReadableDatabase();
+		cursor = db.query(CATEGORY_TBLNAM, FROM, SELECTION, null, null,
 				null, ORDER_BY);
 		return cursor;
 	}
@@ -91,7 +93,7 @@ public class Categories {
 	public void addCategory(final String strName, final double initalValue, final int iType, final boolean isActive) {
 		// Insert a new record into the Events data source.
 		// You would do something similar for delete and update
-		SQLiteDatabase db = MintLink.getWritableDatabase();
+		db = MintLink.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(CATEGORY_NAME, strName);
 		values.put(CATEGORY_TOTAL, initalValue);
@@ -109,7 +111,7 @@ public class Categories {
 	public void deactivateCategory(final long acc_id)
 	// set category to inactive
 	{
-		SQLiteDatabase db = MintLink.getWritableDatabase();
+		db = MintLink.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(CATEGORY_ACTIVE, "inactive");
 		db.update(CATEGORY_TBLNAM, values, _ID + "=" + acc_id, null);
@@ -120,7 +122,7 @@ public class Categories {
 	public void reactivateCategory(final long cat_id)
 	// set category to active
 	{
-		SQLiteDatabase db = MintLink.getWritableDatabase();
+		db = MintLink.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(CATEGORY_ACTIVE, "active");
 		db.update(CATEGORY_TBLNAM, values, _ID + "=" + cat_id, null);
@@ -132,7 +134,7 @@ public class Categories {
 	public void editCategoryType(final long iCatId, final int iType) {
 		// Insert a new record into the Events data source.
 		// You would do something similar for delete and update
-		SQLiteDatabase db = MintLink.getWritableDatabase();
+		db = MintLink.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(CATEGORY_TYPE, iType);
 		db.update(CATEGORY_TBLNAM, values, "_ID=" + iCatId, null);
@@ -144,7 +146,7 @@ public class Categories {
 	public void editCategoryName(final long iCatID, final String strCatName) {
 		// Insert a new record into the Events data source.
 		// You would do something similar for delete and update
-		SQLiteDatabase db = MintLink.getWritableDatabase();
+		db = MintLink.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(CATEGORY_NAME, strCatName);
 		db.update(CATEGORY_TBLNAM, values, "_ID=" + iCatID, null);
@@ -156,9 +158,27 @@ public class Categories {
 	public void updateCategory(final long iCatID, final double dblTotal) {
 		// Insert a new record into the Events data source.
 		// You would do something similar for delete and update
-		SQLiteDatabase db = MintLink.getWritableDatabase();
+		db = MintLink.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(CATEGORY_TOTAL, dblTotal);
 		db.update(CATEGORY_TBLNAM, values, "_ID=" + iCatID, null);
+	}
+	
+	/**
+	 * Access DB object to close when needed
+	 * @return
+	 */
+	public SQLiteDatabase getDB()
+	{
+		return db;
+	}
+	
+	/**
+	 * Access cursor object to close when needed
+	 * @return
+	 */
+	public Cursor getCursor()
+	{
+		return cursor;
 	}
 }
