@@ -59,6 +59,12 @@ public class HomeActivity extends Activity {
 
 		CategoryCursor.close();
 		AccountCursor.close();
+		
+		budget.getCategoryDB().close();
+		budget.getAccountDB().close();
+		
+		budget.getCategoryCursor().close();
+		budget.getAccountCursor().close();
 
 		updateDisplay();
 	}
@@ -135,6 +141,8 @@ public class HomeActivity extends Activity {
 		displayRecentTransactions(TransactionsCursor);
 
 		TransactionsCursor.close();
+		budget.getTransactionDB().close();
+		budget.getTransactionCursor().close();
 	}
 
 	/**

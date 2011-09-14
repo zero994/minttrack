@@ -10,7 +10,9 @@ import com.ponyinc.minttrack.MintData;
 /** Interface to transaction table */
 public class Transactions implements Constants {
 	private MintData MintLink;
-
+	private static SQLiteDatabase db;
+	private static Cursor cursor;
+	
 	/**
 	 * Create an object to talk to transaction table
 	 * 
@@ -41,7 +43,7 @@ public class Transactions implements Constants {
 	// Date yyyymmdd - ex: 20110202 - no dashes or slashes- fill space with
 	// leading zeros
 	{
-		SQLiteDatabase db = MintLink.getWritableDatabase();
+		db = MintLink.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(TRANSACTION_TOACCOUNT, Long.parseLong(newInfo[TO]));
 		values.put(TRANSACTION_FROMACCOUNT, Long.parseLong(newInfo[FROM]));
@@ -71,7 +73,7 @@ public class Transactions implements Constants {
 	 */
 	public void createExpense(final String[] newInfo) {
 
-		SQLiteDatabase db = MintLink.getWritableDatabase();
+		db = MintLink.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
 
@@ -102,7 +104,7 @@ public class Transactions implements Constants {
 	 */
 	public void createIncome(final String[] newInfo) {
 
-		SQLiteDatabase db = MintLink.getWritableDatabase();
+		db = MintLink.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
 
@@ -123,8 +125,8 @@ public class Transactions implements Constants {
 	 * @return Cursor of transactions
 	 */
 	public Cursor getTransactions() {
-		SQLiteDatabase db = MintLink.getWritableDatabase();
-		Cursor c = db.rawQuery("SELECT " + TRANSACTION_TBLNAM + "._ID, "
+		db = MintLink.getReadableDatabase();
+		cursor = db.rawQuery("SELECT " + TRANSACTION_TBLNAM + "._ID, "
 				+ TRANSACTION_AMOUNT + ", " + TRANSACTION_NOTE + ", "
 				+ TRANSACTION_TYPE + ", " + TRANSACTION_DATE + ", "
 				+ TRANSACTION_CATEGORY + ", " + TRANSACTION_TOACCOUNT + ", "
@@ -136,12 +138,12 @@ public class Transactions implements Constants {
 				+ ACCOUNT_TBLNAM + " A2 ON " + TRANSACTION_FROMACCOUNT
 				+ " = A2." + _ID + " LEFT JOIN " + CATEGORY_TBLNAM + " C1 ON "
 				+ TRANSACTION_CATEGORY + " = C1." + _ID, null);
-		return c;
+		return cursor;
 	}
 
 	public Cursor getTransactions(final String FromDate, final String ToDate) {
-		SQLiteDatabase db = MintLink.getWritableDatabase();
-		Cursor c = db.rawQuery("SELECT " + TRANSACTION_TBLNAM + "._ID, "
+		db = MintLink.getReadableDatabase();
+		cursor = db.rawQuery("SELECT " + TRANSACTION_TBLNAM + "._ID, "
 				+ TRANSACTION_AMOUNT + ", " + TRANSACTION_NOTE + ", "
 				+ TRANSACTION_TYPE + ", " + TRANSACTION_DATE + ", "
 				+ TRANSACTION_CATEGORY + ", " + TRANSACTION_TOACCOUNT + ", "
@@ -155,7 +157,7 @@ public class Transactions implements Constants {
 				+ TRANSACTION_CATEGORY + " = C1." + _ID + " WHERE "
 				+ TRANSACTION_DATE + " BETWEEN '" + FromDate + "' AND '"
 				+ ToDate + "'", null);
-		return c;
+		return cursor;
 	}
 
 	/**
@@ -169,9 +171,9 @@ public class Transactions implements Constants {
 				TRANSACTION_DATE, TRANSACTION_CATEGORY, TRANSACTION_NOTE, };
 		final String ORDER_BY = _ID + " DESC";
 
-		SQLiteDatabase db = MintLink.getReadableDatabase();
+		db = MintLink.getReadableDatabase();
 
-		Cursor cursor = db.query(TRANSACTION_TBLNAM, FROM, "_ID=" + transID,
+		cursor = db.query(TRANSACTION_TBLNAM, FROM, "_ID=" + transID,
 				null, null, null, ORDER_BY);
 
 		return cursor;
@@ -181,7 +183,7 @@ public class Transactions implements Constants {
 	// Date mmddyyyy - ex: 02052010 - no dashes or slashes- fill space with
 	// leading zeros
 	{
-		SQLiteDatabase db = MintLink.getWritableDatabase();
+		db = MintLink.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(TRANSACTION_TOACCOUNT, Long.parseLong(newInfo[TO]));
 		values.put(TRANSACTION_FROMACCOUNT, Long.parseLong(newInfo[FROM]));
@@ -197,7 +199,7 @@ public class Transactions implements Constants {
 
 	public void updateExpense(final long trans_ID, final String[] newInfo) {
 
-		SQLiteDatabase db = MintLink.getWritableDatabase();
+		db = MintLink.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
 
@@ -214,7 +216,7 @@ public class Transactions implements Constants {
 
 	public void updateIncome(final long trans_ID, final String[] newInfo) {
 
-		SQLiteDatabase db = MintLink.getWritableDatabase();
+		db = MintLink.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
 
@@ -230,7 +232,7 @@ public class Transactions implements Constants {
 	}
 
 	public void removeTransaction(final long trans_ID) {
-		SQLiteDatabase db = MintLink.getWritableDatabase();
+		db = MintLink.getWritableDatabase();
 
 		db.delete(TRANSACTION_TBLNAM, "_ID =" + trans_ID, null);
 		db.close();
@@ -240,8 +242,26 @@ public class Transactions implements Constants {
 	 * Clear Transaction table
 	 */
 	public void ClearTable() {
-		SQLiteDatabase db = MintLink.getWritableDatabase();
+		db = MintLink.getWritableDatabase();
 		db.delete(TRANSACTION_TBLNAM, null, null);
 		db.close();
+	}
+	
+	/**
+	 * Access DB object to close when needed
+	 * @return
+	 */
+	public SQLiteDatabase getDB()
+	{
+		return db;
+	}
+	
+	/**
+	 * Access cursor object to close when needed
+	 * @return
+	 */
+	public Cursor getCursor()
+	{
+		return cursor;
 	}
 }

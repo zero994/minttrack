@@ -16,6 +16,9 @@ import com.ponyinc.minttrack.MintData;
 */
 public class Accounts {
 	private MintData MintLink;
+	private static SQLiteDatabase db;
+	private static Cursor cursor;
+	
 	/** Secondary Constructor
 	*	@param mintdata Takes a MintData object that represents the actual database object
 	*/
@@ -30,7 +33,7 @@ public class Accounts {
 	public void addAccount(final String strName, final double initalValue, final boolean isActive) {
 		// Insert a new record into the Events data source.
 		// You would do something similar for delete and update
-		SQLiteDatabase db = MintLink.getWritableDatabase();
+		db = MintLink.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(ACCOUNT_NAME, strName);
 		values.put(ACCOUNT_TOTAL, initalValue);
@@ -48,9 +51,9 @@ public class Accounts {
 				ACCOUNT_ACTIVE, };
 		final String ORDER_BY = _ID + " DESC";
 
-		SQLiteDatabase db = MintLink.getReadableDatabase();
+		db = MintLink.getReadableDatabase();
 
-		Cursor cursor = db.query(ACCOUNT_TBLNAM, FROM, "_ID=" + _id, null,
+		cursor = db.query(ACCOUNT_TBLNAM, FROM, "_ID=" + _id, null,
 				null, null, ORDER_BY);
 
 		return cursor;
@@ -63,9 +66,9 @@ public class Accounts {
 				ACCOUNT_ACTIVE, };
 		final String ORDER_BY = _ID + " ASC";
 
-		SQLiteDatabase db = MintLink.getReadableDatabase();
+		db = MintLink.getReadableDatabase();
 
-		Cursor cursor = db.query(ACCOUNT_TBLNAM, FROM, "ACCOUNT_ACTIVE ='active'", null,
+		cursor = db.query(ACCOUNT_TBLNAM, FROM, "ACCOUNT_ACTIVE ='active'", null,
 				null, null, ORDER_BY);
 
 		return cursor;
@@ -77,8 +80,8 @@ public class Accounts {
 		final String[] FROM = { _ID, ACCOUNT_NAME, ACCOUNT_TOTAL,
 				ACCOUNT_ACTIVE, };
 		final String ORDER_BY = _ID + " ASC";
-		SQLiteDatabase db = MintLink.getReadableDatabase();
-		Cursor cursor = db.query(ACCOUNT_TBLNAM, FROM, null, null, null, null,
+		db = MintLink.getReadableDatabase();
+		cursor = db.query(ACCOUNT_TBLNAM, FROM, null, null, null, null,
 				ORDER_BY);
 		return cursor;
 	}
@@ -88,7 +91,7 @@ public class Accounts {
 	public void DeactivateAccount(final long acc_id)
 	// set account to inactive
 	{
-		SQLiteDatabase db = MintLink.getWritableDatabase();
+		db = MintLink.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(ACCOUNT_ACTIVE, "inactive");
 		db.update(ACCOUNT_TBLNAM, values, _ID + "=" + acc_id, null);
@@ -98,7 +101,7 @@ public class Accounts {
 	*	@param strName Name that will replace the account
 	*/
 	public void EditAccountName(final long acc_id, final String strName) {
-		SQLiteDatabase db = MintLink.getWritableDatabase();
+		db = MintLink.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(ACCOUNT_NAME, strName);
 		db.update(ACCOUNT_TBLNAM, values, _ID + "=" + acc_id, null);
@@ -108,7 +111,7 @@ public class Accounts {
 	*	@param total New amount to be set as the balance of the account
 	*/
 	public void EditAccountTotal(final long acc_id, final double total) {
-		SQLiteDatabase db = MintLink.getWritableDatabase();
+		db = MintLink.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(ACCOUNT_TOTAL, total);
 		db.update(ACCOUNT_TBLNAM, values, _ID + "=" + acc_id, null);
@@ -119,9 +122,27 @@ public class Accounts {
 	public void ReactivateAccount(final long acc_id)
 	// set account to inactive
 	{
-		SQLiteDatabase db = MintLink.getWritableDatabase();
+		db = MintLink.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(ACCOUNT_ACTIVE, "active");
 		db.update(ACCOUNT_TBLNAM, values, _ID + "=" + acc_id, null);
+	}
+	
+	/**
+	 * Access DB object to close when needed
+	 * @return
+	 */
+	public SQLiteDatabase getDB()
+	{
+		return db;
+	}
+	
+	/**
+	 * Access cursor object to close when needed
+	 * @return
+	 */
+	public Cursor getCursor()
+	{
+		return cursor;
 	}
 }
