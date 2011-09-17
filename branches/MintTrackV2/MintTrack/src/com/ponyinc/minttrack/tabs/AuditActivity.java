@@ -166,8 +166,16 @@ public class AuditActivity extends ListActivity {
 		switch (item.getItemId())
 	    {
 			case(R.id.backup):
+				BackupManager.openDB();
 				BackupManager bm = new BackupManager();
-		    	bm.exportToXml();
+	    		bm.exportToXml();
+	    		BackupManager.closeDB();
+				return true;
+			case(R.id.export):
+				BackupManager.openDB();
+				BackupManager bmh = new BackupManager();
+				bmh.exportToHtml();
+				BackupManager.closeDB();
 				return true;
 	    	case (R.id.help):
 	    		executeIntent(HelpAudit.class);
