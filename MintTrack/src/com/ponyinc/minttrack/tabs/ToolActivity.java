@@ -97,8 +97,16 @@ public class ToolActivity extends Activity implements OnClickListener
 	    switch (item.getItemId())
 	    {
 		    case(R.id.backup):
-		    	BackupManager bm = new BackupManager();
+		    	BackupManager.openDB();
+				BackupManager bm = new BackupManager();
 	    		bm.exportToXml();
+	    		BackupManager.closeDB();
+				return true;
+		    case(R.id.export):
+				BackupManager.openDB();
+				BackupManager bmh = new BackupManager();
+				bmh.exportToHtml();
+				BackupManager.closeDB();
 				return true;
 	    	case (R.id.help):
 	    		executeHelpIntent();

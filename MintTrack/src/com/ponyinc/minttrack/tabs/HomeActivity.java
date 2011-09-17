@@ -79,8 +79,16 @@ public class HomeActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case(R.id.backup):
-			BackupManager bm = new BackupManager();
-    		bm.exportToXml();
+			BackupManager.openDB();
+			BackupManager bmx = new BackupManager();
+    		bmx.exportToXml();
+    		BackupManager.closeDB();
+			return true;
+		case(R.id.export):
+			BackupManager.openDB();
+			BackupManager bmh = new BackupManager();
+			bmh.exportToHtml();
+			BackupManager.closeDB();
 			return true;
 		case (R.id.help):
 			executeHelpIntent();
